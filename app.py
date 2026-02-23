@@ -31,8 +31,9 @@ def query_db(query, args=(), one=False):
 @app.route("/")
 def home():
     sql = """
-        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.id FROM posts
-        JOIN posts ON categoryid = cat.id;
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name
+        FROM posts
+        JOIN cat ON posts.categoryid = cat.id;
         """
     results = query_db(sql)
     return render_template("home.html", results=results)

@@ -1,0 +1,18 @@
+.two-column{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 2em;
+}
+
+.post-container{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    background-color: grey;
+    border-radius: 20px;
+    padding: 1em;
+}
+
+.post-img img{
+    height: 100%;
+    border-radius: 15px;
+}

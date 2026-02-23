@@ -1,4 +1,6 @@
 -- database: ./database.db
 
 SELECT * FROM posts;
-CREATE TABLE `cat`(`categoryid` INTEGER PRIMARY KEY, `name` TEXT)
+SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.id
+        FROM posts
+        JOIN cat ON posts.categoryid = cat.id;
