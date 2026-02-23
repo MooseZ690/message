@@ -1,0 +1,4 @@
+-- database: ./database.db
+
+SELECT * FROM posts;
+CREATE TABLE `cat`(`categoryid` INTEGER PRIMARY KEY, `name` TEXT)
