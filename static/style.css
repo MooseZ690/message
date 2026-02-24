@@ -1,7 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+body{
+    background-color: rgb(97, 0, 0)
+}
+
 .two-column{
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin: 2em;
+    gap: 1em;
 }
 
 .post-container{
@@ -15,4 +23,68 @@
 .post-img img{
     height: 100%;
     border-radius: 15px;
+}
+
+.post-container h1{
+    font-weight: 700;
+    margin: 0px;
+}
+
+.post-container h2{
+    font-size: 1em;
+    margin: 0px;
+}
+
+.centered-content{
+    margin-top: 12em;
+    display: grid;
+    place-items: center;
+}
+
+.top-row{
+    display: inline;
+    gap: 2em;
+}
+
+.top-input-box{
+    width: 10%;
+    height: 2.4em;
+    padding: 0.5em;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+    border-radius: 20px;
+    background-color: rgb(46, 46, 46);
+    margin-bottom: 1.5em;
+}
+
+.input-box{
+    border-radius: 20px;
+    width: 100%;
+    padding: 0.8em;
+    margin-left: 0.7em;
+    background-color: rgb(46, 46, 46);
+}
+
+.top-input-box,
+.input-box {
+    color: white;
+    border: None;
+}
+
+.new-post-container{
+    background-color: rgb(70, 70, 70);
+    border-radius: 20px;
+    padding: 2em;
+    width: 70%;
+}
+
+.post-button-right{
+    height: 2.4em;
+    padding: 0.5em;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+    border-radius: 20px;
+    background-color: rgb(46, 46, 46);
+    margin-bottom: 1.5em;
+    border: None;
 }

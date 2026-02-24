@@ -39,5 +39,27 @@ def home():
     return render_template("home.html", results=results)
 
 
+@app.route("/newpost", methods=["GET", "POST"])
+def newpost():
+    if request.method == "POST":
+        title = request.form["title"]
+        name = request.form["name"]
+        content = request.form["content"]
+        imageurl = request.form["imageurl"]
+        categoryid = request.form["categoryid"]
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO posts (title, name, content, imageurl, categoryid) VALUES (?, ?, ?, ?, ?)",
+            (title, name, content, imageurl, categoryid)
+        )
+        db.commit()
+        return redirect(url_for("home"))
+    else:
+        sql = "SELECT * FROM cat;"
+        categories = query_db(sql)
+        return render_template("newpost.html", categories=categories)
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
