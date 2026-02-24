@@ -33,7 +33,8 @@ def home():
     sql = """
         SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name
         FROM posts
-        JOIN cat ON posts.categoryid = cat.id;
+        JOIN cat ON posts.categoryid = cat.id
+        ORDER BY posts.time DESC;
         """
     results = query_db(sql)
     return render_template("home.html", results=results)
@@ -47,11 +48,11 @@ def newpost():
         content = request.form["content"]
         imageurl = request.form["imageurl"]
         categoryid = request.form["categoryid"]
-
+        current_time = str(datetime.now().strftime("%H:%M:%S %d/%m/%Y"))
         db = get_db()
         db.execute(
-            "INSERT INTO posts (title, name, content, imageurl, categoryid) VALUES (?, ?, ?, ?, ?)",
-            (title, name, content, imageurl, categoryid)
+            "INSERT INTO posts (title, name, content, imageurl, categoryid, time) VALUES (?, ?, ?, ?, ?, ?)",
+            (title, name, content, imageurl, categoryid, current_time)
         )
         db.commit()
         return redirect(url_for("home"))

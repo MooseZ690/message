@@ -41,9 +41,14 @@ body{
     place-items: center;
 }
 
-.top-row{
-    display: inline;
+.top-box{
+    display: flex;
     gap: 2em;
+    align-items: center;
+}
+
+.top-box .post-button-right{
+    margin-left: auto;
 }
 
 .top-input-box{
@@ -68,7 +73,7 @@ body{
 .top-input-box,
 .input-box {
     color: white;
-    border: None;
+    border: 1px solid rgba(0, 0, 0, 0)
 }
 
 .new-post-container{
@@ -86,5 +91,21 @@ body{
     border-radius: 20px;
     background-color: rgb(46, 46, 46);
     margin-bottom: 1.5em;
-    border: None;
+    border: 1px solid rgba(0, 0, 0, 0);
+    color: rgb(120, 120, 120)
+}
+
+.post-button-right:hover{
+    border: 1px solid rgb(110, 110, 110)
+}
+
+.category-dropdown{
+    background-color: rgb(46, 46, 46);
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 20px;
+    height: 2.4em;
+    padding: 0.5em;
+    margin-left: 0.7em;
+    margin-top: 1.4em;
+    color: rgb(120, 120, 120)
 }
