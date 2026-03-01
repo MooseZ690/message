@@ -49,7 +49,7 @@ def newpost():
         content = request.form["content"]
         imageurl = request.form["imageurl"]
         categoryid = request.form["categoryid"]
-        time = str(datetime.now().strftime("%Y/%m/%D %H:%M:%S"))
+        time = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         db = get_db()
         db.execute(
             "INSERT INTO posts (title, name, content, imageurl, categoryid, time) VALUES (?, ?, ?, ?, ?, ?)",
