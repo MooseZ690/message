@@ -1,17 +1,24 @@
 {% extends "layout.html" %}
 {% block body %}
-            {% for item in results %}
-                <div class="post-container">
-                    <div class="post-text">
-                        <h2>{{item[4]}}</h2>
-                        <h1>{{item[0]}}</h1>
-                        <h3>{{item[2]}}</h3>
-                        <h2>{{item[1]}}</h2>
-                    </div>
-                    <div class="post-img">
-                        <img src="{{item[3]}}" alt="{{item[0]}}">
-                    </div> 
+    {% if results %}
+        {% set title = results[0][4] %}
+        <div class="cat-title">
+        <h1>{{ title }}</h1>
+        </div>
+    {% endif %}
+    <div class="centered-content">
+        {% for item in results %}
+            <div class="post-container">
+                <div class="post-text">
+                    <h2>{{item[4]}}</h2>
+                    <h1>{{item[0]}}</h1>
+                    <h3>{{item[2]}}</h3>
+                    <h2>{{item[1]}}</h2>
                 </div>
-            {% endfor %}
-            <p>{{categories}}</p>
+                <div class="post-img">
+                    <img src="{{item[3]}}" alt="{{item[0]}}">
+                </div> 
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

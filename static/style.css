@@ -43,10 +43,11 @@
 }
 
 body{
-    background-color: rgb(0, 0, 0)
+    background-color: rgb(36, 36, 36)
 }
 
 .post-container{
+    width: 50%;
     display: grid;
     margin: 2em;
     grid-template-columns: 2fr 1fr;
@@ -54,7 +55,7 @@ body{
     color: white;
     border-radius: 20px;
     padding: 1em;
-     border: 1px solid white;
+    border: 1px solid white;
 }
 
 .post-img img{
@@ -73,7 +74,7 @@ body{
 }
 
 .centered-content{
-    margin-top: 12em;
+    margin-top: 5em;
     display: grid;
     place-items: center;
 }
@@ -155,6 +156,7 @@ body{
 
 .dropdown{
     background-color: black;
+    border: None;
 
 }
 
@@ -175,9 +177,22 @@ body{
 }
 
 .dropdown-content a:hover {
-    background-color: black;
+    background-color: rgb(110, 110, 110);
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.top-button{
+    border: None;
+    color: white;
+}
+
+.cat-title{
+    padding-top: 2em;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-weight: 2100;
 }

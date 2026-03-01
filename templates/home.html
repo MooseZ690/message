@@ -5,19 +5,20 @@
                 {% set categories = categories + [item[4]] %}
             {% endfor %}
 
-
-            {% for item in results %}
-                <div class="post-container">
-                    <div class="post-text">
-                        <h2>{{item[4]}}</h2>
-                        <h1>{{item[0]}}</h1>
-                        <h3>{{item[2]}}</h3>
-                        <h2>{{item[1]}}</h2>
+            <div class="centered-content">
+                {% for item in results %}
+                    <div class="post-container">
+                        <div class="post-text">
+                            <h2>{{item[4]}}</h2>
+                            <h1>{{item[0]}}</h1>
+                            <h3>{{item[2]}}</h3>
+                            <h2>{{item[1]}}</h2>
+                        </div>
+                        <div class="post-img">
+                            <img src="{{item[3]}}" alt="{{item[0]}}">
+                        </div> 
                     </div>
-                    <div class="post-img">
-                        <img src="{{item[3]}}" alt="{{item[0]}}">
-                    </div> 
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
             <p>{{categories}}</p>
 {% endblock %}
