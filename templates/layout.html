@@ -10,10 +10,22 @@
 </head>
 <body>
     <!-- shared navbar -->
-     <nav class="w3-bar w3-dark-grey">
-        <a href="/" class="w3-bar-item w3-button">Home</a>
-        <a href="/newpost" class="w3-bar-item w3-button">New post</a>
-     </nav>
+     <nav class="navbar">
+        <a href="/" class="top-button">Home</a>
+        <a href="/newpost" class="top-button">New post</a>
+        <!-- dropdown menu for categories -->
+        <div class="dropdown">
+            <button class="top-button">Categories</button>
+            <div class="dropdown-content">
+             <a href="/category/0">Misc</a>
+             <a href="/category/1">Science</a>
+             <a href="/category/2">Math</a>
+             <a href="/category/3">English</a>
+             <a href="/category/4">History</a>
+             <a href="/category/5">Digitech</a>
+    </div>
+</div>
+    </nav>
     {% block body %}
     {% endblock %}
 </body>

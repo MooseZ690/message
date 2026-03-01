@@ -1,23 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
-body{
-    background-color: rgb(97, 0, 0)
+.title-bar{
+    background-color: black;
+    color: white;
+    padding: 0.5em;
+    display: flex;
+    align-items: left;
+    gap: 1em;
 }
 
-.two-column{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin: 2em;
+.navbar {
+
+    display: flex;
+    justify-content: center;
+    color: white;
     gap: 1em;
+    background-color: black;
+}
+
+.top-button {   
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border-radius: 25px;
+    background-color: black;
+    height: 3em;
+    font-size: 1em;
+    text-decoration: none;
+    margin: 1em;
+    padding: 0.6em;
+    font-weight: 500;
+}
+
+.top-button:hover {
+    background-color: rgb(110, 110, 110)
+}
+
+.top-dropdown{
+    background-color: black;
+
+}
+
+body{
+    background-color: rgb(0, 0, 0)
 }
 
 .post-container{
     display: grid;
+    margin: 2em;
     grid-template-columns: 2fr 1fr;
-    background-color: grey;
+    background-color: black;
+    color: white;
     border-radius: 20px;
     padding: 1em;
+     border: 1px solid white;
 }
 
 .post-img img{
@@ -58,8 +95,12 @@ body{
     margin-left: 0.7em;
     margin-right: 0.7em;
     border-radius: 20px;
-    background-color: rgb(46, 46, 46);
+    background-color: black;
     margin-bottom: 1.5em;
+}
+
+.top-input-box::placeholder, .input-box::placeholder{
+    color: white;
 }
 
 .input-box{
@@ -67,18 +108,19 @@ body{
     width: 100%;
     padding: 0.8em;
     margin-left: 0.7em;
-    background-color: rgb(46, 46, 46);
+    background-color: black;
 }
 
 .top-input-box,
 .input-box {
     color: white;
-    border: 1px solid rgba(0, 0, 0, 0)
+    border: 1px solid white;
 }
 
 .new-post-container{
-    background-color: rgb(70, 70, 70);
+    background-color: rgb(0, 0, 0);
     border-radius: 20px;
+    border: 1px solid white;
     padding: 2em;
     width: 70%;
 }
@@ -89,10 +131,11 @@ body{
     margin-left: 0.7em;
     margin-right: 0.7em;
     border-radius: 20px;
-    background-color: rgb(46, 46, 46);
+    background-color: black;
     margin-bottom: 1.5em;
-    border: 1px solid rgba(0, 0, 0, 0);
-    color: rgb(120, 120, 120)
+    border: 1px solid white;
+    background-color: white;
+    color: black;
 }
 
 .post-button-right:hover{
@@ -108,4 +151,33 @@ body{
     margin-left: 0.7em;
     margin-top: 1.4em;
     color: rgb(120, 120, 120)
+}
+
+.dropdown{
+    background-color: black;
+
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: black;
+    min-width: 160px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+.dropdown-content a:hover {
+    background-color: black;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }

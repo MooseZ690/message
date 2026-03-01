@@ -1,11 +1,5 @@
 {% extends "layout.html" %}
 {% block body %}
-            {% set categories = [] %}
-            {% for item in results %}
-                {% set categories = categories + [item[4]] %}
-            {% endfor %}
-
-
             {% for item in results %}
                 <div class="post-container">
                     <div class="post-text">

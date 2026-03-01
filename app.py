@@ -1,3 +1,4 @@
+import flask
 from flask import Flask, g, render_template, request, redirect, url_for
 import logging, sqlite3, datetime
 from datetime import datetime
@@ -48,7 +49,7 @@ def newpost():
         content = request.form["content"]
         imageurl = request.form["imageurl"]
         categoryid = request.form["categoryid"]
-        current_time = str(datetime.now().strftime("%H:%M:%S %d/%m/%Y"))
+        current_time = str(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
         db = get_db()
         db.execute(
             "INSERT INTO posts (title, name, content, imageurl, categoryid, time) VALUES (?, ?, ?, ?, ?, ?)",
@@ -61,6 +62,15 @@ def newpost():
         categories = query_db(sql)
         return render_template("newpost.html", categories=categories)
 
+@app.route("/category/<int:id>")
+def category(id):
+    sql = """
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name
+        FROM posts
+        JOIN cat ON posts.categoryid = cat.id
+        WHERE posts.categoryid = ?;"""
+    result = query_db(sql, (id,))
+    return render_template("category.html", results=result)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
