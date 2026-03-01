@@ -1,22 +1,25 @@
 {% extends "layout.html" %}
 {% block body %}
+    {# 'results' is a list of rows returned from the category query, each row is a tuple #}
     {% if results %}
+        {# get the category name from the first row's fifth element (index 4) #}
         {% set title = results[0][4] %}
         <div class="cat-title">
         <h1>{{ title }}</h1>
         </div>
     {% endif %}
     <div class="centered-content">
+        {# loop over each row in results and display post details #}
         {% for item in results %}
             <div class="post-container">
                 <div class="post-text">
-                    <h2>{{item[4]}}</h2>
-                    <h1>{{item[0]}}</h1>
-                    <h3>{{item[2]}}</h3>
-                    <h2>{{item[1]}}</h2>
+                    <h2>{{item[4]}}</h2> {# category name repeated per post #}
+                    <h1>{{item[0]}}</h1> {# post title #}
+                    <h3>{{item[2]}}</h3> {# name #}
+                    <h2>{{item[1]}}</h2> {# post content #}
                 </div>
                 <div class="post-img">
-                    <img src="{{item[3]}}" alt="{{item[0]}}">
+                    <img src="{{item[3]}}" alt="{{item[0]}}"> {# image url #}
                 </div> 
             </div>
         {% endfor %}
