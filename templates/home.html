@@ -7,18 +7,16 @@
             <div class="centered-content">
                 {% set item = results[0] %} <!-- sets item as the most recent post -->
                     {% if item[5][:10] == today %} <!-- if the date passed from the database (first 11 characters) is the same date as today's date -->
-                        {% set time = "Today, " %} <!-- set the time variable as the string "Today, " -->
+                        {% set time = "Today," + item[5][10:] %} <!-- set the time variable as the string "Today, " -->
                     {% else %}
-                        {% set time = item[5] %} <!-- otherwise keep the time as the numerical date --> DOESNT WORL
+                        {% set time = item[5] %} <!-- otherwise keep the time as the numerical date -->
                     {% endif %}
-                    <pre>{{today}}</pre>
-                    <pre>{{item[5][:10]}}</pre>
 
                     <h1>Most recent post</h1>
-                    <p>({{ item[5] }})</p>
+                    <p>({{time}})</p>
                     <div class="post-container">
                         <div class="post-text">
-                            <h2>{{item[4]}}</h2>
+                            <h2 class = 'category-box'>category: {{item[4]}}</h2>
                             <h1>{{item[0]}}</h1>
                             <h3>{{item[2]}}</h3>
                             <h2>{{item[1]}}</h2>
