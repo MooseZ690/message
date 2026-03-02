@@ -32,13 +32,13 @@ def query_db(query, args=(), one=False):
 @app.route("/") #creates the home route for the flask app
 def home():
     sql = """
-        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         ORDER BY posts.time DESC; 
-        """ #sql statement to show all posts sorted by time posted
+        """ #sql statement to return all posts from the database
     results = query_db(sql)
-    return render_template("home.html", results=results) #sends the results to home.html, rendering the html file with the info from the database
+    return render_template("home.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 
 @app.route("/newpost", methods=["GET", "POST"]) #defines function to add info into the database

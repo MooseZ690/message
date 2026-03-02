@@ -3,7 +3,6 @@
 
 .title-bar{
     background-color: black;
-    color: white;
     padding: 0.5em;
     display: flex;
     align-items: left;
@@ -14,7 +13,6 @@
 
     display: flex;
     justify-content: center;
-    color: white;
     gap: 1em;
     background-color: black;
 }
@@ -42,17 +40,12 @@
 
 }
 
-body{
-    background-color: rgb(36, 36, 36)
-}
-
 .post-container{
     width: 50%;
     display: grid;
     margin: 2em;
     grid-template-columns: 2fr 1fr;
     background-color: black;
-    color: white;
     border-radius: 20px;
     padding: 1em;
     border: 1px solid white;
@@ -77,7 +70,9 @@ body{
     margin-top: 5em;
     display: grid;
     place-items: center;
+    text-align: left;
 }
+
 
 .top-box{
     display: flex;
@@ -100,9 +95,6 @@ body{
     margin-bottom: 1.5em;
 }
 
-.top-input-box::placeholder, .input-box::placeholder{
-    color: white;
-}
 
 .input-box{
     border-radius: 20px;
@@ -114,7 +106,6 @@ body{
 
 .top-input-box,
 .input-box {
-    color: white;
     border: 1px solid white;
 }
 
@@ -135,7 +126,6 @@ body{
     background-color: black;
     margin-bottom: 1.5em;
     border: 1px solid white;
-    background-color: white;
     color: black;
 }
 
@@ -173,7 +163,6 @@ body{
     display: block;
     padding: 10px;
     text-decoration: none;
-    color: white;
 }
 
 .dropdown-content a:hover {
@@ -193,6 +182,10 @@ body{
     padding-top: 2em;
     display: grid;
     place-items: center;
-    color: white;
     font-weight: 2100;
+}
+
+body{
+    background-color: rgb(36, 36, 36);
+    color: white;
 }

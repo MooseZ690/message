@@ -2,7 +2,7 @@
 {% block body %}
     {# 'results' is a list of rows returned from the category query, each row is a tuple #}
     {% if results %}
-        {# get the category name from the first row's fifth element (index 4) #}
+        {# get the category name from the first row's fifth element #}
         {% set title = results[0][4] %}
         <div class="cat-title">
         <h1>{{ title }}</h1>

@@ -4,9 +4,18 @@
             {% for item in results %}
                 {% set categories = categories + [item[4]] %}
             {% endfor %}
-
             <div class="centered-content">
-                {% for item in results %}
+                {% set item = results[0] %} <!-- sets item as the most recent post -->
+                    {% if item[5][:10] == today %} <!-- if the date passed from the database (first 11 characters) is the same date as today's date -->
+                        {% set time = "Today, " %} <!-- set the time variable as the string "Today, " -->
+                    {% else %}
+                        {% set time = item[5] %} <!-- otherwise keep the time as the numerical date --> DOESNT WORL
+                    {% endif %}
+                    <pre>{{today}}</pre>
+                    <pre>{{item[5][:10]}}</pre>
+
+                    <h1>Most recent post</h1>
+                    <p>({{ item[5] }})</p>
                     <div class="post-container">
                         <div class="post-text">
                             <h2>{{item[4]}}</h2>
@@ -18,7 +27,5 @@
                             <img src="{{item[3]}}" alt="{{item[0]}}">
                         </div> 
                     </div>
-                {% endfor %}
             </div>
-            <p>{{categories}}</p>
 {% endblock %}
