@@ -72,5 +72,7 @@ def category(id):
     result = query_db(sql, (id,))
     return render_template("category.html", results=result)
 
+@app.route("/post/<int:id>") #app route for looking at an individual post
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app
