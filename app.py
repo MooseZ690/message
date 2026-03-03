@@ -32,7 +32,7 @@ def query_db(query, args=(), one=False):
 @app.route("/") #creates the home route for the flask app
 def home():
     sql = """
-        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         ORDER BY posts.time DESC; 
@@ -75,12 +75,22 @@ def category(id):
 @app.route("/post/<int:id>") #app route for looking at an individual post
 def post(id):
     sql = """
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         WHERE posts.id = ?;""" #sql statement to get posts info where category id is selected by the user
     result = query_db(sql, (id,), True)
     return render_template("post.html", results=result)
+
+@app.route("/allposts")
+def allposts():
+    sql = """    
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id
+        FROM posts
+        JOIN cat ON posts.categoryid = cat.id 
+        ORDER BY time DESC;"""
+    result = query_db(sql, (id,))
+    return render_template("allposts.html", results=result)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app

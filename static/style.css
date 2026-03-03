@@ -107,6 +107,7 @@
 .top-input-box,
 .input-box {
     border: 1px solid white;
+    color: white;
 }
 
 .new-post-container{

@@ -1,17 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
-            {% set categories = [] %}
+            <!-- {% set categories = [] %}
             {% for item in results %}
                 {% set categories = categories + [item[4]] %}
             {% endfor %}
             <div class="centered-content">
-                {% set item = results[0] %} <!-- sets item as the most recent post -->
-                    {% if item[5][:10] == today %} <!-- if the date passed from the database (first 11 characters) is the same date as today's date -->
-                        {% set time = "Today," + item[5][10:] %} <!-- set the time variable as the string "Today, " -->
-                    {% else %}
-                        {% set time = item[5] %} <!-- otherwise keep the time as the numerical date -->
-                    {% endif %}
-
                     <h1>Most recent post</h1>
                     <p>({{time}})</p>
                         <a href="{{ url_for('post', id=item[6]) }}" class="post-container">
@@ -26,5 +19,6 @@
                             </div> 
                         </a>
                     </a>
-            </div>
+            </div> -->
+            <pre>{{results}}</pre>
 {% endblock %}
