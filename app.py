@@ -73,6 +73,14 @@ def category(id):
     return render_template("category.html", results=result)
 
 @app.route("/post/<int:id>") #app route for looking at an individual post
+def post(id):
+    sql = """
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name
+        FROM posts
+        JOIN cat ON posts.categoryid = cat.id
+        WHERE posts.id = ?;""" #sql statement to get posts info where category id is selected by the user
+    result = query_db(sql, (id,), True)
+    return render_template("post.html", results=result)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app

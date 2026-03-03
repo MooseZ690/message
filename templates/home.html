@@ -14,16 +14,17 @@
 
                     <h1>Most recent post</h1>
                     <p>({{time}})</p>
-                    <div class="post-container">
-                        <div class="post-text">
-                            <h2 class = 'category-box'>category: {{item[4]}}</h2>
-                            <h1>{{item[0]}}</h1>
-                            <h3>{{item[2]}}</h3>
-                            <h2>{{item[1]}}</h2>
-                        </div>
-                        <div class="post-img">
-                            <img src="{{item[3]}}" alt="{{item[0]}}">
-                        </div> 
-                    </div>
+                        <a href="{{ url_for('post', id=21) }}" class="post-container">
+                            <div class="post-text">
+                                <h2 class = 'category-box'>category: {{item[4]}}</h2>
+                                <h1>{{item[0]}}</h1>
+                                <h3>{{item[2]}}</h3>
+                                <h2>{{item[1]}}</h2>
+                            </div>
+                            <div class="post-img">
+                                <img src="{{item[3]}}" alt="{{item[0]}}">
+                            </div> 
+                        </a>
+                    </a>
             </div>
 {% endblock %}
