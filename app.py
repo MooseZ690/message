@@ -85,12 +85,12 @@ def post(id):
 @app.route("/allposts")
 def allposts():
     sql = """    
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time
         FROM posts
-        JOIN cat ON posts.categoryid = cat.id 
-        ORDER BY time DESC;"""
-    result = query_db(sql, (id,))
-    return render_template("allposts.html", results=result)
+        JOIN cat ON posts.categoryid = cat.id
+        ORDER BY posts.time DESC;"""
+    results = query_db(sql)
+    return render_template("allposts.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to allposts.html, rendering the html file with the info from the database
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app
