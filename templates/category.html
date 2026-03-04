@@ -9,19 +9,18 @@
         </div>
     {% endif %}
     <div class="centered-content">
-        {# loop over each row in results and display post details #}
         {% for item in results %}
-            <div class="post-container">
+            <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
                 <div class="post-text">
-                    <h2 class="category-box">category: {{item[4]}}</h2> {# category name repeated per post #}
-                    <h1>{{item[0]}}</h1> {# post title #}
-                    <h3>{{item[2]}}</h3> {# name #}
-                    <h2>{{item[1]}}</h2> {# post content #}
+                    <h2 class = 'category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2>
+                    <h1>{{item[0]}}</h1>
+                    <h3>{{item[2]}}</h3>
+                    <h2>{{item[1]}}</h2>
                 </div>
                 <div class="post-img">
-                    <img src="{{item[3]}}" alt="{{item[0]}}"> {# image url #}
+                    <img src="{{item[3]}}" alt="{{item[0]}}">
                 </div> 
-            </div>
+            </a>
         {% endfor %}
     </div>
 {% endblock %}

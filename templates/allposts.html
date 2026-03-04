@@ -8,8 +8,7 @@
                 {% for item in results %}
                         <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
                             <div class="post-text">
-                                <h2 class = 'category-box'>category: {{item[4]}}</h2>
-                                <h2 class = 'category-box'>{{item[6][10:]}}</h2>
+                                <h2 class = 'category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2>
                                 <h1>{{item[0]}}</h1>
                                 <h3>{{item[2]}}</h3>
                                 <h2>{{item[1]}}</h2>

@@ -1,4 +1,3 @@
-import flask
 from flask import Flask, g, render_template, request, redirect, url_for
 import logging, sqlite3, datetime
 from datetime import datetime #imports the required packages for working with flask and databases
@@ -28,8 +27,11 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
+@app.route("/")
+def lander():
+    return render_template("lander.html")
 
-@app.route("/") #creates the home route for the flask app
+@app.route("/home") #creates the home route for the flask app
 def home():
     sql = """
         SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id
@@ -65,17 +67,18 @@ def newpost():
 @app.route("/category/<int:id>") #flask app route for the page that shows posts only from a certain category
 def category(id):
     sql = """
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
-        WHERE posts.categoryid = ?;""" #sql statement to get posts info where category id is selected by the user
+        WHERE posts.categoryid = ?
+        ORDER BY posts.time DESC""" #sql statement to get posts info where category id is selected by the user
     result = query_db(sql, (id,))
     return render_template("category.html", results=result)
 
 @app.route("/post/<int:id>") #app route for looking at an individual post
 def post(id):
     sql = """
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         WHERE posts.id = ?;""" #sql statement to get posts info where category id is selected by the user
@@ -91,6 +94,10 @@ def allposts():
         ORDER BY posts.time DESC;"""
     results = query_db(sql)
     return render_template("allposts.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to allposts.html, rendering the html file with the info from the database
+
+@app.route("/login")
+def login():
+    return render_template("login.html, pw='123'")
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app
