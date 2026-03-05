@@ -27,18 +27,17 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
-@app.route("/")
-def lander():
-    return render_template("lander.html")
-
-@app.route("/home") #creates the home route for the flask app
+@app.route("/") #creates the home route for the flask app
 def home():
     sql = """
-        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         ORDER BY posts.time DESC; 
         """ #sql statement to return all posts from the database
+    replysql = """
+        SELECT 
+        """
     results = query_db(sql)
     return render_template("home.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
@@ -51,11 +50,12 @@ def newpost():
         content = request.form["content"]
         imageurl = request.form["imageurl"]
         categoryid = request.form["categoryid"]
+        reply = request.form["reply"]
         time = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         db = get_db()
         db.execute(
-            "INSERT INTO posts (title, name, content, imageurl, categoryid, time) VALUES (?, ?, ?, ?, ?, ?)",
-            (title, name, content, imageurl, categoryid, time)
+            "INSERT INTO posts (title, name, content, imageurl, categoryid, time, reply) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (title, name, content, imageurl, categoryid, time, reply)
         ) #adds info from newpost.html into the database
         db.commit()
         return redirect(url_for("home"))
@@ -88,16 +88,15 @@ def post(id):
 @app.route("/allposts")
 def allposts():
     sql = """    
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time
-        FROM posts
-        JOIN cat ON posts.categoryid = cat.id
-        ORDER BY posts.time DESC;"""
-    results = query_db(sql)
-    return render_template("allposts.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to allposts.html, rendering the html file with the info from the database
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+    FROM posts
+    JOIN cat ON posts.categoryid = cat.id
+    ORDER BY posts.time DESC;
+    """
 
-@app.route("/login")
-def login():
-    return render_template("login.html, pw='123'")
+    results = query_db(sql)
+    return render_template(
+        "allposts.html", results=results, today=datetime.now().strftime("%Y-%m-%d"))
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app
