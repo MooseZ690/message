@@ -1,34 +1,33 @@
 {% extends "layout.html" %}
 {% block body %}
-    <div class="centered-content">
-        {% for item in results %}
-            <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
+<div class="centered-content">
+    {% for item in results %}
+    <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
 
-                {% if item[7] %}
-                    {% for post in results %}
-                        {% if post[5] == item[7] %}
-                                <div class="post-text">
-                                    <p>Replying to:</p>
-                                    <p>{{post[0]}}</p>
-                                    <p>{{post[2]}}</p>
-                                    <p>{{post[1]}}</p>
-                                </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+        <div class="post-text">
+            <h2 class='category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2>
+            <h1>{{item[0]}}</h1>
+            <h3>{{item[2]}}</h3>
+            <h2>{{item[1]}}</h2>
+        </div>
 
-                <div class="post-text">
-                    <h2 class='category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2>
-                    <h1>{{item[0]}}</h1>
-                    <h3>{{item[2]}}</h3>
-                    <h2>{{item[1]}}</h2>
+        <div class="post-img">
+            <img src="{{item[3]}}" alt="{{item[0]}}">
+        </div>
+    </a>
+    {% if item[7] %}
+            {% for post in results %}
+                {% if post[5] == item[7] %}
+                <div class="reply-box">
+                    <div class="post-text">
+                        <p>{{post[0]}}</p>
+                        <p>{{post[2]}}</p>
+                        <p>{{post[1]}}</p>
+                    </div>
                 </div>
-
-                <div class="post-img">
-                    <img src="{{item[3]}}" alt="{{item[0]}}">
-                </div> 
-            </a>
-
-        {% endfor %}
-    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</div>
 {% endblock %}

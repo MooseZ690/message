@@ -43,19 +43,12 @@
 .post-container{
     width: 50%;
     display: grid;
+    grid-template-columns: 2fr 1fr;
     margin: 2em;
     background-color: black;
     border-radius: 20px;
     padding: 1em;
     border: 1px solid white;
-}
-
-.post-container:has(:nth-child(3)) {
-    grid-template-columns: 2fr 3fr 3fr;
-}
-
-.post-container:not(:has(:nth-child(2))) {
-    grid-template-columns: 1fr 1fr;
 }
 
 .post-img img{
@@ -221,4 +214,6 @@ a{
     background-color: rgb(110, 110, 110);
     border-radius: 20px;
     border: 1px solid white;
+    padding: 1em;
+    margin-bottom: 4em;
 }

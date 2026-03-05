@@ -35,9 +35,6 @@ def home():
         JOIN cat ON posts.categoryid = cat.id
         ORDER BY posts.time DESC; 
         """ #sql statement to return all posts from the database
-    replysql = """
-        SELECT 
-        """
     results = query_db(sql)
     return render_template("home.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
