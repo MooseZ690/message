@@ -18,11 +18,15 @@
     {% if item[7] %}
             {% for post in results %}
                 {% if post[5] == item[7] %}
-                <div class="reply-box">
-                    <div class="post-text">
-                        <p>{{post[0]}}</p>
-                        <p>{{post[2]}}</p>
-                        <p>{{post[1]}}</p>
+                <div class="reply-decoration">
+                    <div class="line">
+                    </div>
+                    <div class="reply-box">
+                        <div class="post-text">
+                            <p>Replying to <i>{{post[2]}}</i></p>
+                            <p>{{post[0]}}</p>
+                            <p>{{post[1]}}</p>
+                        </div>
                     </div>
                 </div>
                 {% endif %}

@@ -69,8 +69,17 @@ def category(id):
         JOIN cat ON posts.categoryid = cat.id
         WHERE posts.categoryid = ?
         ORDER BY posts.time DESC""" #sql statement to get posts info where category id is selected by the user
+        
+    sqlall = """    
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+    FROM posts
+    JOIN cat ON posts.categoryid = cat.id
+    ORDER BY posts.time DESC;
+    """
+    
+    result2 = query_db(sqlall)
     result = query_db(sql, (id,))
-    return render_template("category.html", results=result)
+    return render_template("category.html", results=result, allposts=result2)
 
 @app.route("/post/<int:id>") #app route for looking at an individual post
 def post(id):

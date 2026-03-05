@@ -1,54 +1,48 @@
 {% extends "layout.html" %}
 {% block body %}
-            {% set categories = [] %}
-            {% for item in results %}
-                {% set categories = categories + [item[4]] %}
-            {% endfor %}
-            <div class="centered-content">
-                {% if results[6] %}
-                    {% set item = results[0] %} <!-- sets item as the most recent post -->
-                        {% if item[5][:10] == today %} <!-- if the date passed from the database (first 11 characters) is the same date as today's date -->
-                            {% set time = "Today," + item[5][10:] %} <!-- set the time variable as the string "Today, " -->
-                        {% else %}
-                            {% set time = item[5] %} <!-- otherwise keep the time as the numerical date -->
-                        {% endif %}
+<div class="centered-content">
+    {% set item = results[0] %}  {# most recent post #}
 
-                        <h1>Most recent post</h1>
-                        <p>({{time}})</p>
-                            <a href="{{ url_for('post', id=item[6]) }}" class="reply-container">
-                            <a href="{{ url_for('post', id=item[6]) }}" class="post-container">
-                                <div class="post-text">
-                                    <h2 class = 'category-box'>category: {{item[4]}}</h2>
-                                    <h1>{{item[0]}}</h1>
-                                    <h3>{{item[2]}}</h3>
-                                    <h2>{{item[1]}}</h2>
-                                    <h2>replying to {{item[6]}}</h2>
-                                </div>
-                                <div class="post-img">
-                                    <img src="{{item[3]}}" alt="{{item[0]}}">
-                                </div> 
-                            </a>
-                {% else %}
-                    {% set item = results[0] %} <!-- sets item as the most recent post -->
-                        {% if item[5][:10] == today %} <!-- if the date passed from the database (first 11 characters) is the same date as today's date -->
-                            {% set time = "Today," + item[5][10:] %} <!-- set the time variable as the string "Today, " -->
-                        {% else %}
-                            {% set time = item[5] %} <!-- otherwise keep the time as the numerical date -->
-                        {% endif %}
+    {# Format the time #}
+    {% if item[5][:10] == today %}
+        {% set time = "Today," + item[5][10:] %}
+    {% else %}
+        {% set time = item[5] %}
+    {% endif %}
 
-                        <h1>Most recent post</h1>
-                        <p>({{time}})</p>
-                            <a href="{{ url_for('post', id=item[6]) }}" class="post-container">
-                                <div class="post-text">
-                                    <h2 class = 'category-box'>category: {{item[4]}}</h2>
-                                    <h1>{{item[0]}}</h1>
-                                    <h3>{{item[2]}}</h3>
-                                    <h2>{{item[1]}}</h2>
-                                </div>
-                                <div class="post-img">
-                                    <img src="{{item[3]}}" alt="{{item[0]}}">
-                                </div> 
-                            </a>
-                {% endif %}
+    <h1>Most recent post</h1>
+    <p>({{ time }})</p>
+
+    <a href="{{ url_for('post', id=item[6]) }}" class="post-container">
+        <div class="post-text">
+            <h2 class="category-box">category: {{ item[4] }}</h2>
+            <h1>{{ item[0] }}</h1>
+            <h3>{{ item[2] }}</h3>
+            <h2>{{ item[1] }}</h2>
+        </div>
+        {% if item[3] %}
+        <div class="post-img">
+            <img src="{{ item[3] }}" alt="{{ item[0] }}">
+        </div>
+        {% endif %}
+    </a>
+
+    {# Only show reply if there actually is one #}
+    {% if item[7] %}
+        {% for post in results %}
+            {% if post[6] == item[7] %}
+            <div class="reply-decoration">
+                <div class="line"></div>
+                <div class="reply-box">
+                    <div class="post-text">
+                        <p>Replying to <i>{{ post[2] }}</i></p>
+                        <p>{{ post[0] }}</p>
+                        <p>{{ post[1] }}</p>
+                    </div>
+                </div>
             </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}

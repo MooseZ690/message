@@ -45,6 +45,8 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     margin: 2em;
+    margin-top: 4em;
+    margin-bottom: 0em;
     background-color: black;
     border-radius: 20px;
     padding: 1em;
@@ -61,6 +63,7 @@
 .post-container h1{
     font-weight: 700;
     margin: 0px;
+    font-size: 2em;
 }
 
 .post-container h2{
@@ -210,10 +213,23 @@ a{
 }
 
 .reply-box{
-    width: 30%;
+    width: 100%;
     background-color: rgb(110, 110, 110);
     border-radius: 20px;
     border: 1px solid white;
     padding: 1em;
-    margin-bottom: 4em;
+    margin-bottom: 2em;
+    margin-top: 1em;
+}
+
+.reply-decoration{
+    display: flex;
+}
+
+.line{
+    height: 4em;
+    width: 4em;
+    border-left: 3px solid white;
+    border-bottom: 3px solid white;
+    border-bottom-left-radius: 25px;
 }

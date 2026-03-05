@@ -10,17 +10,38 @@
     {% endif %}
     <div class="centered-content">
         {% for item in results %}
-            <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
-                <div class="post-text">
-                    <h2 class = 'category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2>
-                    <h1>{{item[0]}}</h1>
-                    <h3>{{item[2]}}</h3>
-                    <h2>{{item[1]}}</h2>
-                </div>
-                <div class="post-img">
-                    <img src="{{item[3]}}" alt="{{item[0]}}">
-                </div> 
-            </a>
+                <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
+                    <div class="post-text">
+                        <h2 class = 'category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2>
+                        <h1>{{item[0]}}</h1>
+                        <h3>{{item[2]}}</h3>
+                        <h2>{{item[1]}}</h2>
+                    </div>
+                    <div class="post-img">
+                        <img src="{{item[3]}}" alt="{{item[0]}}">
+                    </div> 
+                </a>
+                <p>{{allposts}}</p>
+
+            {# Only show reply if there actually is one #}
+            {% if item[7] %}
+                {% for post in allposts %}
+                    {% if post[6] == item[7] %}
+                        <div class="reply-decoration">
+                            <div class="line">
+
+                            </div>
+                            <div class="reply-box">
+                                <div class="post-text">
+                                    <p>Replying to <i>{{ post[2] }}</i></p>
+                                    <p>{{ post[0] }}</p>
+                                    <p>{{ post[1] }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         {% endfor %}
     </div>
 {% endblock %}
