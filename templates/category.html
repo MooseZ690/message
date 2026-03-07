@@ -21,12 +21,11 @@
                         <img src="{{item[3]}}" alt="{{item[0]}}">
                     </div> 
                 </a>
-                <p>{{allposts}}</p>
 
             {# Only show reply if there actually is one #}
             {% if item[7] %}
                 {% for post in allposts %}
-                    {% if post[6] == item[7] %}
+                    {% if post[5] == item[7] %}
                         <div class="reply-decoration">
                             <div class="line">
 
