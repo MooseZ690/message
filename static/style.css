@@ -31,8 +31,7 @@ a{
 
 /* Buttons */
 
-.top-button,
-.top-login{
+.top-button{
     display:flex;
     justify-content:center;
     align-items:center;
@@ -68,8 +67,12 @@ a{
 .reply-button{
     margin-top:2em;
     border-radius:25px;
-    padding:0.2em;
-    border:1px solid white;
+    padding:0.6em;
+    background:#0866FF;
+}
+
+.reply-button a{
+    font-weight: 550;
 }
 
 /* Input boxes */
@@ -126,6 +129,17 @@ a{
 }
 
 /* Posts */
+
+.post-text h1,
+.post-text h2,
+.post-text h3 {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.post-text h3{
+    font-size: 1em;
+}
 
 .post-container{
     width:50%;

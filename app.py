@@ -176,5 +176,17 @@ def allposts():
     return render_template(
         "allposts.html", results=results, today=datetime.now().strftime("%Y-%m-%d"))
 
+@app.route("/userposts/<username>")
+def userposts(username):
+    sql = """    
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+    FROM posts
+    JOIN cat ON posts.categoryid = cat.id
+    WHERE posts.name = ?
+    ORDER BY posts.time DESC;
+    """
+    results = query_db(sql, (username,))
+    return render_template("userposts.html", results=results)
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app

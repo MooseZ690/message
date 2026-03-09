@@ -56,7 +56,7 @@
     </div>
     <div class="nav-right">
         {% if session.username %}
-            <span class="top-login">Logged in as {{ session.username }}</span>
+            <a href="{{ url_for('userposts', username=session['username']) }}" class="top-button">My Posts</a>
             <a href="/logout" class="top-button">Logout</a>
             {# if logged in, say so in navbar #}
         {% else %}

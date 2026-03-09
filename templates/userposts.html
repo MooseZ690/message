@@ -1,15 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="centered-content">
+    <h1>@{{session['username']}}'s posts</h1>
     {% for item in results %}
     <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
         <!-- Puts the post in a clickable centered element -->
 
         <div class="post-text">
-            <h2 class='category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2><br>
-            <h1>{{item[0]}}</h1>
-            <h3>@{{item[2]}}</h3><br>
-            <h2>{{item[1]}}</h2>
+            <h2 class='category-box'>category: {{item[4]}} | {{item[5][10:]}}</h2><br>
+            <h1>{{item[0]}}</h1> {# post title #}
+            <h3>@{{item[2]}}</h3><br>{# name #}
+            <h2>{{item[1]}}</h2> {# post content #}
         </div>
 
         <div class="post-img">
