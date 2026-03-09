@@ -1,292 +1,263 @@
 @import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
-.title-bar{
-    background-color: black;
-    padding: 0.5em;
-    display: flex;
-    align-items: left;
-    gap: 1em;
-}
-
-.top-button {   
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    border-radius: 25px;
-    background-color: black;
-    height: 3em;
-    font-size: 1em;
-    text-decoration: none;
-    margin: 1em;
-    padding: 0.6em;
-    font-weight: 500;
-}
-
-.top-button:hover {
-    background-color: rgb(110, 110, 110)
-}
-
-.top-login {   
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    border-radius: 25px;
-    background-color: black;
-    height: 3em;
-    font-size: 1em;
-    text-decoration: none;
-    margin: 1em;
-    padding: 0.6em;
-    font-weight: 500;
-}
-
-.top-dropdown{
-    background-color: black;
-
-}
-
-.post-container{
-    width: 50%;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    margin: 2em;
-    margin-top: 4em;
-    margin-bottom: 0em;
-    background-color: black;
-    border-radius: 20px;
-    padding: 1em;
-    border: 1px solid white;
-}
-
-.post-img img{
-    width: 100%;
-    border-radius: 15px;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;  
-}
-
-.post-container h1{
-    font-weight: 700;
-    margin: 0px;
-    font-size: 2em;
-}
-
-.post-container h2{
-    font-size: 1em;
-    margin: 0px;
-}
-
-.centered-content{
-    margin-top: 5em;
-    display: grid;
-    place-items: center;
-    text-align: left;
-}
-
-
-.top-box{
-    display: flex;
-    gap: 2em;
-    align-items: center;
-}
-
-.top-box .post-button-right{
-    margin-left: auto;
-}
-
-.top-input-box{
-    width: 10%;
-    height: 2.4em;
-    padding: 0.5em;
-    margin-left: 0.7em;
-    margin-right: 0.7em;
-    border-radius: 20px;
-    background-color: black;
-    margin-bottom: 1.5em;
-}
-
-
-.input-box{
-    border-radius: 20px;
-    width: 100%;
-    padding: 0.8em;
-    margin-left: 0.7em;
-    background-color: black;
-}
-
-.top-input-box,
-.input-box {
-    background-color: black;
-    border: none;
-    color: white;
-}
-
-.top-input-box:hover, .input-box:hover{
-    background-color: rgb(46, 46, 46);
-}
-
-.new-post-container{
-    background-color: rgb(0, 0, 0);
-    border-radius: 20px;
-    padding: 2em;
-    width: 70%;
-}
-
-.post-button-right{
-    height: 2.8em;
-    width: 2.8em;
-    padding: 0.5em;
-    margin-left: 0.7em;
-    margin-right: 0.7em;
-    border-radius: 25px;
-    margin-bottom: 1.5em;
-    border: 1px solid white;
-    color: black;
-}
-
-.post-button-right:hover{
-    border: 1px solid rgb(110, 110, 110)
-}
-
-.category-dropdown{
-    background-color: rgb(46, 46, 46);
-    border: 1px solid rgba(0, 0, 0, 0);
-    border-radius: 20px;
-    height: 2.4em;
-    padding: 0.5em;
-    margin-left: 0.7em;
-    margin-top: 1.4em;
-    color: rgb(120, 120, 120)
-}
-
-.dropdown{
-    background-color: black;
-    border: None;
-
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: black;
-    min-width: 160px;
-    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    display: block;
-    padding: 10px;
-    text-decoration: none;
-}
-
-.dropdown-content a:hover {
-    background-color: rgb(110, 110, 110);
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.top-button{
-    border: None;
-    color: white;
-}
-
-.cat-title{
-    padding-top: 2em;
-    display: grid;
-    place-items: center;
-    font-weight: 2100;
-}
+/* Global styling */
 
 body{
-    background-color: rgb(36, 36, 36);
-    color: white;
-}
-
-.category-box{
-    display: inline-block;
-    background-color: rgb(46, 46, 46);
-    border-radius: 10px;
-    padding: 0.3em;
-    padding-top: 0.2em;
+    background:#e6eee6D6;
+    color:#0866FF;
 }
 
 a{
-    text-decoration: none;
+    text-decoration:none;
+    color:white;
 }
 
-.reply-box{
-    width: 100%;
-    background-color: rgb(110, 110, 110);
-    border-radius: 20px;
-    border: 1px solid white;
-    padding: 1em;
-    margin-bottom: 2em;
-    margin-top: 1em;
+/* Navbar */
+
+.title-bar,
+.navbar{
+    display:flex;
+    align-items:center;
+    gap:1em;
+    padding:0.5em;
 }
 
-.reply-decoration{
-    display: flex;
+.nav-right{
+    margin-left:auto;
+    display:flex;
+    gap:10px;
 }
 
-.line{
-    height: 4em;
-    width: 4em;
-    border-left: 3px solid white;
-    border-bottom: 3px solid white;
-    border-bottom-left-radius: 25px;
+/* Buttons */
+
+.top-button,
+.top-login{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:25px;
+    height:3em;
+    font-size:1em;
+    margin:0.5em;
+    padding:0.6em;
+    font-weight:600;
+    border:none;
+    color:#0866FF;
+}
+
+.top-button:hover{
+    background:#0866FF;
+    color:white;
+}
+
+.post-button-right{
+    height:2.8em;
+    width:2.8em;
+    padding:0.5em;
+    margin:0 0.7em 1.5em 0.7em;
+    border-radius:25px;
+    border:1px solid white;
+    color:black;
+}
+
+.post-button-right:hover{
+    border-color:rgb(110,110,110);
 }
 
 .reply-button{
-    margin-top: 2em;
-    border-radius: 25px;
-    padding: 0.2em;
-    border: 1px solid white;
+    margin-top:2em;
+    border-radius:25px;
+    padding:0.2em;
+    border:1px solid white;
 }
 
-.navbar {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    background-color: black;
+/* Input boxes */
+
+.top-input-box,
+.input-box{
+    border-radius:20px;
+    background:black;
+    border:none;
+    color:white;
 }
 
-
-.nav-right {
-    margin-left: auto;
-    display: flex;
-    gap: 10px;
+.top-input-box{
+    width:10%;
+    height:2.4em;
+    padding:0.5em;
+    margin:0 0.7em 1.5em 0.7em;
 }
 
-.login-box{
-    width: auto;
-    height: 2.4em;
-    padding: 0.5em;
-    border-radius: 20px;
-    background-color: rgb(46, 46, 46);
-    border: none;
+.input-box{
+    width:100%;
+    padding:0.8em;
+    margin-left:0.7em;
+}
+
+.top-input-box:hover,
+.input-box:hover{
+    background:rgb(46,46,46);
+}
+
+/* Login/register */
+
+.login-box,
+.login-button{
+    height:2.4em;
+    padding:0.5em;
+    border-radius:20px;
+    background:rgb(46,46,46);
+    border:none;
 }
 
 .login-button{
-    width: auto;
-    height: 2.4em;
-    padding: 0.5em;
-    border-radius: 20px;
-    background-color: rgb(46, 46, 46);
-    border: none;
-    color: rgb(110, 110, 110);
+    color:rgb(110,110,110);
 }
 
 .login-container{
-    border-radius: 25px;
-    background-color: black;
-    padding: 2em;
-    display: block;
+    border-radius:25px;
+    background:black;
+    padding:2em;
 }
 
 .block{
-    margin-top: 12em;
+    margin-top:12em;
+}
+
+/* Posts */
+
+.post-container{
+    width:50%;
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    margin:4em 2em 0 2em;
+    background:#BBC5AA;
+    border-radius:20px;
+    padding:1em;
+    border:1px solid white;
+}
+
+.post-container h1{
+    font-weight:700;
+    margin:0;
+    font-size:2em;
+}
+
+.post-container h2{
+    margin:0;
+    font-size:1em;
+}
+
+.post-img img{
+    width:100%;
+    border-radius:15px;
+    aspect-ratio:1/1;
+    object-fit:cover;
+}
+
+.centered-content{
+    margin-top:5em;
+    display:grid;
+    place-items:center;
+    text-align:left;
+}
+
+.new-post-container{
+    background:black;
+    border-radius:20px;
+    padding:2em;
+    width:70%;
+}
+
+/* New post header */
+
+.top-box{
+    display:flex;
+    gap:2em;
+    align-items:center;
+}
+
+.top-box .post-button-right{
+    margin-left:auto;
+}
+
+/* Categories */
+
+.category-box{
+    display:inline-block;
+    background:rgb(46,46,46);
+    border-radius:10px;
+    padding:0.2em 0.3em;
+}
+
+.cat-title{
+    padding-top:2em;
+    display:grid;
+    place-items:center;
+    font-weight:2100;
+}
+
+/* Dropdowns */
+
+.dropdown{
+    border:none;
+}
+
+.dropdown-content{
+    display:none;
+    position:absolute;
+    background:#0866FF;
+    border-radius:25px;
+    min-width:160px;
+    box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    z-index:1;
+}
+
+.dropdown-content a{
+    display:block;
+    padding:10px;
+}
+
+.dropdown-content a:hover{
+    background:white;
+    color:#0866FF;
+    overflow:hidden;
+}
+
+.dropdown:hover .dropdown-content{
+    display:block;
+}
+
+.category-dropdown{
+    background:rgb(46,46,46);
+    border:none;
+    border-radius:20px;
+    height:2.4em;
+    padding:0.5em;
+    margin:1.4em 0 0 0.7em;
+    color:rgb(120,120,120);
+}
+
+/* Post replies */
+
+.reply-box{
+    width:100%;
+    background:rgb(110,110,110);
+    border-radius:20px;
+    border:1px solid white;
+    padding:1em;
+    margin:1em 0 2em 0;
+}
+
+.reply-decoration{
+    display:flex;
+}
+
+.line{
+    height:4em;
+    width:4em;
+    border-left:3px solid white;
+    border-bottom:3px solid white;
+    border-bottom-left-radius:25px;
 }
