@@ -1,6 +1,7 @@
 from flask import Flask, g, render_template, request, redirect, url_for
 import logging, sqlite3, datetime
-from datetime import datetime #imports the required packages for working with flask and databases
+from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 DATABASE = 'database.db' #sets the variable DATABASE as the file database.db
 

@@ -21,13 +21,13 @@
                 <div class="reply-decoration">
                     <div class="line">
                     </div>
-                    <div class="reply-box">
+                    <a class="reply-box" href="{{ url_for('post', id=item[7]) }}"></a>
                         <div class="post-text">
                             <p>Replying to <i>{{post[2]}}</i></p>
                             <p>{{post[0]}}</p>
                             <p>{{post[1]}}</p>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 {% endif %}
             {% endfor %}
