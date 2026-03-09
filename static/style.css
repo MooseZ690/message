@@ -9,14 +9,6 @@
     gap: 1em;
 }
 
-.navbar {
-
-    display: flex;
-    justify-content: center;
-    gap: 1em;
-    background-color: black;
-}
-
 .top-button {   
     display: flex;
     justify-content: center;
@@ -33,6 +25,20 @@
 
 .top-button:hover {
     background-color: rgb(110, 110, 110)
+}
+
+.top-login {   
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border-radius: 25px;
+    background-color: black;
+    height: 3em;
+    font-size: 1em;
+    text-decoration: none;
+    margin: 1em;
+    padding: 0.6em;
+    font-weight: 500;
 }
 
 .top-dropdown{
@@ -239,4 +245,48 @@ a{
     border-radius: 25px;
     padding: 0.2em;
     border: 1px solid white;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    background-color: black;
+}
+
+
+.nav-right {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.login-box{
+    width: auto;
+    height: 2.4em;
+    padding: 0.5em;
+    border-radius: 20px;
+    background-color: rgb(46, 46, 46);
+    border: none;
+}
+
+.login-button{
+    width: auto;
+    height: 2.4em;
+    padding: 0.5em;
+    border-radius: 20px;
+    background-color: rgb(46, 46, 46);
+    border: none;
+    color: rgb(110, 110, 110);
+}
+
+.login-container{
+    border-radius: 25px;
+    background-color: black;
+    padding: 2em;
+    display: block;
+}
+
+.block{
+    margin-top: 12em;
 }

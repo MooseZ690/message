@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template, request, redirect, url_for
+from flask import Flask, g, render_template, request, redirect, url_for, session
 import logging, sqlite3, datetime
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,7 +7,7 @@ DATABASE = 'database.db'
 #sets the variable DATABASE as the file database.db
 
 app = Flask(__name__)
-
+app.secret_key = "password"
 
 def get_db():
     #try to get the database connection in flasks g object
@@ -51,14 +51,64 @@ def home():
     results = query_db(sql)
     return render_template("home.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
+@app.route("/register", methods=["GET","POST"])
+def register():
+
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        hashed_password = generate_password_hash(password)
+
+        db = get_db()
+        db.execute(
+            "INSERT INTO users (username, password) VALUES (?, ?)",
+            (username, hashed_password)
+        )
+        db.commit()
+
+        return redirect(url_for("login"))
+
+    return render_template("register.html")
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+
+    if request.method == "POST":
+
+        username = request.form["username"]
+        password = request.form["password"]
+
+        user = query_db(
+            "SELECT * FROM users WHERE username = ?",
+            (username,),
+            one=True
+        )
+
+        if user and check_password_hash(user[2], password):
+
+            session["user_id"] = user[0]
+            session["username"] = user[1]
+
+            return redirect(url_for("home"))
+
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("user_id", None)
+    session.pop("username", None)
+    return redirect(url_for("home"))
 
 @app.route("/newpost", methods=["GET", "POST"]) #app route if just a new post
 @app.route("/newpost/<int:id>", methods=["GET", "POST"]) #app route if replying to another post
 def newpost(id=None):
 
+    if "user_id" not in session:
+        return redirect(url_for("login"))
     if request.method == "POST":
         title = request.form["title"]
-        name = request.form["name"]
+        name = session["username"]
         content = request.form["content"]
         imageurl = request.form["imageurl"]
         categoryid = request.form["categoryid"]

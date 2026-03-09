@@ -16,6 +16,7 @@
         <a href="/" class="top-button">Home</a>
         <a href="/newpost" class="top-button">New post</a>
         <a href="/allposts" class="top-button">All posts</a>
+
         <!-- dropdown menu for categories -->
         <div class="dropdown">
             <button class="top-button">Categories</button>
@@ -28,7 +29,21 @@
                 <a href="/category/5">Digitech</a>
             </div>
         </div>
+
+        <!-- login/logout -->
+        <div class="nav-right">
+            {% if session.username %}
+                <span class="top-login">Logged in as {{ session.username }}</span>
+                <a href="/logout" class="top-button">Logout</a>
+                {# if logged in, say so in navbar #}
+            {% else %}
+                <a href="/login" class="top-button">Login</a>
+                <a href="/register" class="top-button">Register</a>
+            {% endif %}
+        </div>
+
     </nav>
+
     {% block body %}
     {% endblock %}
 </body>
