@@ -3,19 +3,19 @@
 <div class="centered-content">
     {% set item = results[0] %}  {# most recent post #}
 
-    {# Format the time #}
     {% if item[5][:10] == today %}
         {% set time = "Today," + item[5][10:] %}
     {% else %}
         {% set time = item[5] %}
     {% endif %}
+    {# If the post was today, change the date to say that #}
 
     <h1>Most recent post</h1>
     <p>({{ time }})</p>
 
-    <a href="{{ url_for('post', id=item[6]) }}" class="post-container">
+    <a href="{{ url_for('post', id=item[6]) }}" class="post-container"> <!-- Puts the post in a clickable centered element -->
         <div class="post-text">
-            <h2 class="category-box">category: {{ item[4] }}</h2>
+            <h2 class="category-box">category: {{ item[4] }}</h2> 
             <h1>{{ item[0] }}</h1>
             <h3>{{ item[2] }}</h3>
             <h2>{{ item[1] }}</h2>
@@ -33,7 +33,7 @@
             {% if post[6] == item[7] %}
             <div class="reply-decoration">
                 <div class="line"></div>
-                <a class="reply-box" href="{{ url_for('post', id=item[7]) }}">
+                <a class="reply-box" href="{{ url_for('post', id=item[7]) }}"> <!-- puts the reply in a clickable div -->
                     <div class="post-text">
                         <p>Replying to <i>{{ post[2] }}</i></p>
                         <p>{{ post[0] }}</p>

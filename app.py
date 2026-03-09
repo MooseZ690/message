@@ -3,30 +3,41 @@ import logging, sqlite3, datetime
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
-DATABASE = 'database.db' #sets the variable DATABASE as the file database.db
+DATABASE = 'database.db'
+#sets the variable DATABASE as the file database.db
 
 app = Flask(__name__)
 
 
 def get_db():
+    #try to get the database connection in flasks g object
     db = getattr(g, '_database', None)
     if db is None:
+        #if the database isn't connected
         db = g._database = sqlite3.connect(DATABASE)
+        #create a new connection to the database
     return db
 
 
 @app.teardown_appcontext
 def close_connection(exception):
+    #get the database connection from g
     db = getattr(g, '_database', None)
     if db is not None:
+        #if a connection exists
         db.close()
+        #close db connection when request finishes
 
 
 def query_db(query, args=(), one=False):
+    #execute the sql query with optional arguments
     cur = get_db().execute(query, args)
     rv = cur.fetchall()
+    #fetch all results from the query
     cur.close()
+    #closes the cursor after the query
     return (rv[0] if rv else None) if one else rv
+    #if first argument == True return only the first result, otherwise return all results
 
 @app.route("/") #creates the home route for the flask app
 def home():
@@ -35,14 +46,15 @@ def home():
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         ORDER BY posts.time DESC; 
-        """ #sql statement to return all posts from the database
+        """ 
+        #sql statement to return all posts from the database
     results = query_db(sql)
     return render_template("home.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 
 @app.route("/newpost", methods=["GET", "POST"]) #defines function to add info into the database
 def newpost():
-    if request.method == "POST": #fetches all the necessary info from the newpost page
+    if request.method == "POST":
         title = request.form["title"]
         name = request.form["name"]
         content = request.form["content"]
@@ -50,15 +62,18 @@ def newpost():
         categoryid = request.form["categoryid"]
         reply = request.form["reply"]
         time = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        #fetches all info from the form on newpost.html
         db = get_db()
         db.execute(
             "INSERT INTO posts (title, name, content, imageurl, categoryid, time, reply) VALUES (?, ?, ?, ?, ?, ?, ?)",
             (title, name, content, imageurl, categoryid, time, reply)
-        ) #adds info from newpost.html into the database
+        )
         db.commit()
+        #adds info from newpost.html into the database
         return redirect(url_for("home"))
     else:
         sql = "SELECT * FROM cat;"
+        #sql statement to return all info from categories table
         categories = query_db(sql)
         return render_template("newpost.html", categories=categories) #gives the page the list of categories for the dropdown
 
@@ -69,18 +84,11 @@ def category(id):
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         WHERE posts.categoryid = ?
-        ORDER BY posts.time DESC""" #sql statement to get posts info where category id is selected by the user
-        
-    sqlall = """    
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
-    FROM posts
-    JOIN cat ON posts.categoryid = cat.id
-    ORDER BY posts.time DESC;
-    """
-    
-    result2 = query_db(sqlall)
+        ORDER BY posts.time DESC;
+        """
+        #sql statement to return posts info where category id is selected by the user
     result = query_db(sql, (id,))
-    return render_template("category.html", results=result, allposts=result2)
+    return render_template("category.html", results=result)
 
 @app.route("/post/<int:id>") #app route for looking at an individual post
 def post(id):
@@ -88,7 +96,9 @@ def post(id):
     SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
-        WHERE posts.id = ?;""" #sql statement to get posts info where category id is selected by the user
+        WHERE posts.id = ?;
+        """
+        #sql statement to return posts info where category id is selected by the user
     result = query_db(sql, (id,), True)
     return render_template("post.html", results=result)
 
@@ -100,7 +110,7 @@ def allposts():
     JOIN cat ON posts.categoryid = cat.id
     ORDER BY posts.time DESC;
     """
-
+    #sql statement to return all relevant info from posts table
     results = query_db(sql)
     return render_template(
         "allposts.html", results=results, today=datetime.now().strftime("%Y-%m-%d"))
