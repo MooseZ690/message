@@ -133,8 +133,10 @@ a{
     grid-template-columns:2fr 1fr;
     margin:4em 2em 0 2em;
     background:white;
+    border: 3px solid #0866FF;
     border-radius:20px;
     padding:1em;
+    color: black;
 }
 
 .post-container h1{
@@ -184,9 +186,6 @@ a{
 /* Categories */
 
 .category-box{
-    display:inline-block;
-    background:rgb(46,46,46);
-    border-radius:10px;
     padding:0.2em 0.3em;
 }
 
@@ -248,11 +247,12 @@ a{
 
 .reply-box{
     width:100%;
-    background:rgb(110,110,110);
+    background:rgb(210, 210, 210);
     border-radius:20px;
-    border:1px solid white;
+    border:3px solid #0866FF;
     padding:1em;
     margin:1em 0 2em 0;
+    color: black;
 }
 
 .reply-decoration{
@@ -262,7 +262,7 @@ a{
 .line{
     height:4em;
     width:4em;
-    border-left:3px solid black;
-    border-bottom:3px solid black;
+    border-left:3px solid #0866FF;
+    border-bottom:3px solid #0866FF;
     border-bottom-left-radius:25px;
 }

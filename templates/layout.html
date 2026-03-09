@@ -55,12 +55,14 @@
         </div>
     </div>
     <div class="nav-right">
-        <a href="/login" class="top-button">
-            Login
-        </a>
-        <a href="/login" class="top-button">
-            Register
-        </a>
+        {% if session.username %}
+            <span class="top-login">Logged in as {{ session.username }}</span>
+            <a href="/logout" class="top-button">Logout</a>
+            {# if logged in, say so in navbar #}
+        {% else %}
+            <a href="/login" class="top-button">Login</a>
+            <a href="/register" class="top-button">Register</a>
+        {% endif %}
     </div>
 </nav>
 
