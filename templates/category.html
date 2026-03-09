@@ -25,7 +25,7 @@
 
     {# Only show reply if there actually is one #}
     {% if item[7] %}
-    {% for post in allposts %}
+    {% for post in results %}
     {% if post[5] == item[7] %}
     <div class="reply-decoration">
         <div class="line"></div>

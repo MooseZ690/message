@@ -132,10 +132,9 @@ a{
     display:grid;
     grid-template-columns:2fr 1fr;
     margin:4em 2em 0 2em;
-    background:#BBC5AA;
+    background:white;
     border-radius:20px;
     padding:1em;
-    border:1px solid white;
 }
 
 .post-container h1{
@@ -195,7 +194,10 @@ a{
     padding-top:2em;
     display:grid;
     place-items:center;
-    font-weight:2100;
+}
+
+.cat-title h1{
+    font-weight:600;
 }
 
 /* Dropdowns */
@@ -212,17 +214,20 @@ a{
     min-width:160px;
     box-shadow:0 4px 8px rgba(0,0,0,0.2);
     z-index:1;
+    overflow:hidden;
 }
 
 .dropdown-content a{
+    font-weight: 500;
     display:block;
     padding:10px;
+    transition: all 0.3s ease;
 }
 
 .dropdown-content a:hover{
     background:white;
     color:#0866FF;
-    overflow:hidden;
+    transition: all 0.3s ease;
 }
 
 .dropdown:hover .dropdown-content{
@@ -257,7 +262,7 @@ a{
 .line{
     height:4em;
     width:4em;
-    border-left:3px solid white;
-    border-bottom:3px solid white;
+    border-left:3px solid black;
+    border-bottom:3px solid black;
     border-bottom-left-radius:25px;
 }
