@@ -113,6 +113,9 @@ def newpost(id=None):
         imageurl = request.form["imageurl"]
         categoryid = request.form["categoryid"]
 
+        if not imageurl:
+            imageurl = "https://operaparallele.org/wp-content/uploads/2023/09/Placeholder_Image.png"
+        
         # if replying, use the id from the URL
         reply = id if id else None
 
