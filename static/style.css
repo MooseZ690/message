@@ -80,7 +80,6 @@ a{
 .top-input-box,
 .input-box{
     border-radius:20px;
-    background:black;
     border:none;
     color:white;
 }
@@ -90,17 +89,18 @@ a{
     height:2.4em;
     padding:0.5em;
     margin:0 0.7em 1.5em 0.7em;
+    color: black;
 }
 
 .input-box{
     width:100%;
     padding:0.8em;
     margin-left:0.7em;
+    color: black;
 }
 
 .top-input-box:hover,
 .input-box:hover{
-    background:rgb(46,46,46);
 }
 
 /* Login/register */
@@ -110,8 +110,8 @@ a{
     height:2.4em;
     padding:0.5em;
     border-radius:20px;
-    background:rgb(46,46,46);
     border:none;
+    color:rgb(110,110,110);
 }
 
 .login-button{
@@ -120,7 +120,7 @@ a{
 
 .login-container{
     border-radius:25px;
-    background:black;
+    background:rgba(220, 220, 220, 0.5);
     padding:2em;
 }
 
@@ -179,10 +179,11 @@ a{
 }
 
 .new-post-container{
-    background:black;
     border-radius:20px;
+    background:rgba(220, 220, 220, 0.5);
     padding:2em;
     width:70%;
+    border: 3px solid #0866FF;
 }
 
 /* New post header */
@@ -248,7 +249,6 @@ a{
 }
 
 .category-dropdown{
-    background:rgb(46,46,46);
     border:none;
     border-radius:20px;
     height:2.4em;

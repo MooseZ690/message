@@ -66,6 +66,19 @@ def register():
             (username, hashed_password)
         )
         db.commit()
+        if request.method == "POST":
+            user = query_db(
+            "SELECT * FROM users WHERE username = ?",
+            (username,),
+            one=True
+        )
+
+        if user and check_password_hash(user[2], password):
+
+            session["user_id"] = user[0]
+            session["username"] = user[1]
+
+            return redirect(url_for("home"))
 
         return redirect(url_for("login"))
 
@@ -112,7 +125,12 @@ def newpost(id=None):
         content = request.form["content"]
         imageurl = request.form["imageurl"]
         categoryid = request.form["categoryid"]
-
+        with open("profanity.txt", "r") as profanity: #open profanity.txt as profanity so the code can read it
+            badwords = [line.strip() for line in profanity]
+        for word in badwords:
+            stars = "*" * len(word) #sets the *s of the censored word to its length
+            content = content.replace(word, stars)
+            title = title.replace(word, stars)
         if not imageurl:
             imageurl = "https://operaparallele.org/wp-content/uploads/2023/09/Placeholder_Image.png"
         
