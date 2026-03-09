@@ -52,30 +52,41 @@ def home():
     return render_template("home.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 
-@app.route("/newpost", methods=["GET", "POST"]) #defines function to add info into the database
-def newpost():
+@app.route("/newpost", methods=["GET", "POST"]) #app route if just a new post
+@app.route("/newpost/<int:id>", methods=["GET", "POST"]) #app route if replying to another post
+def newpost(id=None):
+
     if request.method == "POST":
         title = request.form["title"]
         name = request.form["name"]
         content = request.form["content"]
         imageurl = request.form["imageurl"]
         categoryid = request.form["categoryid"]
-        reply = request.form["reply"]
+
+        # if replying, use the id from the URL
+        reply = id if id else None
+
         time = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-        #fetches all info from the form on newpost.html
+
         db = get_db()
         db.execute(
             "INSERT INTO posts (title, name, content, imageurl, categoryid, time, reply) VALUES (?, ?, ?, ?, ?, ?, ?)",
             (title, name, content, imageurl, categoryid, time, reply)
         )
         db.commit()
-        #adds info from newpost.html into the database
+        #put post info into database
         return redirect(url_for("home"))
+        #send user back to homepage after posting
     else:
-        sql = "SELECT * FROM cat;"
-        #sql statement to return all info from categories table
+        sql = "SELECT * FROM cat"
+        #sql statement to get all info from categories table
         categories = query_db(sql)
-        return render_template("newpost.html", categories=categories) #gives the page the list of categories for the dropdown
+
+        return render_template(
+            "newpost.html",
+            categories=categories,
+            reply_id=id
+        )
 
 @app.route("/category/<int:id>") #flask app route for the page that shows posts only from a certain category
 def category(id):

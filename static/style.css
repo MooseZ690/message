@@ -233,3 +233,10 @@ a{
     border-bottom: 3px solid white;
     border-bottom-left-radius: 25px;
 }
+
+.reply-button{
+    margin-top: 2em;
+    border-radius: 25px;
+    padding: 0.2em;
+    border: 1px solid white;
+}

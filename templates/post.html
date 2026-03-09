@@ -5,7 +5,6 @@
 {% set title = results[4] %}
 <div class="cat-title">
     <h1>Post #{{ results[5] }}</h1> <!-- post ID -->
-    <h3>To reply, create a new post with the ID '{{results[5]}}'</h3>
 </div>
 {% endif %}
 <div class="centered-content">
@@ -20,5 +19,8 @@
             <img src="{{results[3]}}" alt="{{results[0]}}"> <!-- post image -->
         </div>
     </div>
+    <a href="{{ url_for('newpost', id=results[5]) }}" class="reply-button">
+    Reply
+    </a>
 </div>
 {% endblock %}
