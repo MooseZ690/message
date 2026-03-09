@@ -1,24 +1,24 @@
 {% extends "layout.html" %}
 {% block body %}
-    {% if results %}
-        {# get the category name from the first row's fifth element #}
-        {% set title = results[4] %}
-        <div class="cat-title">
-        <h1>Post #{{ results[5] }}</h1>
-        <h3>To reply, create a new post with the ID '{{results[5]}}'</h3>
+{% if results %}
+{# get the category name from the result's fifth element #}
+{% set title = results[4] %}
+<div class="cat-title">
+    <h1>Post #{{ results[5] }}</h1> <!-- post ID -->
+    <h3>To reply, create a new post with the ID '{{results[5]}}'</h3>
+</div>
+{% endif %}
+<div class="centered-content">
+    <div class="post-container">
+        <div class="post-text">
+            <h2 class='category-box'>category: {{results[4]}} | {{results[6][10:]}}</h2>
+            <h1>{{results[0]}}</h1> {# post title #}
+            <h3>{{results[2]}}</h3> {# name #}
+            <h2>{{results[1]}}</h2> {# post content #}
         </div>
-    {% endif %}
-    <div class="centered-content">
-            <div class="post-container">
-                <div class="post-text">
-                    <h2 class = 'category-box'>category: {{results[4]}} | {{results[6][10:]}}</h2>
-                    <h1>{{results[0]}}</h1> {# post title #}
-                    <h3>{{results[2]}}</h3> {# name #}
-                    <h2>{{results[1]}}</h2> {# post content #}
-                </div>
-                <div class="post-img">
-                    <img src="{{results[3]}}" alt="{{results[0]}}"> {# image url #}
-                </div> 
-            </div>
+        <div class="post-img">
+            <img src="{{results[3]}}" alt="{{results[0]}}"> <!-- post image -->
+        </div>
     </div>
+</div>
 {% endblock %}

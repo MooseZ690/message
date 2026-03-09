@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,10 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <title>Messages</title>
 </head>
+
 <body>
     <!-- shared navbar -->
-     <nav class="navbar">
+    <nav class="navbar">
         <a href="/" class="top-button">Home</a>
         <a href="/newpost" class="top-button">New post</a>
         <a href="/allposts" class="top-button">All posts</a>
@@ -18,16 +20,17 @@
         <div class="dropdown">
             <button class="top-button">Categories</button>
             <div class="dropdown-content">
-             <a href="/category/0">Misc</a>
-             <a href="/category/1">Science</a>
-             <a href="/category/2">Math</a>
-             <a href="/category/3">English</a>
-             <a href="/category/4">History</a>
-             <a href="/category/5">Digitech</a>
+                <a href="/category/0">Misc</a>
+                <a href="/category/1">Science</a>
+                <a href="/category/2">Math</a>
+                <a href="/category/3">English</a>
+                <a href="/category/4">History</a>
+                <a href="/category/5">Digitech</a>
             </div>
         </div>
     </nav>
     {% block body %}
     {% endblock %}
 </body>
+
 </html>

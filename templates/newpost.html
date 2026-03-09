@@ -1,32 +1,27 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} <!-- borrows formatting, navbar etc from layout file -->
 
 {% block body %}
-    <div class="centered-content">
-        <form method="post" class="new-post-container">
-            <div class="top-box">
-                <input type="text" id="title" name="title" class="top-input-box"
-                    placeholder="Title" required>
-                    
-                <input type="text" id="name" name="name" class="top-input-box"
-                    placeholder="Name" required>
+<div class="centered-content">
+    <form method="post" class="new-post-container"> <!-- tells app.py the method="POST" -->
+        <div class="top-box">
+            <input type="text" id="title" name="title" class="top-input-box" placeholder="Title" required>
 
-                <input type="text" id="imageurl" name="imageurl" class="top-input-box"
-                    placeholder="Image">
+            <input type="text" id="name" name="name" class="top-input-box" placeholder="Name" required>
 
-                <input type="text" id="reply" name="reply" class="top-input-box"
-                    placeholder="Reply to:">
-                
-                <button type="submit" class="post-button-right">^</button>
-            </div>
+            <input type="text" id="imageurl" name="imageurl" class="top-input-box" placeholder="Image">
 
-            <textarea id="content" name="content" rows="5" class="input-box"
-                    placeholder="Ask anything" required></textarea>
+            <input type="text" id="reply" name="reply" class="top-input-box" placeholder="Reply to:">
 
-                <select name="categoryid" id="categoryid" class="category-dropdown" required>
-                <option value="">Category</option>
-                {% for id, name in categories %}
-                    <option value="{{ id }}">{{ name }}</option>
-                {% endfor %}
-        </form>
-    </div>
+            <button type="submit" class="post-button-right">^</button>
+        </div>
+
+        <textarea id="content" name="content" rows="5" class="input-box" placeholder="Ask anything" required></textarea>
+
+        <select name="categoryid" id="categoryid" class="category-dropdown" required>
+            <option value="">Category</option>
+            {% for id, name in categories %}
+            <option value="{{ id }}">{{ name }}</option>
+            {% endfor %}
+    </form>
+</div>
 {% endblock %}
