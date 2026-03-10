@@ -1,5 +1,5 @@
 from flask import Flask, g, render_template, request, redirect, url_for, session
-import logging, sqlite3, datetime
+import logging, sqlite3, datetime, random
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -7,7 +7,7 @@ DATABASE = 'database.db'
 #sets the variable DATABASE as the file database.db
 
 app = Flask(__name__)
-app.secret_key = "password"
+app.secret_key = "serendipitous"
 
 def get_db():
     #try to get the database connection in flasks g object
@@ -72,16 +72,6 @@ def register():
             (username,),
             one=True
         )
-
-        if user and check_password_hash(user[2], password):
-
-            session["user_id"] = user[0]
-            session["username"] = user[1]
-
-            return redirect(url_for("home"))
-
-        return redirect(url_for("login"))
-
     return render_template("register.html")
 
 @app.route("/login", methods=["GET","POST"])
@@ -116,7 +106,15 @@ def logout():
 @app.route("/newpost", methods=["GET", "POST"]) #app route if just a new post
 @app.route("/newpost/<int:id>", methods=["GET", "POST"]) #app route if replying to another post
 def newpost(id=None):
-
+    sql = """
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+    FROM posts
+    JOIN cat ON posts.categoryid = cat.id
+    ORDER BY posts.time DESC;
+    """
+    #sql statement to get all relevant info from posts table
+    results = query_db(sql)
+    
     if "user_id" not in session:
         return redirect(url_for("login"))
     if request.method == "POST":
@@ -124,6 +122,8 @@ def newpost(id=None):
         name = session["username"]
         content = request.form["content"]
         imageurl = request.form["imageurl"]
+        if not imageurl:
+            imageurl = "https://operaparallele.org/wp-content/uploads/2023/09/Placeholder_Image.png"
         categoryid = request.form["categoryid"]
         with open("profanity.txt", "r") as profanity: #open profanity.txt as profanity so the code can read it
             badwords = [line.strip() for line in profanity]
@@ -131,8 +131,6 @@ def newpost(id=None):
             stars = "*" * len(word) #sets the *s of the censored word to its length
             content = content.replace(word, stars)
             title = title.replace(word, stars)
-        if not imageurl:
-            imageurl = "https://operaparallele.org/wp-content/uploads/2023/09/Placeholder_Image.png"
         
         # if replying, use the id from the URL
         reply = id if id else None
@@ -156,7 +154,8 @@ def newpost(id=None):
         return render_template(
             "newpost.html",
             categories=categories,
-            reply_id=id
+            reply_id=id,
+            results=results
         )
 
 @app.route("/category/<int:id>") #flask app route for the page that shows posts only from a certain category
@@ -171,18 +170,6 @@ def category(id):
         #sql statement to return posts info where category id is selected by the user
     result = query_db(sql, (id,))
     return render_template("category.html", results=result)
-
-@app.route("/post/<int:id>") #app route for looking at an individual post
-def post(id):
-    sql = """
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time
-        FROM posts
-        JOIN cat ON posts.categoryid = cat.id
-        WHERE posts.id = ?;
-        """
-        #sql statement to return posts info where category id is selected by the user
-    result = query_db(sql, (id,), True)
-    return render_template("post.html", results=result)
 
 @app.route("/allposts")
 def allposts():

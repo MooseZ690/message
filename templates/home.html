@@ -1,19 +1,21 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="centered-content">
-    {% set item = results[0] %} {# most recent post #}
 
-    {% if item[5][:10] == today %}
+{% set item = results[0] %} {# most recent post #}
+
+{% if item[5][:10] == today %}
     {% set time = "Today," + item[5][10:] %}
-    {% else %}
+{% else %}
     {% set time = item[5] %}
-    {% endif %}
-    {# If the post was today, change the date to say that #}
+{% endif %}
+{# If the post was today, change the date to say that #}
 
-    <h1>Most recent post</h1>
+<div class="cat-title">
+    <h1>home</h1>
     <p>({{ time }})</p>
-
-    <a href="{{ url_for('post', id=item[6]) }}" class="post-container">
+</div>
+<div class="centered-content">
+    <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
         <!-- Puts the post in a clickable centered element -->
         <div class="post-text">
             <h2 class='category-box'>category: {{item[4]}} | {{item[5][10:]}}</h2><br>
@@ -34,7 +36,7 @@
     {% if post[6] == item[7] %}
     <div class="reply-decoration">
         <div class="line"></div>
-        <a class="reply-box" href="{{ url_for('post', id=item[7]) }}"> <!-- puts the reply in a clickable div -->
+        <a class="reply-box" href="{{ url_for('newpost', id=item[7]) }}"> <!-- puts the reply in a clickable div -->
             <div class="post-text">
                 <p>Replying to <i>{{ post[2] }}</i></p>
                 <p>{{ post[0] }}</p>

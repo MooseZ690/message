@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
+<div class="cat-title">
+    <h1>all posts</h1>
+</div>
 <div class="centered-content">
     {% for item in results %}
-    <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
+    <a href="{{ url_for('newpost', id=item[5]) }}" class="post-container">
         <!-- Puts the post in a clickable centered element -->
 
         <div class="post-text">
@@ -22,7 +25,7 @@
     <div class="reply-decoration">
         <div class="line">
         </div>
-        <a class="reply-box" href="{{ url_for('post', id=item[7]) }}"> <!-- puts the reply in a clickable div -->
+        <a class="reply-box" href="{{ url_for('newpost', id=item[7]) }}"> <!-- puts the reply in a clickable div -->
             <div class="post-text">
                 <p>Replying to <i>{{post[2]}}</i></p>
                 <p>{{post[0]}}</p>

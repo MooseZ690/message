@@ -1,7 +1,27 @@
 {% extends "layout.html" %} <!-- borrows formatting, navbar etc from layout file -->
 
 {% block body %}
-<div class="centered-content">
+{% set replyid = request.path[9:] | int%}
+
+    <div class="centered-content">
+        {% for item in results if item[5] == replyid %}
+            <div class="cat-title">
+                <h1>Replying to @{{ item[2] }}</h1>
+            </div>
+            <div class="newpost-reply">
+                <div class="newpost-text">
+                    <h1>{{ item[0] }}</h1>
+                    <h3>@{{ item[2] }}</h3>
+                    <h2>{{ item[1] }}</h2>
+                </div>
+
+                {% if item[3] %}
+                <div class="post-img">
+                    <img src="{{ item[3] }}" alt="{{ item[0] }}">
+                </div>
+                {% endif %}
+            </div>
+        {% endfor %}
     <form method="post" class="new-post-container"> <!-- tells app.py the method="POST" -->
         <div class="top-box">
             <input type="text" id="title" name="title" class="top-input-box" placeholder="Title" required>
@@ -18,6 +38,7 @@
             {% for id, name in categories %}
             <option value="{{ id }}">{{ name }}</option>
             {% endfor %}
+        </select>
     </form>
 </div>
 {% endblock %}

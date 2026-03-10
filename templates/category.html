@@ -10,7 +10,7 @@
 {% endif %}
 <div class="centered-content">
     {% for item in results %}
-    <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
+    <a href="{{ url_for('newpost', id=item[5]) }}" class="post-container">
         <!-- Puts the post in a clickable centered element -->
         <div class="post-text">
             <h2 class='category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2><br>
@@ -24,23 +24,24 @@
     </a>
 
     {# Only show reply if there actually is one #}
-    {% if item[7] %}
-    {% for post in results %}
-    {% if post[5] == item[7] %}
-    <div class="reply-decoration">
-        <div class="line"></div>
-
-        <a class="reply-box" href="{{ url_for('post', id=item[7]) }}"> <!-- puts the reply in a clickable div -->
-            <div class="post-text">
-                <p>Replying to <i>{{ post[2] }}</i></p>
-                <p>{{ post[0] }}</p>
-                <p>{{ post[1] }}</p>
-            </div>
-        </a>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% endif %}
+    <pre>{{item}}</pre>
+    <pre>{{results}}</pre>
+        {% if item[7] is not none%}
+            {% for post in results %}
+                {% if post[5] == item[7] %}
+                <div class="reply-decoration">
+                    <div class="line"></div>
+                    <a class="reply-box" href="{{ url_for('newpost', id=item[7]) }}"> <!-- puts the reply in a clickable div -->
+                        <div class="post-text">
+                            <p>Replying to <i>{{ post[2] }}</i></p>
+                            <p>{{ post[0] }}</p>
+                            <p>{{ post[1] }}</p>
+                        </div>
+                    </a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

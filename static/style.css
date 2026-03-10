@@ -280,3 +280,20 @@ a{
     border-bottom:3px solid #0866FF;
     border-bottom-left-radius:25px;
 }
+
+.newpost-reply{
+    width:40%;
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    margin:4em 2em 0 2em;
+    background:rgb(200, 200, 200);
+    margin-bottom: 2em;
+    border: 3px solid #0866FF;
+    border-radius:20px;
+    padding:1em;
+    color: black;
+}
+
+.newpost-text{
+    display: inline;
+}
