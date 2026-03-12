@@ -279,7 +279,7 @@ a{
     border:3px solid #0866FF;
     padding:1em;
     margin:1em 0 2em 0;
-    color: black;
+    color:black;
 }
 
 .reply-decoration{
@@ -304,9 +304,29 @@ a{
     border: 3px solid #0866FF;
     border-radius:20px;
     padding:1em;
-    color: black;
+    color:black;
 }
 
 .newpost-text{
-    display: inline;
+    display:inline;
+}
+
+.home-sidebar{
+    width:100%;
+    height:100%;
+    margin:1em;
+    border-radius:25px;
+    background-color: none;
+    padding:1em;
+}
+
+.home-sidebar:hover{
+    background-color:
+}
+
+.home-container{
+    display:grid;
+    grid-template-columns:1fr 4fr;
+    gap:1em;
+    height:100%
 }
