@@ -1,7 +1,12 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="centered-content">
-    <h1>your (@{{session['username']}})'s posts</h1>
+    {% set user = request.path | replace("/userposts/", "") %}
+        {% if user == session['username'] %}
+            <h1>Your (@{{ user }})'s posts</h1>
+        {% else %}
+            <h1>@{{ user }}'s posts</h1>
+        {% endif %}
     {% for item in results %}
     <a href="{{ url_for('newpost', id=item[5]) }}" class="post-container">
         <!-- Puts the post in a clickable centered element -->

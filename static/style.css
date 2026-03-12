@@ -364,12 +364,6 @@ a{
     box-shadow:0 6px 15px rgba(0,0,0,0.1);
 }
 
-.sidebar-section-top:active,
-.sidebar-section:active,
-.sidebar-section-bottom:active {
-    transform:scale(0.97);
-}
-
 .home-container{
     display:grid;
     grid-template-columns:1fr 5fr;
