@@ -12,7 +12,12 @@
 <div class="home-container">
     <div class="home-sidebar">
         <div class="sidebar-section-top">
-            @dumbass posted in misc - "I don't like you"
+            {% for post in results %}
+                {% if post[8] == 0: %}
+                    <a href="{{ url_for('category', id=post[6]) }}">@{{ post[2] }} posted in {{ post[4] }}: "{{ post[1][:10] }}..."</a>
+                {% set _ = loop.index = loop.length %} {# end loop after one result returned #}
+                {% endif %}
+            {% endfor %}
         </div>
         <div class="sidebar-section">Hey goy</div>
         <div class="sidebar-section">Hey goy</div>

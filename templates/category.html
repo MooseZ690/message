@@ -24,8 +24,6 @@
         </a>
 
         {# Only show reply if there actually is one #}
-        <pre>{{item}}</pre>
-        <pre>{{results}}</pre>
             {% if item[7] is not none%}
                 {% for post in results %}
                     {% if post[5] == item[7] %}

@@ -42,7 +42,7 @@ def query_db(query, args=(), one=False):
 @app.route("/") #creates the home route for the flask app
 def home():
     sql = """
-        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         ORDER BY posts.time DESC; 
@@ -160,9 +160,9 @@ def newpost(id=None):
 
 @app.route("/category/<int:id>") #flask app route for the page that shows posts only from a certain category
 def category(id):
-    #posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
     sql = """
-    SELECT posts.id FROM posts
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+    FROM posts
     JOIN cat ON posts.categoryid = cat.id
     WHERE posts.categoryid = ?
     ORDER BY posts.time DESC;
