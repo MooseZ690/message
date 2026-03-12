@@ -325,6 +325,7 @@ a{
     flex-direction:column;
     gap:0.5em;
     font-family:'Segoe UI', sans-serif;
+    margin-bottom: 2em;
 }
 
 .home-sidebar a{
@@ -374,4 +375,7 @@ a{
     grid-template-columns:1fr 5fr;
     gap:1em;
     height:100%
+}
+
+.total-sidebar{
 }

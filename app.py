@@ -48,8 +48,14 @@ def home():
         ORDER BY posts.time DESC; 
         """ 
         #sql statement to return all posts from the database
+    userssql = """
+        SELECT users.id, users.username
+        FROM users
+        ORDER BY users.id ASC;
+        """
+    users = query_db(userssql)
     results = query_db(sql)
-    return render_template("home.html", results=results, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
+    return render_template("home.html", results=results, users=users, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 @app.route("/register", methods=["GET","POST"])
 def register():
