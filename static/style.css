@@ -21,6 +21,19 @@ a{
     align-items:center;
     gap:1em;
     padding:0.5em;
+    opacity: 0;
+    transform: translateY(-2em);   
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.navbar:hover{
+    display:flex;
+    align-items:center;
+    gap:1em;
+    padding:0.5em;
+    opacity: 1;
+    transform: translateY(0);  
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .nav-right{

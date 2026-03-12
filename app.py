@@ -160,12 +160,12 @@ def newpost(id=None):
 
 @app.route("/category/<int:id>") #flask app route for the page that shows posts only from a certain category
 def category(id):
+    #posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
     sql = """
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply  
-        FROM posts
-        JOIN cat ON posts.categoryid = cat.id
-        WHERE posts.categoryid = ?
-        ORDER BY posts.time DESC;
+    SELECT posts.id FROM posts
+    JOIN cat ON posts.categoryid = cat.id
+    WHERE posts.categoryid = ?
+    ORDER BY posts.time DESC;
         """
         #sql statement to return posts info where category id is selected by the user
     result = query_db(sql, (id,))
