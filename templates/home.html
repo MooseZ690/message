@@ -10,18 +10,86 @@
 {% endif %}
 {# If the post was today, change the date to say that #}
 <div class="home-container">
+    <!-- sidebar with info and recent posts -->
     <div class="home-sidebar">
+        <h3><b>Updates</b></h3>
+        <!-- recent posts -->
         <div class="sidebar-section-top">
-            {% for post in results %}
-                {% if post[8] == 0: %}
-                    <a href="{{ url_for('category', id=post[6]) }}">@{{ post[2] }} posted in {{ post[4] }}: "{{ post[1][:10] }}..."</a>
-                {% set _ = loop.index = loop.length %} {# end loop after one result returned #}
-                {% endif %}
-            {% endfor %}
+            {% set first_post = results | selectattr('8', 'equalto', 0) | list | first %}
+            {% if first_post %}
+                <a href="{{ url_for('category', id=first_post[8]) }}">
+                    @{{ first_post[2] }} posted in {{ first_post[4] }}: "{{ first_post[0][:10] }}..."
+                </a>
+            {% else %}
+                <p>No new posts in post[4]</p>
+            {% endif %}
         </div>
-        <div class="sidebar-section">Hey goy</div>
-        <div class="sidebar-section">Hey goy</div>
-        <div class="sidebar-section-bottom">Hey goy</div>
+
+        <div class="sidebar-section">
+            {% set first_post = results | selectattr('8', 'equalto', 1) | list | first %}
+            {% if first_post %}
+                <a href="{{ url_for('category', id=first_post[8]) }}">
+                    @{{ first_post[2] }} posted in {{ first_post[4] }}: "{{ first_post[0][:10] }}..."
+                </a>
+            {% else %}
+                <p>No new posts in post[4]</p>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-section">
+            {% set first_post = results | selectattr('8', 'equalto', 2) | list | first %}
+            {% if first_post %}
+                <a href="{{ url_for('category', id=first_post[8]) }}">
+                    @{{ first_post[2] }} posted in {{ first_post[4] }}: "{{ first_post[0][:10] }}..."
+                </a>
+            {% else %}
+                <p>No new posts in post[4]</p>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-section">
+            {% set first_post = results | selectattr('8', 'equalto', 3) | list | first %}
+            {% if first_post %}
+                <a href="{{ url_for('category', id=first_post[8]) }}">
+                    @{{ first_post[2] }} posted in {{ first_post[4] }}: "{{ first_post[0][:10] }}..."
+                </a>
+            {% else %}
+                <p>No new posts in post[4]</p>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-section">
+            {% set first_post = results | selectattr('8', 'equalto', 4) | list | first %}
+            {% if first_post %}
+                <a href="{{ url_for('category', id=first_post[8]) }}">
+                    @{{ first_post[2] }} posted in {{ first_post[4] }}: "{{ first_post[0][:10] }}..."
+                </a>
+            {% else %}
+                <p>No new posts in post[4]</p>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-section">
+            {% set first_post = results | selectattr('8', 'equalto', 5) | list | first %}
+            {% if first_post %}
+                <a href="{{ url_for('category', id=first_post[8]) }}">
+                    @{{ first_post[2] }} posted in {{ first_post[4] }}: "{{ first_post[0][:10] }}..."
+                </a>
+            {% else %}
+                <p>No new posts in post[4]</p>
+            {% endif %}
+        </div>
+
+        <div class="sidebar-section-bottom">
+            {% set first_post = results | selectattr('8', 'equalto', 6) | list | first %}
+            {% if first_post %}
+                <a href="{{ url_for('category', id=first_post[8]) }}">
+                    @{{ first_post[2] }} posted in {{ first_post[4] }}: "{{ first_post[0][:10] }}..."
+                </a>
+            {% else %}
+                <p>No new posts in post[4]</p>
+            {% endif %}
+        </div>
     </div>
     <div class="centered-content">
         <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">

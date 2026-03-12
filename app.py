@@ -1,4 +1,4 @@
-from flask import Flask, g, render_template, request, redirect, url_for, session
+from flask import Flask, g, render_template, request, redirect, url_for, session, jsonify
 import logging, sqlite3, datetime, random
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -57,13 +57,14 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        imageurl = request.form["imageurl"]
 
         hashed_password = generate_password_hash(password)
 
         db = get_db()
         db.execute(
-            "INSERT INTO users (username, password) VALUES (?, ?)",
-            (username, hashed_password)
+            "INSERT INTO users (username, password, imageurl) VALUES (?, ?, ?)",
+            (username, hashed_password, imageurl)
         )
         db.commit()
         if request.method == "POST":
