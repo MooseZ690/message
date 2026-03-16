@@ -2,6 +2,7 @@ from flask import Flask, g, render_template, request, redirect, url_for, session
 import logging, sqlite3, datetime, random
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, timedelta
 
 DATABASE = 'database.db'
 #sets the variable DATABASE as the file database.db

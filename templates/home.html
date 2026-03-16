@@ -17,7 +17,7 @@
         <div class="home-sidebar">
             <h3><b>Updates</b></h3>
             {% for i in range(6) %}
-            <div class="sidebar-section{% if i == 0 %}-top{% elif i == 5 %}-bottom{% endif %}">
+            <div class="sidebar-section">
                 <!-- changes div class depending on whether the cat id is first, last, or neither -->
                 {% set post = results | selectattr('8', 'equalto', i) | list | first %}
                 <!-- find the most recent post with the cat.id -->
@@ -36,7 +36,11 @@
         <div class="home-sidebar">
             <h3><b>Users</b></h3>
             {% for user in users %}
-            <a href="{{ url_for('userposts', username=user[1]) }}" class="sidebar-section-bottom">
+            <a href="{{ url_for('userposts', username=user[1]) }}" class="sidebar-section">
+
+
+
+
                 @{{ user[1] }}
                 {# goes through users table and prints each user #}
                 {% if user[1] == session['username'] %}
