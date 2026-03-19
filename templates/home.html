@@ -17,7 +17,6 @@
             <h3><b>Updates</b></h3>
             {% for i in range(6) %}
             <div class="sidebar-section">
-                <!-- changes div class depending on whether the cat id is first, last, or neither -->
                 {% set post = results | selectattr('8', 'equalto', i) | list | first %}
                 <!-- find the most recent post with the cat.id -->
                 {% if post %}
@@ -87,13 +86,15 @@
                     <img src="{{ item[3] }}" alt="{{ item[0] }}">
                 </div>
                 {% endif %}
-            {% if session['username'] %}
-                <form action="/like/{{ item[6] }}" method="POST">
-                    <button type="submit" class="like-button"><h1>♡</h1>{{ item[9] }}</button>
-                </form>
-            {% else %}
-                <div class="like-button"><h1>♡</h1>{{ item[9] }}</div>
-            {% endif %}
+                {% if session['username'] %}
+                    <form action="/like/{{ item[6] }}" method="POST">
+                        <button type="submit" class="like-button"><h1>♡</h1>like</button>
+                    </form>
+                {% else %}
+                    <form action="/login">
+                        <button type="submit" class="like-button"><h1>♡</h1>like</button>
+                    </form>
+                {% endif %}
             </a>
 
             {# Only show reply if there actually is one #}

@@ -43,7 +43,7 @@ def query_db(query, args=(), one=False):
 @app.route("/") #creates the home route for the flask app
 def home():
     sql = """
-        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, posts.likes
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         ORDER BY posts.time DESC; 
@@ -55,19 +55,31 @@ def home():
         ORDER BY users.id ASC;
         """
     comments = """
-        SELECT * FROM comments
+        SELECT * FROM comments;
         """
+    likes = """
+        SELECT * FROM likes;
+        """
+    
     users = query_db(userssql)
     results = query_db(sql)
     comments = query_db(comments)
-    return render_template("home.html", results=results, users=users, comments=comments, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
+    likes = query_db(likes)
+    return render_template("home.html", results=results, users=users, comments=comments, likes=likes, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 @app.route("/like/<int:id>", methods=["POST"])
 def like(id):
     db = get_db()
-    db.execute(
-        "UPDATE posts SET likes = likes + 1 WHERE id = ?",
-        (id,)
+    liker = session.get('username')
+    sql = "SELECT * FROM likes;"
+    likes = query_db(sql)
+    for row in likes:
+        if row[1] == id:
+            if row[0] == liker:
+                return redirect(request.referrer or url_for('index'))
+    db.execute(            
+        "INSERT INTO likes (liker, postid) VALUES (?, ?)",
+        (liker, id)
     )
     db.commit()
     return redirect(request.referrer or url_for('index'))
@@ -144,7 +156,6 @@ def newpost(id=None):
         name = session["username"]
         content = request.form["content"]
         imageurl = request.form["imageurl"]
-        likes = 0
         if not imageurl:
             imageurl = "https://operaparallele.org/wp-content/uploads/2023/09/Placeholder_Image.png"
         categoryid = request.form["categoryid"]
@@ -162,8 +173,8 @@ def newpost(id=None):
 
         db = get_db()
         db.execute(
-            "INSERT INTO posts (title, name, content, imageurl, categoryid, time, reply, likes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (title, name, content, imageurl, categoryid, time, reply, likes)
+            "INSERT INTO posts (title, name, content, imageurl, categoryid, time, reply) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (title, name, content, imageurl, categoryid, time, reply)
         )
         db.commit()
         #put post info into database
