@@ -10,7 +10,6 @@
 {% endif %}
 
 <div class="home-container">
-
     <!-- left sidebar -->
     <div class="total-sidebar">
         <!-- updates section -->
@@ -76,7 +75,7 @@
     <div class="centered-content">
         <div class="home-wrapper">
             <h1 class="home-title">most recent post</h1>
-            <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container-home">
+            <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
                 <div class="post-text">
                     <h2 class='category-box'>category: {{item[4]}} | {{item[5][10:]}}</h2><br>
                     <h1>{{item[0]}}</h1>
@@ -89,7 +88,7 @@
                 </div>
                 {% endif %}
             <form action="/like/{{ item[6] }}" method="POST">
-                <button type="submit">{{ item[9] }} likes</button>
+                <button type="submit" class="like-button"><h1>♡</h1>{{ item[9] }}</button>
             </form>
             </a>
 

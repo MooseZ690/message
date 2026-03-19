@@ -54,9 +54,13 @@ def home():
         FROM users
         ORDER BY users.id ASC;
         """
+    comments = """
+        SELECT * FROM comments
+        """
     users = query_db(userssql)
     results = query_db(sql)
-    return render_template("home.html", results=results, users=users, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
+    comments = query_db(comments)
+    return render_template("home.html", results=results, users=users, comments=comments, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 @app.route("/like/<int:id>", methods=["POST"])
 def like(id):
@@ -66,7 +70,7 @@ def like(id):
         (id,)
     )
     db.commit()
-    return redirect(url_for("home"))
+    return redirect(request.referrer or url_for('index'))
 
 @app.route("/register", methods=["GET","POST"])
 def register():
@@ -193,7 +197,7 @@ def category(id):
 @app.route("/allposts")
 def allposts():
     sql = """    
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply, posts.likes
     FROM posts
     JOIN cat ON posts.categoryid = cat.id
     ORDER BY posts.time DESC;

@@ -178,21 +178,17 @@ a{
     font-size:1em;
 }
 
-.post-container, 
-.post-container-home{
+.post-container{
+    width: 50vw;
     display:grid;
-    grid-template-columns:2fr 1fr;
+    grid-template-columns:4fr 1fr;
     margin:4em 2em 0 2em;
-    background:white;
+    background:#d0d0d0;
     border:3px solid #0866FF;
-    border-radius:20px;
     padding:1em;
     color:black;
 }
 
-.post-container-home{
-    width: 100%
-}
 
 .post-container h1,
 .post-container-home h1{
@@ -237,11 +233,16 @@ a{
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 60%;
 }
 
 .like-button{
+    background-color: rgba(0, 0, 0, 0);
+    color:#a7a7a7;
+    border: none;
+}
 
+.like-button:hover{
+    color: #FE2C55;
 }
 
 /* New post header */
@@ -380,6 +381,7 @@ a{
 
 .sidebar-section{
     display:flex;
+    font-size: 0.75cqi; /* sets font width to 7.5% of parent containers inline width */
     align-items:center;
     height:3.5em;
     padding:0 1.2em;
