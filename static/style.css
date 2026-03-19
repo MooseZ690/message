@@ -72,7 +72,7 @@ a{
     align-items:center;
     border-radius:25px;
     height:3em;
-    font-size:1em;
+    font-size:0.75cqi;
     margin:0.5em;
     padding:0.6em;
     font-weight:600;
@@ -175,7 +175,7 @@ a{
 }
 
 .post-text h3{
-    font-size:1em;
+    font-size:0.75cqi;
 }
 
 .post-container{
@@ -194,13 +194,13 @@ a{
 .post-container-home h1{
     font-weight:700;
     margin:0;
-    font-size:2em;
+    font-size:1.5cqi;
 }
 
 .post-container h2,
 .post-container-home h2{
     margin:0;
-    font-size:1em;
+    font-size:0.75cqi;
 }
 
 .post-img img{
@@ -267,6 +267,7 @@ a{
     padding-top:2em;
     display:grid;
     place-items:center;
+    font-size: 1.5cqi;
 }
 
 .cat-title h1{
