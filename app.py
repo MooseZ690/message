@@ -60,11 +60,10 @@ def home():
     likes = """
         SELECT * FROM likes;
         """
-    
+    likes = query_db(likes)
     users = query_db(userssql)
     results = query_db(sql)
     comments = query_db(comments)
-    likes = query_db(likes)
     return render_template("home.html", results=results, users=users, comments=comments, likes=likes, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 @app.route("/like/<int:id>", methods=["POST"])
