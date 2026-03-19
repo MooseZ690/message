@@ -88,6 +88,9 @@
                     <img src="{{ item[3] }}" alt="{{ item[0] }}">
                 </div>
                 {% endif %}
+            <form action="/like/{{ item[6] }}" method="POST">
+                <button type="submit">{{ item[9] }} likes</button>
+            </form>
             </a>
 
             {# Only show reply if there actually is one #}

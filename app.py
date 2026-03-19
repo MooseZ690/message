@@ -43,7 +43,7 @@ def query_db(query, args=(), one=False):
 @app.route("/") #creates the home route for the flask app
 def home():
     sql = """
-        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, posts.likes
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         ORDER BY posts.time DESC; 
@@ -57,6 +57,16 @@ def home():
     users = query_db(userssql)
     results = query_db(sql)
     return render_template("home.html", results=results, users=users, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
+
+@app.route("/like/<int:id>", methods=["POST"])
+def like(id):
+    db = get_db()
+    db.execute(
+        "UPDATE posts SET likes = likes + 1 WHERE id = ?",
+        (id,)
+    )
+    db.commit()
+    return redirect(url_for("home"))
 
 @app.route("/register", methods=["GET","POST"])
 def register():
@@ -130,6 +140,7 @@ def newpost(id=None):
         name = session["username"]
         content = request.form["content"]
         imageurl = request.form["imageurl"]
+        likes = 0
         if not imageurl:
             imageurl = "https://operaparallele.org/wp-content/uploads/2023/09/Placeholder_Image.png"
         categoryid = request.form["categoryid"]
@@ -147,8 +158,8 @@ def newpost(id=None):
 
         db = get_db()
         db.execute(
-            "INSERT INTO posts (title, name, content, imageurl, categoryid, time, reply) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (title, name, content, imageurl, categoryid, time, reply)
+            "INSERT INTO posts (title, name, content, imageurl, categoryid, time, reply, likes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (title, name, content, imageurl, categoryid, time, reply, likes)
         )
         db.commit()
         #put post info into database
