@@ -4,7 +4,16 @@
 /* Global styling */
 
 body{
-    background:#3c4043;
+    background:linear-gradient(
+    120deg,
+    rgba(5, 20, 90, 1) 0%,
+    rgba(60, 0, 140, 1) 40%,
+    rgba(140, 0, 220, 1) 75%,
+    rgba(190, 0, 225, 1) 100%
+    );
+    background-attachment:fixed;
+    background-repeat:no-repeat;
+    background-size:cover;
     color:#0866FF;
 }
 
@@ -29,34 +38,6 @@ a{
     gap:1em;
 }
 
-.left-navbar-group > *:not(:first-child){
-    max-width: 0;
-    overflow: hidden;
-    opacity: 0;
-    white-space: nowrap;
-    transition: all 0.1s ease;
-}
-
-.left-navbar-group:hover > *:not(:first-child){
-    max-width: 150px;
-    opacity: 1;
-}
-    /*
-    opacity:0;
-    transform:translateY(-2em);   
-    transition:transform 0.3s ease, opacity 0.3s ease;
-}
-
-.navbar:hover{
-    display:flex;
-    align-items:center;
-    gap:1em;
-    padding:0.5em;
-    opacity:1;
-    transform:translateY(0);  
-    transition:transform 0.3s ease, opacity 0.3s ease;
-}
-*/
 
 .nav-right{
     margin-left:auto;
@@ -78,7 +59,7 @@ a{
     font-weight:600;
     border:none;
     color:#0866FF;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color:rgba(255, 255, 255, 0.8);
     border:1px solid rgba(255,255,255,0.2);
 }
 
@@ -151,6 +132,12 @@ a{
     color:rgb(110,110,110);
 }
 
+.register-top-box{
+    display:flex;
+    flex-direction:column;
+    gap:1em;
+}
+
 .login-button{
     color:rgb(110,110,110);
 }
@@ -179,7 +166,7 @@ a{
 }
 
 .post-container{
-    width: 50vw;
+    width:50vw;
     display:grid;
     grid-template-columns:4fr 1fr;
     margin:4em 2em 0 2em;
@@ -230,19 +217,19 @@ a{
 }
 
 .home-wrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
 }
 
 .like-button{
-    background-color: rgba(0, 0, 0, 0);
+    background-color:rgba(0, 0, 0, 0);
     color:#a7a7a7;
-    border: none;
+    border:none;
 }
 
 .like-button:hover{
-    color: #FE2C55;
+    color:#FE2C55;
 }
 
 /* New post header */
@@ -267,7 +254,7 @@ a{
     padding-top:2em;
     display:grid;
     place-items:center;
-    font-size: 1.5cqi;
+    font-size:1.5cqi;
 }
 
 .cat-title h1{
@@ -289,6 +276,7 @@ a{
     box-shadow:0 4px 8px rgba(0,0,0,0.2);
     z-index:1;
     overflow:hidden;
+    transition: height 0.14s ease;
 }
 
 .dropdown-content a{
@@ -369,7 +357,15 @@ a{
     flex-direction:column;
     gap:0.5em;
     font-family:'Segoe UI', sans-serif;
-    margin-bottom: 2em;
+    margin-bottom:2em;
+    gap: 1vh;
+    max-height: 20vh;
+    overflow: hidden;
+    transition: max-height 0.14s ease-in-out;
+}
+
+.home-sidebar:hover {
+    max-height: 1000px;
 }
 
 .home-sidebar a{
@@ -377,12 +373,12 @@ a{
 }
 
 .home-sidebar h3{
-    margin-left: 1em;
+    margin-left:1em;
 }
 
 .sidebar-section{
     display:flex;
-    font-size: 0.75cqi; /* sets font width to 7.5% of parent containers inline width */
+    font-size:0.75cqi; /* sets font width to 7.5% of parent containers inline width */
     align-items:center;
     height:3.5em;
     padding:0 1.2em;
@@ -411,15 +407,5 @@ a{
 }
 
 .total-sidebar{
-    margin-top: 5em;    
+    margin-top:5em;    
 }
-/*
-    opacity:0;
-    transform:translateX(-60%);
-    transition:transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-}
-
-.total-sidebar:hover{
-    opacity:1;
-    transform:translateX(0)
-} */

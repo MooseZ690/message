@@ -15,7 +15,7 @@
         <!-- updates section -->
         <div class="home-sidebar">
             <h3><b>Updates</b></h3>
-            {% for i in range(6) %}
+            {% for i in range(8) %}
             <div class="sidebar-section">
                 {% set post = results | selectattr('8', 'equalto', i) | list | first %}
                 <!-- find the most recent post with the cat.id -->

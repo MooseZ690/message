@@ -4,11 +4,16 @@
 <div class="centered-content">
     <div class="block"></div>
     <h1>Register</h1>
+    {% if failed %}
+        <h2>Registration failed. </h2>
+    {% endif %}
     <form method="post" class="login-container"> <!-- tells app.py the method="POST" -->
-        <div class="top-box">
+        <div class="register-top-box">
             <input type="text" id="username" name="username" class="login-box" placeholder="Username" required>
 
             <input type="text" id="password" name="password" class="login-box" placeholder="Password" required>
+
+            <input type="text" id="email" name="email" class="login-box" placeholder="Email">
 
             <input type="text" id="imageurl" name="imageurl" class="login-box" placeholder="Profile picture URL">
 

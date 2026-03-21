@@ -85,27 +85,41 @@ def like(id):
 
 @app.route("/register", methods=["GET","POST"])
 def register():
+    failed = request.args.get("failed") == "True"
 
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         imageurl = request.form["imageurl"]
+        email = request.form["email"]
 
         hashed_password = generate_password_hash(password)
 
+        users = query_db("SELECT email, username FROM users")
+
+        for row in users:
+            if row[1] == username or row[0] == email:
+                return redirect(url_for("register", failed=True))
+
         db = get_db()
         db.execute(
-            "INSERT INTO users (username, password, imageurl) VALUES (?, ?, ?)",
-            (username, hashed_password, imageurl)
+            "INSERT INTO users (username, password, imageurl, email) VALUES (?, ?, ?, ?)",
+            (username, hashed_password, imageurl, email)
         )
         db.commit()
-        if request.method == "POST":
-            user = query_db(
+
+        user = query_db(
             "SELECT * FROM users WHERE username = ?",
             (username,),
             one=True
         )
-    return render_template("register.html")
+
+        session["user_id"] = user[0]
+        session["username"] = user[1]
+
+        return redirect(url_for("home"))
+
+    return render_template("register.html", failed=failed)
 
 @app.route("/login", methods=["GET","POST"])
 def login():
@@ -207,7 +221,7 @@ def category(id):
 @app.route("/allposts")
 def allposts():
     sql = """    
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply, posts.likes
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply  
     FROM posts
     JOIN cat ON posts.categoryid = cat.id
     ORDER BY posts.time DESC;
