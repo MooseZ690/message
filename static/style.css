@@ -170,8 +170,10 @@ a{
     display:grid;
     grid-template-columns:4fr 1fr;
     margin:4em 2em 0 2em;
-    background:#d0d0d0;
-    border:3px solid #0866FF;
+    border-radius:25px;
+    background:rgba(255, 255, 255, 0.15);
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    border:1px solid rgba(255,255,255,0.25);
     padding:1em;
     color:black;
 }
@@ -308,9 +310,10 @@ a{
 /* Post replies */
 
 .reply-box{
-    background:rgb(210, 210, 210);
-    border-radius:20px;
-    border:3px solid #0866FF;
+    border-radius:25px;
+    background:rgba(255, 255, 255, 0.15);
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    border:1px solid rgba(255,255,255,0.25);
     padding:1em;
     margin:1em 0 2em 0;
     color:black;
@@ -324,8 +327,8 @@ a{
 .line{
     height:4em;
     width:4em;
-    border-left:3px solid #0866FF;
-    border-bottom:3px solid #0866FF;
+    border-left:3px solid rgba(255,255,255,0.25);
+    border-bottom:3px solid rgba(255,255,255,0.25);
     border-bottom-left-radius:25px;
 }
 
@@ -359,13 +362,6 @@ a{
     font-family:'Segoe UI', sans-serif;
     margin-bottom:2em;
     gap: 1vh;
-    max-height: 20vh;
-    overflow: hidden;
-    transition: max-height 0.14s ease-in-out;
-}
-
-.home-sidebar:hover {
-    max-height: 1000px;
 }
 
 .home-sidebar a{
