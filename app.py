@@ -205,6 +205,19 @@ def newpost(id=None):
             results=results
         )
 
+@app.route("/admin")
+def admin():
+    users = """SELECT users.username, users.type 
+            FROM users;"""
+    users = query_db(users)
+    for row in users:
+        if row[0] == session.get('username'):
+            if row[1] == 'admin':
+                return render_template("admin.html", users=users)
+    return redirect(url_for("home"))
+    
+            
+
 @app.route("/category/<int:id>") #flask app route for the page that shows posts only from a certain category
 def category(id):
     sql = """
@@ -244,8 +257,16 @@ def userposts(username):
     WHERE posts.name = ?
     ORDER BY posts.time DESC;
     """
+    userdb = """
+    SELECT users.id, users.imageurl, users.username
+    FROM users
+    WHERE users.username = ?;
+    """
+    userdb = query_db(userdb, (username,))
     results = query_db(sql, (username,))
-    return render_template("userposts.html", results=results)
+    profilepic = userdb[0][1]
+    
+    return render_template("userposts.html", results=results, profilepic=profilepic, username=username)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app
