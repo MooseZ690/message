@@ -4,11 +4,9 @@
 {% if results %}
 {# get the category name from the first row's fifth element #}
 {% set title = results[0][4] %}
-<div class="cat-title">
-    <h1>{{ title }}</h1>
-</div>
 {% endif %}
 <div class="centered-content">
+        <h1>{{ title }}</h1>
     {% for item in results %}
         <a href="{{ url_for('newpost', id=item[5]) }}" class="post-container">
             <!-- Puts the post in a clickable centered element -->

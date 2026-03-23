@@ -227,9 +227,13 @@ def allposts():
     ORDER BY posts.time DESC;
     """
     #sql statement to return all relevant info from posts table
+    likes = """
+        SELECT * FROM likes;
+        """
+    likes = query_db(likes)
     results = query_db(sql)
     return render_template(
-        "allposts.html", results=results, today=datetime.now().strftime("%Y-%m-%d"))
+        "allposts.html", results=results, likes=likes, today=datetime.now().strftime("%Y-%m-%d"))
 
 @app.route("/userposts/<username>")
 def userposts(username):

@@ -1,9 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="cat-title">
-    <h1>all posts</h1>
-</div>
 <div class="centered-content">
+    <h1>all posts</h1>
     {% for item in results %}
     <a href="{{ url_for('newpost', id=item[5]) }}" class="post-container">
         <!-- Puts the post in a clickable centered element -->
