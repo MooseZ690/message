@@ -59,15 +59,9 @@
                 {% endif %}
                 {% endfor %}
                 -
-                {% if ns.postsnumber > 1 or ns.postsnumber < 1 %}
-                    {{ ns.postsnumber }} posts
-                {% else %}
-                    {{ ns.postsnumber }} post
-                {% endif %}
-
-                {# correct grammar for different numbers #}
-            </a>
-            {% endfor %}
+                {% if ns.postsnumber > 1 or ns.postsnumber < 1 %} {{ ns.postsnumber }} posts {% else %} {{
+                    ns.postsnumber }} post {% endif %} {# correct grammar for different numbers #} </a>
+                    {% endfor %}
         </div>
     </div>
 
@@ -89,19 +83,23 @@
                 {% set postlikes = 0 %}
                 {% set ns = namespace(postlikes=0) %}
                 {% for row in likes %}
-                    {% if row[1] == item[6] %}
-                        {% set ns.postlikes = ns.postlikes + 1 %}
-                    {% endif %}
+                {% if row[1] == item[6] %}
+                {% set ns.postlikes = ns.postlikes + 1 %}
+                {% endif %}
                 {% endfor %}
 
                 {% if session['username'] %}
-                        <form action="/like/{{ item[6] }}" method="POST">
-                            <button type="submit" class="like-button"><h1>♡</h1>{{ns.postlikes}}</button>
-                        </form>
+                <form action="/like/{{ item[6] }}" method="POST">
+                    <button type="submit" class="like-button">
+                        <h1>♡</h1>{{ns.postlikes}}
+                    </button>
+                </form>
                 {% else %}
-                    <form action="/login">
-                        <button type="submit" class="like-button"><h1>♡</h1>{{ns.postlikes}}</button>
-                    </form>
+                <form action="/login">
+                    <button type="submit" class="like-button">
+                        <h1>♡</h1>{{ns.postlikes}}
+                    </button>
+                </form>
                 {% endif %}
             </a>
 

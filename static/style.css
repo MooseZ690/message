@@ -30,8 +30,8 @@ a{
     align-items:center;
     gap:1em;
     padding:0;
-    background-color: black;
-    padding-top: 1em;
+    background-color:black;
+    padding-top:1em;
 }
 
 .left-navbar-group{
@@ -65,11 +65,11 @@ a{
 
 .top-button:hover{
     color:white;
-    box-shadow: 0 10px 10px -5px rgba(0, 150, 255, 1);
+    box-shadow:0 10px 10px -5px rgba(0, 150, 255, 1);
 }
 
 .cat-button:hover{
-    color: white;
+    color:white;
 }
 
 .post-button-right{
@@ -203,11 +203,10 @@ a{
     margin-top:5em;
     display:grid;
     place-items:center;
-    padding-bottom: 5em;
+    padding-bottom:5em;
 }
 
 .new-post-container{
-    margin-top: 12em;
     border-radius:20px;
     background:rgba(220, 220, 220, 0.15);
     padding:2em;
@@ -241,9 +240,9 @@ a{
 
 .top-box .post-button-right{
     margin-left:auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;  
+    display:flex;
+    justify-content:center;
+    align-items:center;  
 }
 
 /* Categories */
@@ -258,7 +257,8 @@ a{
     border:none;
 }
 
-.dropdown-content{
+.dropdown-content, 
+.dropdown-right-content{
     display:none;
     position:absolute;
     background:rgba(255, 255, 255, 0.15);
@@ -271,22 +271,30 @@ a{
     transition: height 0.14s ease;
 }
 
-.dropdown-content a{
+.dropdown-right-content{
+    min-width: 80px;
+    transform:translateX(-1em);
+}
+
+.dropdown-content a, 
+.dropdown-right-content a{
     font-weight:500;
     display:block;
     padding:10px;
     transition:all 0.3s ease;
 }
 
-.dropdown-content a:hover{
+.dropdown-content a:hover, 
+.dropdown-right-content a:hover{
     background:white;
     box-shadow:white;
-    color: black;
+    color:black;
 }
 
-.dropdown:hover .dropdown-content{
+.dropdown:hover .dropdown-content, 
+.dropdown-right:hover .dropdown-right-content{
     display:block;
-    box-shadow: 0 0 20px 10px rgba(0, 150, 255, 0.5);
+    box-shadow:0 0 20px 10px rgba(0, 150, 255, 0.5);
 }
 
 .category-dropdown{
@@ -352,7 +360,7 @@ a{
     gap:0.5em;
     font-family:'Segoe UI', sans-serif;
     margin-bottom:2em;
-    gap: 1vh;
+    gap:1vh;
 }
 
 .home-sidebar a{

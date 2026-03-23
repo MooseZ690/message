@@ -6,10 +6,8 @@
 <div class="centered-content">
     <!-- if the newpost is a reply, show the post being replied to -->
     {% for item in results if item[5] == replyid %}
-    <div class="cat-title">
-        <h1>Replying to @{{ item[2] }}</h1>
-    </div>
-    <div class="newpost-reply">
+    <h1>Replying to @{{ item[2] }}</h1>
+    <div class="post-container">
         <div class="newpost-text">
             <h1>{{ item[0] }}</h1>
             <h3>@{{ item[2] }}</h3>
@@ -23,6 +21,9 @@
         {% endif %}
     </div>
     {% endfor %}
+    {% if not replyid %}
+        <div class="block"></div>
+    {% endif %}
     <form method="post" class="new-post-container"> <!-- tells app.py the method="POST" -->
         <div class="top-box">
             <input type="text" id="title" name="title" class="top-input-box" placeholder="Title" required>

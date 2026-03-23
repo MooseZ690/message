@@ -54,22 +54,28 @@
                 <a href="/category/4">History</a>
                 <a href="/category/5">Digitech</a>
                 <a href="/category/6">Politics</a>
-                <a href="/category/6">Religion</a>
+                <a href="/category/7">Religion</a>
             </div>
         </div>
     </div>
     <div class="nav-right">
-        {% if session.get('username') in admins %}
-            <a href="/admin" class="top-button">Admin panel</a>
-        {% endif %} {# if the user is an admin, show option for admin panel #}
-        {% if session.username %}
-            <a href="{{ url_for('userposts', username=session['username']) }}" class="top-button">My Posts</a>
-            <a href="/logout" class="top-button">Logout</a>
-            {# if logged in, say so in navbar #}
-        {% else %}
-            <a href="/login" class="top-button">Login</a>
-            <a href="/register" class="top-button">Register</a>
-        {% endif %}
+        <div class="dropdown-right">
+            <button class="cat-button">
+                
+                &nbsp;Profile
+            </button>
+            <div class="dropdown-right-content">
+                <a href="/admin" class="top-button">Admin panel</a>
+                {% if session.username %}
+                    <a href="{{ url_for('userposts', username=session['username']) }}" class="top-button">My Posts</a>
+                    <a href="/logout" class="top-button">Logout</a>
+                    {# if logged in, say so in navbar #}
+                {% else %}
+                    <a href="/login" class="top-button">Login</a>
+                    <a href="/register" class="top-button">Register</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </nav>
 

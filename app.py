@@ -66,6 +66,22 @@ def home():
     comments = query_db(comments)
     return render_template("home.html", results=results, users=users, comments=comments, likes=likes, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
+@app.route("/allposts")
+def allposts():
+    sql = """    
+    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply  
+    FROM posts
+    JOIN cat ON posts.categoryid = cat.id
+    ORDER BY posts.time DESC;
+    """
+    #sql statement to return all relevant info from posts table
+    likes = """
+        SELECT * FROM likes;
+        """
+    likes = query_db(likes)
+    results = query_db(sql)
+    return render_template("allposts.html", results=results, likes=likes, today=datetime.now().strftime("%Y-%m-%d"))
+
 @app.route("/like/<int:id>", methods=["POST"])
 def like(id):
     db = get_db()
@@ -230,23 +246,6 @@ def category(id):
         #sql statement to return posts info where category id is selected by the user
     result = query_db(sql, (id,))
     return render_template("category.html", results=result)
-
-@app.route("/allposts")
-def allposts():
-    sql = """    
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply  
-    FROM posts
-    JOIN cat ON posts.categoryid = cat.id
-    ORDER BY posts.time DESC;
-    """
-    #sql statement to return all relevant info from posts table
-    likes = """
-        SELECT * FROM likes;
-        """
-    likes = query_db(likes)
-    results = query_db(sql)
-    return render_template(
-        "allposts.html", results=results, likes=likes, today=datetime.now().strftime("%Y-%m-%d"))
 
 @app.route("/userposts/<username>")
 def userposts(username):
