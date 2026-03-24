@@ -65,7 +65,7 @@ a{
 
 .top-button:hover{
     color:white;
-    box-shadow:0 10px 10px -5px rgba(0, 150, 255, 1);
+    box-shadow:0 10px 10px -5px rgba(200, 0, 255, 1);
 }
 
 .cat-button:hover{
@@ -169,7 +169,7 @@ a{
     width:50vw;
     display:grid;
     grid-template-columns:4fr 1fr;
-    margin:4em 2em 0 2em;
+    margin:2em 2em 0 2em;
     background:rgba(255, 255, 255, 0.2);
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
     border:2px solid rgba(255,255,255,0.25);
@@ -265,7 +265,6 @@ a{
     border:2px solid rgba(255, 255, 255, 0.25);
     border-radius:25px;
     min-width:140px;
-    box-shadow:0 4px 8px rgba(0,0,0,0.2);
     z-index:1;
     overflow:hidden;
     transition: height 0.14s ease;
@@ -293,7 +292,7 @@ a{
 .dropdown:hover .dropdown-content, 
 .dropdown-right:hover .dropdown-right-content{
     display:block;
-    box-shadow:0 0 20px 10px rgba(0, 150, 255, 0.5);
+    box-shadow:0 0 20px 10px rgba(200, 0, 255, 0.5);
 }
 
 .category-dropdown{
@@ -344,9 +343,21 @@ a{
     color:black;
 }
 
+.newpost-reply-line{
+    width:2px;
+    border-left:2px solid rgba(255, 255, 255, 0.25)
+}
+
 .newpost-text{
     display:inline;
 }
+
+.reply-to-content{
+    display:grid;
+    place-items:center;
+}
+
+/* sidebars */
 
 .home-sidebar {
     width:100%;
@@ -372,7 +383,7 @@ a{
 }
 
 .sidebar-section{
-    display:none;
+    display:flex;
     font-size:0.75cqi; /* sets font width to 7.5% of parent containers inline width */
     align-items:center;
     height:3.5em;
@@ -417,6 +428,27 @@ a{
     background:rgba(255, 255, 255, 0.15);
     border:2px solid rgba(255, 255, 255, 0.25);
     border-radius:25px;
-    height:200px;
     padding:1em;
+}
+
+/* various containers */
+.userposts-header{
+    display:flex;
+    align-items:center;
+    gap:1em;
+    border:3px solid rgba(255, 255, 255, 0.15);
+    border-radius:25px;
+    background:rgba(255, 255, 255, 0.15);
+    padding:1em;
+}
+
+.userposts-header img {
+    aspect-ratio:1 / 1;
+    border-radius:50%;
+    object-fit:cover;
+    max-height:100px;
+}
+
+.userposts-header h1{
+    
 }

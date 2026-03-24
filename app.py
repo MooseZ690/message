@@ -225,11 +225,13 @@ def newpost(id=None):
 def admin():
     users = """SELECT users.username, users.type 
             FROM users;"""
+    followers = """SELECT * FROM following;"""
     users = query_db(users)
+    followers = query_db(followers)
     for row in users:
         if row[0] == session.get('username'):
             if row[1] == 'admin':
-                return render_template("admin.html", users=users)
+                return render_template("admin.html", users=users, followers=followers)
     return redirect(url_for("home"))
     
             
@@ -265,11 +267,40 @@ def userposts(username):
     FROM users
     WHERE users.username = ?;
     """
+    followers = """
+        SELECT * FROM following;
+    """
+    followers = query_db(followers)
     userdb = query_db(userdb, (username,))
     results = query_db(sql, (username,))
     profilepic = userdb[0][1]
+    following = False
+    for row in followers:
+        if row[0] == session.get('username') and row[1] == username:
+            following = True
+    return render_template("userposts.html", results=results, profilepic=profilepic, username=username, following=following)
+
+@app.route("/follow/<target>")
+def follow(target):
+    follower = session.get('username')
+    if "user_id" not in session: #if youre not logged in
+        return redirect(url_for("login")) #go to login page
+    sql = """
+        SELECT * FROM following;
+    """
+    results = query_db(sql)
+    for row in results:
+        if row[0] == follower and row[1] == target:
+            return render_template('userposts', message = True)
+            #return redirect(request.referrer)
+    db = get_db()
+    db.execute(            
+    "INSERT INTO following (follower_id, followed_id) VALUES (?, ?)",
+    (follower, target)
+    )
+    db.commit()
+    return redirect(request.referrer)
     
-    return render_template("userposts.html", results=results, profilepic=profilepic, username=username)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app

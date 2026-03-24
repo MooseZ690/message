@@ -1,12 +1,18 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="centered-content">
-    {% if username == session.get('username') %}
-        <h1>Your (@{{ username }})'s posts</h1>
-    {% else %}
-        <h1>@{{ username }}'s posts</h1>
-    {% endif %}
-    <img src="{{profilepic}}" alt="profile picture">
+    <div class="userposts-header">
+        {% if username == session.get('username') %}
+            <img src="{{profilepic}}" alt="profile picture"> <h1>Your (@{{ username }})'s posts</h1>
+        {% else %}
+            <img src="{{profilepic}}" alt="profile picture"> <h1>@{{ username }}'s posts</h1>
+        {% endif %}
+        {% if following == True %}
+            <a>Following</a>
+        {% else %}
+            <a href="/follow/{{username}}">Following</a>
+        {% endif %}
+    </div>
     {% for item in results %}
     <a href="{{ url_for('newpost', id=item[5]) }}" class="post-container">
         <!-- Puts the post in a clickable centered element -->
