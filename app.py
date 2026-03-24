@@ -243,9 +243,13 @@ def category(id):
     WHERE posts.categoryid = ?
     ORDER BY posts.time DESC;
         """
+    cat = """
+        SELECT cat.name FROM cat WHERE cat.id = ?
+    """
         #sql statement to return posts info where category id is selected by the user
+    cat = query_db(cat, (id,))
     result = query_db(sql, (id,))
-    return render_template("category.html", results=result)
+    return render_template("category.html", results=result, cat=cat)
 
 @app.route("/userposts/<username>")
 def userposts(username):

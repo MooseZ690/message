@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="centered-content">
-    {% if user == username %}
-        <h1>Your (@{{ user }})'s posts</h1>
+    {% if username == session.get('username') %}
+        <h1>Your (@{{ username }})'s posts</h1>
     {% else %}
-        <h1>@{{ user }}'s posts</h1>
+        <h1>@{{ username }}'s posts</h1>
     {% endif %}
     <img src="{{profilepic}}" alt="profile picture">
     {% for item in results %}

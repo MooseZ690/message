@@ -287,7 +287,6 @@ a{
 .dropdown-content a:hover, 
 .dropdown-right-content a:hover{
     background:white;
-    box-shadow:white;
     color:black;
 }
 
