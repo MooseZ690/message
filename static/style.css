@@ -6,7 +6,7 @@
 
 body{
     background:linear-gradient(
-    120deg,
+    135deg,
     rgb(20, 20, 20) 0%,
     rgb(52, 10, 107) 33%,
     rgba(140, 0, 220, 1) 67%,
@@ -315,11 +315,12 @@ a{
     padding:1em;
     margin:1em 0 2em 0;
     color:white;
+    min-width:20em;
 }
 
 .reply-decoration{
     display:flex;
-
+    transform:translateX(-2em);
 }
 
 .line{
@@ -371,7 +372,7 @@ a{
 }
 
 .sidebar-section{
-    display:flex;
+    display:none;
     font-size:0.75cqi; /* sets font width to 7.5% of parent containers inline width */
     align-items:center;
     height:3.5em;
@@ -384,6 +385,7 @@ a{
     background:rgba(255, 255, 255, 0.25);
     border:1px solid rgba(255,255,255,0.2);
     color:white;
+    transition:height 0.3s ease-in-out;
 }
 
 .sidebar-section:hover{
@@ -402,6 +404,10 @@ a{
 
 .total-sidebar{
     margin-top:5em;    
+}
+
+.home-sidebar:hover .sidebar-section{
+    display:flex;
 }
 
 /* admin panel */
