@@ -267,11 +267,11 @@ a{
     min-width:140px;
     z-index:1;
     overflow:hidden;
-    transition: height 0.14s ease;
+    transition:height 0.14s ease;
 }
 
 .dropdown-right-content{
-    min-width: 80px;
+    min-width:80px;
     transform:translateX(-1em);
 }
 
@@ -451,4 +451,13 @@ a{
 
 .userposts-header h1{
     
+}
+
+/* messages/errors */
+.error{
+    background:rgba(184, 39, 39, 0.616);
+    border-radius:25px;
+    padding:0.2em 0.5em;
+    width:277px;
+    text-align:left;
 }

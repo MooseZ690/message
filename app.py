@@ -54,12 +54,15 @@ def home():
         FROM users
         ORDER BY users.id ASC;
         """
+        #sql statement to get user info
     comments = """
         SELECT * FROM comments;
         """
+        #sql statement to get comments on posts
     likes = """
         SELECT * FROM likes;
         """
+        #sql statement to get all info from likes table
     likes = query_db(likes)
     users = query_db(userssql)
     results = query_db(sql)
@@ -78,6 +81,7 @@ def allposts():
     likes = """
         SELECT * FROM likes;
         """
+    #sql statement to get all info from likes table
     likes = query_db(likes)
     results = query_db(sql)
     return render_template("allposts.html", results=results, likes=likes, today=datetime.now().strftime("%Y-%m-%d"))
@@ -86,17 +90,21 @@ def allposts():
 def like(id):
     db = get_db()
     liker = session.get('username')
+    #sets gets the current user, also the one liking the post
     sql = "SELECT * FROM likes;"
+    #sql statement to get all info from likes table
     likes = query_db(sql)
     for row in likes:
         if row[1] == id:
             if row[0] == liker:
                 return redirect(request.referrer or url_for('index'))
+    #if the intended like has already occured, redirect back to the page the user came from
     db.execute(            
         "INSERT INTO likes (liker, postid) VALUES (?, ?)",
         (liker, id)
     )
     db.commit()
+    #otherwise, commit the into to the likes database
     return redirect(request.referrer or url_for('index'))
 
 @app.route("/register", methods=["GET","POST"])
@@ -108,22 +116,23 @@ def register():
         password = request.form["password"]
         imageurl = request.form["imageurl"]
         email = request.form["email"]
+        #get all info from the register page
 
         hashed_password = generate_password_hash(password)
-
+        #hashes the password with werkzeug
         users = query_db("SELECT email, username FROM users")
 
         for row in users:
             if row[1] == username or row[0] == email:
                 return redirect(url_for("register", failed=True))
-
+        #if the user is already registered, go back to register page with an error message
         db = get_db()
         db.execute(
             "INSERT INTO users (username, password, imageurl, email) VALUES (?, ?, ?, ?)",
             (username, hashed_password, imageurl, email)
         )
         db.commit()
-
+        #otherwise, commit new account to the users database
         user = query_db(
             "SELECT * FROM users WHERE username = ?",
             (username,),
@@ -134,7 +143,7 @@ def register():
         session["username"] = user[1]
 
         return redirect(url_for("home"))
-
+        #log the user in
     return render_template("register.html", failed=failed)
 
 @app.route("/login", methods=["GET","POST"])
