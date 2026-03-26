@@ -234,7 +234,11 @@ def newpost(id=None):
 def admin():
     users = """SELECT users.username, users.type 
             FROM users;"""
-    followers = """SELECT * FROM following;"""
+    followers = """SELECT following.follower_id, following.followed_id, follower.username
+    AS follower_name, followed.username AS followed_name
+    FROM following
+    JOIN users AS follower ON following.follower_id = follower.id
+    JOIN users AS followed ON following.followed_id = followed.id;"""
     users = query_db(users)
     followers = query_db(followers)
     for row in users:
@@ -264,48 +268,54 @@ def category(id):
 
 @app.route("/userposts/<username>")
 def userposts(username):
-    sql = """    
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
-    FROM posts
-    JOIN cat ON posts.categoryid = cat.id
-    WHERE posts.name = ?
-    ORDER BY posts.time DESC;
+    sql = """
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+        FROM posts
+        JOIN cat ON posts.categoryid = cat.id
+        WHERE posts.name = ?
+        ORDER BY posts.time DESC;
     """
-    userdb = """
-    SELECT users.id, users.imageurl, users.username
-    FROM users
-    WHERE users.username = ?;
+    user_sql = """
+        SELECT users.id, users.imageurl, users.username
+        FROM users
+        WHERE users.username = ?;
     """
-    followers = """
-        SELECT * FROM following;
+    followers_sql = """
+        SELECT follower_id, followed_id
+        FROM following;
     """
-    followers = query_db(followers)
-    userdb = query_db(userdb, (username,))
+    followers = query_db(followers_sql)
+    userdb = query_db(user_sql, (username,))
     results = query_db(sql, (username,))
+    if not userdb:
+        return "User not found"
     profilepic = userdb[0][1]
+    userid = userdb[0][0]
     following = False
     for row in followers:
-        if row[0] == session.get('username') and row[1] == username:
+        if row[0] == session.get('user_id') and row[1] == userid:
             following = True
-    return render_template("userposts.html", results=results, profilepic=profilepic, username=username, following=following)
-
-@app.route("/follow/<target>")
-def follow(target):
-    follower = session.get('username')
-    if "user_id" not in session: #if youre not logged in
+            break
+    return render_template( "userposts.html", results=results, profilepic=profilepic, username=username, userid=userid, following=following)
+    
+@app.route("/follow/<followed_id>")
+def follow(followed_id):
+    if "user_id" not in session: #if you're not logged in
         return redirect(url_for("login")) #go to login page
+    follower_id = session.get('user_id')
     sql = """
         SELECT * FROM following;
     """
+    #sql statement to get all data from following table
     results = query_db(sql)
     for row in results:
-        if row[0] == follower and row[1] == target:
+        if row[0] == follower_id and row[1] == followed_id:
             return render_template('userposts', message = True)
             #return redirect(request.referrer)
     db = get_db()
     db.execute(            
     "INSERT INTO following (follower_id, followed_id) VALUES (?, ?)",
-    (follower, target)
+    (follower_id, followed_id)
     )
     db.commit()
     return redirect(request.referrer)

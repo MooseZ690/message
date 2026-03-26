@@ -6,11 +6,11 @@
 
 body{
     background:linear-gradient(
-    135deg,
-    rgb(20, 20, 20) 0%,
-    rgb(52, 10, 107) 33%,
-    rgba(140, 0, 220, 1) 67%,
-    rgba(190, 0, 225, 1) 100%
+    120deg,
+    rgb(0, 0, 0) 0%,
+    rgb(31, 1, 70) 33%,
+    rgb(96, 0, 151) 67%,
+    rgb(140, 0, 165) 100%
     );
     background-attachment:fixed;
     background-repeat:no-repeat;
@@ -49,8 +49,8 @@ a{
 
 /* Buttons */
 
-.top-button, 
-.cat-button{
+.top-button,
+.top-button-active{
     display:flex;
     justify-content:center;
     align-items:center;
@@ -63,6 +63,7 @@ a{
     border-bottom:3px solid rgba(0, 0, 255, 0);
 }
 
+.top-button-active, 
 .top-button:hover{
     color:white;
     box-shadow:0 10px 10px -5px rgba(200, 0, 255, 1);
@@ -70,6 +71,10 @@ a{
 
 .cat-button:hover{
     color:white;
+}
+
+.cat-button-active{
+    box-shadow:0 10px 10px -5px rgba(200, 0, 255, 1);
 }
 
 .post-button-right{
@@ -457,7 +462,6 @@ a{
 .error{
     background:rgba(184, 39, 39, 0.616);
     border-radius:25px;
-    padding:0.2em 0.5em;
+    padding:0.5em;
     width:277px;
-    text-align:left;
 }

@@ -4,9 +4,13 @@
     <div class="admin-container">
         <h1 class="cat-title">Admin panel</h1>
         <br><h2>Users</h2>
-        {{users}}
+        {% for row in users %}
+            <p>@{{row[0]}}, admin = {{row[1]}}</p>
+        {% endfor %}
     <br><h2>Following rls</h2>--------------------------------------<br>
-        {{followers}}
+        {% for row in followers %}
+            <p>{{row[2]}} just followed {{row[3]}}</p>
+        {% endfor %}
     </div>
 </div>
 
