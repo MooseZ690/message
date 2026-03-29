@@ -43,14 +43,15 @@ def query_db(query, args=(), one=False):
 @app.route("/") #creates the home route for the flask app
 def home():
     sql = """
-        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
+        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
+        JOIN users on posts.user_id = users.id
         ORDER BY posts.time DESC; 
         """ 
         #sql statement to return all posts from the database
     userssql = """
-        SELECT users.id, users.username
+        SELECT users.id, users.name
         FROM users
         ORDER BY users.id ASC;
         """
@@ -72,9 +73,10 @@ def home():
 @app.route("/allposts")
 def allposts():
     sql = """    
-    SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply  
+    SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply  
     FROM posts
     JOIN cat ON posts.categoryid = cat.id
+    JOIN users ON posts.user_id = users.id
     ORDER BY posts.time DESC;
     """
     #sql statement to return all relevant info from posts table
@@ -320,6 +322,12 @@ def follow(followed_id):
     db.commit()
     return redirect(request.referrer)
     
+#ADMIN ACTIONS
+@app.route("/block/<int:id>")
+def block(id):
+    sql = """ e """
+    return None
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True) #run the app

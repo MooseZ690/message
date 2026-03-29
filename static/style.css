@@ -5,18 +5,19 @@
 /* Global styling */
 
 body{
-    background:linear-gradient(
-    120deg,
-    rgb(0, 0, 0) 0%,
-    rgb(31, 1, 70) 33%,
-    rgb(96, 0, 151) 67%,
-    rgb(140, 0, 165) 100%
+    background: linear-gradient(
+        135deg, 
+        #1e1f26 0%,      /* deep graphite base */
+        #2c2f3a 25%,     /* muted steel blue */
+        #3a4160 50%,     /* darker slate blue */
+        #4a5780 75%,     /* slightly brighter, icy blue accent */
+        #1e1f26 100%     /* loop back to graphite */
     );
     background-attachment:fixed;
     background-repeat:no-repeat;
     background-size:cover;
     color:white;
-}   
+}
 
 a{
     text-decoration:none;
