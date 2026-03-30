@@ -14,6 +14,27 @@
         <div class="post-img">
             <img src="{{item[3]}}" alt="{{item[0]}}">
         </div>
+        {% set postlikes = 0 %}
+        {% set ns = namespace(postlikes=0) %}
+        {% for row in likes %}
+        {% if row[1] == item[5] %}
+        {% set ns.postlikes = ns.postlikes + 1 %}
+        {% endif %}
+        {% endfor %}
+
+        {% if session['username'] %}
+        <form action="/like/{{ item[5] }}" method="POST">
+            <button type="submit" class="like-button">
+                <h1>♡</h1>{{ns.postlikes}}
+            </button>
+        </form>
+        {% else %}
+        <form action="/login">
+            <button type="submit" class="like-button">
+                <h1>♡</h1>{{ns.postlikes}}
+            </button>
+        </form>
+        {% endif %}
     </a>
 
     {# Only show reply if there actually is one #}

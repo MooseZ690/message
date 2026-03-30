@@ -1,4 +1,5 @@
 from flask import Flask, g, render_template, request, redirect, url_for, session, jsonify
+from flask_socketio import SocketIO, emit
 import logging, sqlite3, datetime, random
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -9,6 +10,7 @@ DATABASE = 'database.db'
 
 app = Flask(__name__)
 app.secret_key = "serendipitous"
+socketio = SocketIO(app)
 
 def get_db():
     #try to get the database connection in flasks g object
@@ -277,11 +279,15 @@ def category(id):
         SELECT cat.name FROM cat WHERE cat.id = ?
     """
         #sql statement to return posts info where category id is selected by the user
+    likes = """
+        SELECT likes.liker_id, likes.postid, users.name FROM likes
+        JOIN users ON likes.liker_id = users.id;
+        """
     allposts = """SELECT * FROM posts"""
     allposts = query_db(allposts)
     cat = query_db(cat, (id,))
     result = query_db(sql, (id,))
-    return render_template("category.html", results=result, allposts=allposts, cat=cat)
+    return render_template("category.html", results=result, allposts=allposts, cat=cat, likes=likes)
 
 @app.route("/userposts/<username>")
 def userposts(username):
@@ -329,7 +335,6 @@ def follow(followed_id):
     for row in results:
         if row[0] == follower_id and row[1] == followed_id:
             return render_template('userposts', message = True)
-            #return redirect(request.referrer)
     db = get_db()
     db.execute(            
     "INSERT INTO following (follower_id, followed_id) VALUES (?, ?)",
@@ -341,9 +346,25 @@ def follow(followed_id):
 #ADMIN ACTIONS
 @app.route("/block/<int:id>")
 def block(id):
-    sql = """ e """
+    sql = """  """
     return None
 
+@app.route("/unfollow/<int:id>")
+def unfollow(id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    follower_id = session.get('user_id')
+    db = get_db()
+    db.execute(
+        "DELETE FROM following WHERE follower_id = ? AND followed_id = ?",
+        (follower_id, id)
+    )
+    db.commit()
+    return redirect(request.referrer)
+
+#@app.route("/livechat")
+#def livechat():
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True) #run the app
+    socketio.run(app, host="0.0.0.0", debug=True)
+#runs the app

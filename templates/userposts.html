@@ -2,19 +2,23 @@
 {% block body %}
 <div class="centered-content">
     <div class="userposts-header">
-        {% if username == session.get('username') %}
-            <img src="{{profilepic}}" alt="profile picture"> <h1>Your (@{{ username }})'s posts</h1>
-        {% else %}
-            <img src="{{profilepic}}" alt="profile picture"> <h1>@{{ username }}'s posts</h1>
-        {% endif %}
+        <img src="{{profilepic}}" alt="profile picture">
+        <h1>
+            {% if username == session.get('username') %}
+            Your
+            {% endif %}
+            (@{{ username }})'s posts
+        </h1>
+        </img>
+
         {% if following == True %}
-            <a>Following</a>
+        <a class="follow-button" href="/unfollow/{{userid}}">Following</a>
         {% else %}
-            <a href="/follow/{{userid}}">Follow</a>
+        <a class="follow-button" href="/follow/{{userid}}">Follow</a>
         {% endif %}
     </div>
     {% if not results %}
-    <h1>No posts</h1>
+    <p class="error">No posts</p>
     {% endif %}
     {% for item in results %}
     <a href="{{ url_for('newpost', id=item[5]) }}" class="post-container">

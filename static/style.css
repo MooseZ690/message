@@ -4,8 +4,12 @@
 
 /* Global styling */
 :root{
-    --nav-box-shadow: white;
-    --nav-box-shadow-light: rgba(255, 255, 255, 0.6)
+    --nav-box-shadow:white;
+    --nav-box-shadow-light:rgba(255, 255, 255, 0.6);
+    --box-background:rgba(255, 255, 255, 0.15);
+    --box-border:3px solid rgba(255, 255, 255, 0.25);
+    --error-red:rgba(184, 39, 39, 0.616);
+    --light-font:rgb(200, 200, 200);
 }
 
 
@@ -106,6 +110,11 @@ a{
 
 .reply-button a{
     font-weight:550;
+}
+
+.follow-button{
+    background:var(--box-background);
+    border:var(--box-border)
 }
 
 /* Input boxes */
@@ -466,7 +475,8 @@ a{
 
 /* messages/errors */
 .error{
-    background:rgba(184, 39, 39, 0.616);
+    background:var(--error-red);
+    color:var(--light-font);
     border-radius:25px;
     padding:0.5em;
     width:277px;
