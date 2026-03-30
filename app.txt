@@ -61,7 +61,7 @@ def home():
         """
         #sql statement to get comments on posts
     likes = """
-        SELECT liker_id, postid FROM likes;
+        SELECT * FROM likes;
         """
         #sql statement to get all info from likes table
     likes = query_db(likes)
@@ -80,10 +80,8 @@ def allposts():
     ORDER BY posts.time DESC;
     """
     #sql statement to return all relevant info from posts table
-    
     likes = """
-        SELECT liker_id, postid, users.name FROM likes
-        JOIN users ON likes.liker_id = users.id;
+        SELECT * FROM likes;
         """
     #sql statement to get all info from likes table
     likes = query_db(likes)
@@ -99,7 +97,8 @@ def like(id):
     #sql statement to get all info from likes table
     likes = query_db(sql)
     for row in likes:
-        if row[2] == id and row[1] == liker_id:
+        if row[1] == id:
+            if row[0] == liker_id:
                 return redirect(request.referrer or url_for('index'))
     #if the intended like has already occured, redirect back to the page the user came from
     db.execute(            
@@ -236,29 +235,19 @@ def newpost(id=None):
 
 @app.route("/admin")
 def admin():
-    users = """SELECT users.name, users.email, users.imageurl
+    users = """SELECT users.username, users.type 
             FROM users;"""
-            
-    followers = """
-    SELECT followed.name AS followed_name,
-        follower.name AS follower_name
+    followers = """SELECT following.follower_id, following.followed_id, follower.username
+    AS follower_name, followed.username AS followed_name
     FROM following
-    JOIN users AS followed ON following.followed_id = followed.id
-    JOIN users AS follower ON following.follower_id = follower.id;
-    """
-
-    admin = """SELECT users.id, users.name, users.email, users.imageurl
-    FROM admins
-    JOIN users ON admins.userid = users.id
-    ORDER BY admins.id DESC;
-    """
-    
-    admin = query_db(admin)
+    JOIN users AS follower ON following.follower_id = follower.id
+    JOIN users AS followed ON following.followed_id = followed.id;"""
     users = query_db(users)
     followers = query_db(followers)
-    for row in admin:
-        if row[0] == session.get('user_id'):
-            return render_template("admin.html", users=users, followers=followers, admin=admin)
+    for row in users:
+        if row[0] == session.get('username'):
+            if row[1] == 'admin':
+                return render_template("admin.html", users=users, followers=followers)
     return redirect(url_for("home"))
     
             
@@ -277,26 +266,23 @@ def category(id):
         SELECT cat.name FROM cat WHERE cat.id = ?
     """
         #sql statement to return posts info where category id is selected by the user
-    allposts = """SELECT * FROM posts"""
-    allposts = query_db(allposts)
     cat = query_db(cat, (id,))
     result = query_db(sql, (id,))
-    return render_template("category.html", results=result, allposts=allposts, cat=cat)
+    return render_template("category.html", results=result, cat=cat)
 
 @app.route("/userposts/<username>")
 def userposts(username):
     sql = """
-        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+        SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
-        JOIN users on posts.user_id = users.id
-        WHERE users.name = ?
+        WHERE posts.name = ?
         ORDER BY posts.time DESC;
     """
     user_sql = """
-        SELECT users.id, users.imageurl, users.name
+        SELECT users.id, users.imageurl, users.username
         FROM users
-        WHERE users.name = ?;
+        WHERE users.username = ?;
     """
     followers_sql = """
         SELECT follower_id, followed_id

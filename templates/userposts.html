@@ -13,6 +13,9 @@
             <a href="/follow/{{userid}}">Follow</a>
         {% endif %}
     </div>
+    {% if not results %}
+    <h1>No posts</h1>
+    {% endif %}
     {% for item in results %}
     <a href="{{ url_for('newpost', id=item[5]) }}" class="post-container">
         <!-- Puts the post in a clickable centered element -->

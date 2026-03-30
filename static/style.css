@@ -3,6 +3,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Jetbrains+Mono&display=swap');
 
 /* Global styling */
+:root{
+    --nav-box-shadow: white;
+    --nav-box-shadow-light: rgba(255, 255, 255, 0.6)
+}
+
 
 body{
     background: linear-gradient(
@@ -67,7 +72,7 @@ a{
 .top-button-active, 
 .top-button:hover{
     color:white;
-    box-shadow:0 10px 10px -5px rgba(200, 0, 255, 1);
+    box-shadow:0 10px 10px -5px var(--nav-box-shadow);
 }
 
 .cat-button:hover{
@@ -75,7 +80,7 @@ a{
 }
 
 .cat-button-active{
-    box-shadow:0 10px 10px -5px rgba(200, 0, 255, 1);
+    box-shadow:0 10px 10px -5px var(--nav-box-shadow);
 }
 
 .post-button-right{
@@ -298,7 +303,7 @@ a{
 .dropdown:hover .dropdown-content, 
 .dropdown-right:hover .dropdown-right-content{
     display:block;
-    box-shadow:0 0 20px 10px rgba(200, 0, 255, 0.5);
+    box-shadow:0 0 20px 10px var(--nav-box-shadow-light);
 }
 
 .category-dropdown{

@@ -79,12 +79,6 @@
         </div>
     </div>
     <div class="nav-right">
-        <div class="dropdown-right">
-            <button class="top-button">
-                
-                &nbsp;Profile
-            </button>
-            <div class="dropdown-right-content">
                 <a href="/admin" class="top-button">Admin panel</a>
                 {% if session.username %}
                     <a href="{{ url_for('userposts', username=session['username']) }}" class="top-button">My Posts</a>
@@ -94,8 +88,6 @@
                     <a href="/login" class="top-button">Login</a>
                     <a href="/register" class="top-button">Register</a>
                 {% endif %}
-            </div>
-        </div>
     </div>
 </nav>
 
