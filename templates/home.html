@@ -15,7 +15,7 @@
         <div class="total-sidebar">
             <!-- updates section -->
             <div class="home-sidebar">
-                <h3><b>Updates</b></h3>
+                <h1>Updates</h1>
                 {% for i in range(8) %}
                 <div class="sidebar-section">
                     {% set post = results | selectattr('8', 'equalto', i) | list | first %}
@@ -33,7 +33,7 @@
 
             <!-- users section -->
             <div class="home-sidebar">
-                <h3><b>Users</b></h3>
+                <h1>Users</h1>
                 {% for user in users %}
                 <a href="{{ url_for('userposts', username=user[1]) }}" class="sidebar-section">
 

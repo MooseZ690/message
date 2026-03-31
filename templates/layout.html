@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit">
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <title>Messages</title>
@@ -77,6 +76,20 @@
                 <a href="/category/7">Religion</a>
             </div>
         </div>
+
+        <!-- live chat -->
+            {% if request.path == "/livechat" %}
+                {% set button = 'top-button-active' %}
+            {% else %}
+                {% set button = 'top-button' %}
+            {% endif %}
+        <a href="/livechat" class="{{button}}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            &nbsp;Live chat
+        </a>
+
     </div>
     <div class="nav-right">
                 <a href="/admin" class="top-button">Admin panel</a>

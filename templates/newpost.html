@@ -4,8 +4,8 @@
 {% set replyid = request.path[9:] | int%}
 
 <div class="centered-content">
-    <form method="post" class="new-post-container"> <!-- tells app.py the method="POST" -->
-        {% for item in results if item[5] == replyid %}
+    <div class="block"></div>
+    {% for item in results if item[5] == replyid %}
         <div class="reply-to-content">
             <div class="post-container">
                 <div class="newpost-text">
@@ -23,6 +23,8 @@
         </div>
         <!-- if the newpost is a reply, show the post being replied to -->
         {% endfor %}
+        <div class="block"></div>
+    <form method="post" class="new-post-container"> <!-- tells app.py the method="POST" -->
         <div class="top-box">
             <input type="text" id="title" name="title" class="top-input-box" placeholder="Title" required>
 

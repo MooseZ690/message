@@ -164,7 +164,9 @@ def login():
             (username,),
             one=True
         )
-
+        for row in query_db("SELECT users.name FROM blacklist JOIN users on blacklist.userid = users.id;"):
+            if row[0] == username:
+                return render_template("login.html", failed=True)
         if user and check_password_hash(user[2], password):
 
             session["user_id"] = user[0]
@@ -238,7 +240,7 @@ def newpost(id=None):
 
 @app.route("/admin")
 def admin():
-    users = """SELECT users.name, users.email, users.imageurl
+    users = """SELECT users.name, users.email, users.imageurl, users.id
             FROM users;"""
             
     followers = """
@@ -344,10 +346,26 @@ def follow(followed_id):
     return redirect(request.referrer)
     
 #ADMIN ACTIONS
+
 @app.route("/block/<int:id>")
 def block(id):
-    sql = """  """
-    return None
+    admin_check = query_db("SELECT userid FROM admins")
+    for row in admin_check:
+        if session.get('user_id') == row[0]:
+            db = get_db()
+            existing = query_db(
+                "SELECT * FROM blacklist WHERE userid = ?",
+                (id,),
+                one=True
+            )
+            if existing:
+                return redirect(url_for("admin"))
+            db.execute(
+                "INSERT INTO blacklist (userid) VALUES (?)",
+                (id,)
+            )
+            db.commit()
+            return redirect(url_for("admin"))
 
 @app.route("/unfollow/<int:id>")
 def unfollow(id):
@@ -362,9 +380,57 @@ def unfollow(id):
     db.commit()
     return redirect(request.referrer)
 
-#@app.route("/livechat")
-#def livechat():
+#---------------------#
+#------LIVE-CHAT------#
+#---------------------#
 
+@app.route("/livechat")
+def livechat():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    sql = """
+        SELECT chat.message, chat.time, users.name
+        FROM chat
+        JOIN users ON chat.user_id = users.id
+        ORDER BY chat.id ASC
+        LIMIT 100;
+    """
+    messages = query_db(sql)
+
+    return render_template("livechat.html", messages=messages)
+
+@socketio.on("send_message")
+def handle_send_message(data):
+    #run the function when the browser sends a "send_message" event
+    if "user_id" not in session:
+        #if the user isn't logged in, they can't send messages
+        return
+    message = data.get("message", "").strip()
+    #get the message text sent from javascript and remove extra spaces
+    if not message:
+        #if the message is empty, do nothing
+        return
+    userid = session["user_id"]
+    username = session["username"]
+    #get the logged in user's id and username from session
+    time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    #save the time when the message was sent
+    db = get_db()
+    #connect to the database
+    db.execute(
+        "INSERT INTO chat (user_id, message, time) VALUES (?, ?, ?)",
+        (userid, message, time)
+    )
+    #insert the new chat message into the chat table
+    db.commit()
+    #save the new message to the database
+    emit("receive_message", {
+        "username": username,
+        "message": message,
+        "time": time
+    }, broadcast=True)
+    #send the new message out live to everyone currently connected to the chat
+    
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", debug=True)
 #runs the app

@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<!-- imports socket.io so the page can send/receive live messages -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+<div class="chat-centered-content">
+    <!-- box that holds all chat messages -->
+    <div id="chat-box" class="chat-box">
+        {% for message in messages %}
+        <!-- each old message loaded from the database -->
+            <div class="chat-meta">
+                <strong>{{ message[2] }}</strong>
+                <span>{{ message[1] }}</span>
+            </div>
+            <div class="chat-text">{{ message[0] }}</div>   
+        {% endfor %}
+    </div>
+
+    <!-- form to send a new message -->
+    <form id="chat-form" class="chat-input-box">
+        <input type="text" id="message-input" class="chat-input" placeholder="Type a message..." autocomplete="off"
+            required>
+        <button type="submit" class="chat-send-button">Send</button>
+    </form>
+</div>
+
+<script>
+    //connect to the flask socketio server
+    const socket = io();
+
+    //get important html elements from the page
+    const form = document.getElementById("chat-form");
+    const input = document.getElementById("message-input");
+    const chatBox = document.getElementById("chat-box");
+
+    form.addEventListener("submit", function (e) {
+        //when the user submits the chat form
+        e.preventDefault();
+        //stop the page from refreshing
+        const message = input.value.trim();
+        //get the text the user typed and remove extra spaces
+        if (message === "") return;
+        //if the message is empty, do nothing
+        socket.emit("send_message", { message: message });
+        //send the message to flask through socketio
+        input.value = "";
+        //clear the input box after sending
+    });
+
+    socket.on("receive_message", function (data) {
+        //when flask sends a new live message to the browser, run this
+        const div = document.createElement("div");
+        //make a new div for the incoming message
+        div.classList.add("chat-message");
+        //makes the new div a chat-message
+        div.innerHTML = `
+            <div class="chat-meta">
+                <strong class="chat-username">${data.username}</strong>
+                <span class="chat-time">${data.time}</span>
+            </div>
+            <div class="chat-text">${data.message}</div>
+        `;
+        //add the username, time, and message text to the div
+        chatBox.appendChild(div);
+        //add the new message to the bottom of the chat box
+    });
+</script>
+
+{% endblock %}

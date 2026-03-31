@@ -5,11 +5,16 @@
         <h1 class="cat-title">Admin panel</h1>
         <br><h2>Users</h2>
         {% for row in users %}
-            <p>@{{row[0]}}, admin = {{row[1]}}</p>
+        <p class="admin-users"?>
+            @{{row[0]}}<br>
+            {{row[1]}}<br>
+            <a href="/block/{{row[3]}}">Blacklist</a><br>
+            _____
+        </p>
         {% endfor %}
     <br><h2>Following rls</h2>--------------------------------------<br>
         {% for row in followers %}
-            <p>{{row[0]}} followed {{row[1]}}</p>
+            <p>{{row[0]}} is following {{row[1]}}</p>
         {% endfor %}
     </div>
 </div>
