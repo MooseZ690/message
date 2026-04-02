@@ -84,8 +84,7 @@ def allposts():
     #sql statement to return all relevant info from posts table
     
     likes = """
-        SELECT liker_id, postid, users.name FROM likes
-        JOIN users ON likes.liker_id = users.id;
+        SELECT liker_id, postid FROM likes;
         """
     #sql statement to get all info from likes table
     likes = query_db(likes)
@@ -111,6 +110,21 @@ def like(id):
     db.commit()
     #otherwise, commit the into to the likes database
     return redirect(request.referrer or url_for('index'))
+
+@app.route("/unlike/<int:id>", methods=["POST"])
+def unlike(id):
+    db = get_db()
+    liker_id = session.get('user_id')
+
+    # Delete the like if it exists
+    db.execute(
+        "DELETE FROM likes WHERE liker_id = ? AND postid = ?",
+        (liker_id, id)
+    )
+    db.commit()
+
+    return redirect(request.referrer or url_for('index'))
+
 
 @app.route("/register", methods=["GET","POST"])
 def register():
@@ -282,13 +296,14 @@ def category(id):
     """
         #sql statement to return posts info where category id is selected by the user
     likes = """
-        SELECT likes.liker_id, likes.postid, users.name FROM likes
-        JOIN users ON likes.liker_id = users.id;
+        SELECT liker_id, postid FROM likes;
         """
     allposts = """SELECT * FROM posts"""
+    #all posts so replied posts from other categories can be shown
     allposts = query_db(allposts)
     cat = query_db(cat, (id,))
     result = query_db(sql, (id,))
+    likes = query_db(likes)
     return render_template("category.html", results=result, allposts=allposts, cat=cat, likes=likes)
 
 @app.route("/userposts/<username>")

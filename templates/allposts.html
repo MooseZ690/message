@@ -22,19 +22,30 @@
         {% for row in likes %}
         {% if row[1] == item[5] %}
         {% set ns.postlikes = ns.postlikes + 1 %}
+        {% if row[0] == session['user_id'] %}
+        {% set ns.liked = True %}
+        {% endif %}
         {% endif %}
         {% endfor %}
 
         {% if session['username'] %}
-        <form action="/like/{{ item[5] }}" method="POST">
+        {% if ns.liked %}
+        <form action="/unlike/{{ item[5] }}" method="POST">
             <button type="submit" class="like-button">
-                <h1>♡</h1>{{ns.postlikes}}
+                <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
             </button>
         </form>
         {% else %}
+        <form action="/like/{{ item[5] }}" method="POST">
+            <button type="submit" class="like-button">
+                <h1>♥</h1>{{ ns.postlikes }}
+            </button>
+        </form>
+        {% endif %}
+        {% else %}
         <form action="/login">
             <button type="submit" class="like-button">
-                <h1>♡</h1>{{ns.postlikes}}
+                <h1>♡</h1>{{ ns.postlikes }}
             </button>
         </form>
         {% endif %}
