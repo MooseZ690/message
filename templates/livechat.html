@@ -3,7 +3,15 @@
 
 <!-- imports socket.io so the page can send/receive live messages -->
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-
+<script>
+window.addEventListener("load", function () {
+    //when the page loads
+    const chatBox = document.getElementById("chat-box");
+    //find the chat box
+    chatBox.scrollTop = chatBox.scrollHeight;
+    //scroll to the bottom
+});
+</script>
 <div class="chat-centered-content">
     <!-- box that holds all chat messages -->
     <div id="chat-box" class="chat-box">
@@ -34,25 +42,27 @@
     const form = document.getElementById("chat-form");
     const input = document.getElementById("message-input");
     const chatBox = document.getElementById("chat-box");
+    
 
     form.addEventListener("submit", function (e) {
-        //when the user submits the chat form
+        //when the user submits the message
         e.preventDefault();
         //stop the page from refreshing
         const message = input.value.trim();
         //get the text the user typed and remove extra spaces
         if (message === "") return;
-        //if the message is empty, do nothing
+        //don't post if the message is empty
         socket.emit("send_message", { message: message });
         //send the message to flask through socketio
         input.value = "";
-        //clear the input box after sending
+        //clear the input box after sending 
+        chatBox.scrollTop = chatBox.scrollHeight;
+        //scrolls to bottom
     });
 
     socket.on("receive_message", function (data) {
-        //when flask sends a new live message to the browser, run this
         const div = document.createElement("div");
-        //make a new div for the incoming message
+        //make a new div for the incoming message from flask
         div.classList.add("chat-message");
         //makes the new div a chat-message
         div.innerHTML = `
@@ -62,9 +72,11 @@
             </div>
             <div class="chat-text">${data.message}</div>
         `;
-        //add the username, time, and message text to the div
+        //add the message metadata
         chatBox.appendChild(div);
         //add the new message to the bottom of the chat box
+        chatBox.scrollTop = chatBox.scrollHeight;
+        //scrolls to bottom
     });
 </script>
 

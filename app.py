@@ -306,6 +306,13 @@ def category(id):
     likes = query_db(likes)
     return render_template("category.html", results=result, allposts=allposts, cat=cat, likes=likes)
 
+@app.route("/post/<int:id>")
+def post(id):
+    sql = """
+        SELECT posts.title, posts.content, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+        """
+    
+
 @app.route("/userposts/<username>")
 def userposts(username):
     sql = """
