@@ -66,11 +66,16 @@ def home():
         SELECT liker_id, postid FROM likes;
         """
         #sql statement to get all info from likes table
+    categories = """
+        SELECT * FROM cat;
+        """
+        #sql statement to get all info from category table
     likes = query_db(likes)
     users = query_db(userssql)
     results = query_db(sql)
     comments = query_db(comments)
-    return render_template("home.html", results=results, users=users, comments=comments, likes=likes, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
+    categories = query_db(categories)
+    return render_template("home.html", results=results, users=users, comments=comments, likes=likes, categories=categories, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 @app.route("/allposts")
 def allposts():
@@ -264,21 +269,20 @@ def admin():
     JOIN users AS followed ON following.followed_id = followed.id
     JOIN users AS follower ON following.follower_id = follower.id;
     """
-
     admin = """SELECT users.id, users.name, users.email, users.imageurl
     FROM admins
     JOIN users ON admins.userid = users.id
     ORDER BY admins.id DESC;
     """
-    
     admin = query_db(admin)
     users = query_db(users)
     followers = query_db(followers)
     for row in admin:
         if row[0] == session.get('user_id'):
+        #if the user is an admin, load the template
             return render_template("admin.html", users=users, followers=followers, admin=admin)
     return redirect(url_for("home"))
-    
+    #if the user isn't an admin, redirect to the homepage. 
             
 
 @app.route("/category/<int:id>") #flask app route for the page that shows posts only from a certain category

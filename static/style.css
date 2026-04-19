@@ -13,6 +13,7 @@
     --sidebar-font-size:0.8vw;
     --reply-font:calc(0.5vh + 0.5vw);
     --reply-line:calc(2vh + 2vw);
+    --navbar-font-size:1vw;
 }
 
 
@@ -59,6 +60,10 @@ a{
 
 /* Buttons */
 
+.admin-users-button a{
+    color:black;
+}
+
 .top-button,
 .top-button-active{
     display:flex;
@@ -68,7 +73,7 @@ a{
     font-weight:600;
     color:white;
     border:none;
-    font-size:1em !important;
+    font-size:var(--navbar-font-size) !important;
     background:black;
     border-bottom:3px solid rgba(0, 0, 255, 0);
 }
@@ -254,11 +259,6 @@ a{
 /* Dropdowns */
 
 
-
-.dropdown button{
-    font-size:0.9vw;
-}
-
 .dropdown-content{
     display:none;
     position:absolute;
@@ -281,6 +281,10 @@ a{
 .dropdown-content a:hover{
     background:white;
     color:black;
+}
+
+.dropdown button{
+    font-size:var(--navbar-font-size) !important;
 }
 
 .dropdown:hover .dropdown-content{
@@ -308,7 +312,8 @@ a{
     margin:1em 0 2em 0;
     color:white;
     font-size:0.7cqi;
-    max-width:35%;
+    min-width:10vw;
+    max-width:35vw;
 }
 
 .reply-decoration{
@@ -391,7 +396,7 @@ a{
     border:1px solid rgba(255,255,255,0.2);
     color:white;
     transition:height 0.3s ease-in-out;
-    font-size:var(--sidebar-font-size)
+    font-size:var(--sidebar-font-size);
 }
 
 .sidebar-section:hover{
@@ -462,7 +467,7 @@ a{
 
 .chat-input-box{
     background:var(--box-background);
-    padding:1em;
+    padding:1em;    
 }
 
 .chat-centered-content{

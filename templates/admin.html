@@ -8,17 +8,17 @@
         <p class="admin-users"?>
             @{{row[0]}}<br>
             {{row[1]}}<br>
-
-
-            <a href="/block/{{row[3]}}">Blacklist</a><br>
-
-
-            _____
+            <button class="admin-users-button" style="margin-left:auto">
+                <a href="/userposts/{{row[0]}}">Profile</a>
+            </button>
+            <button class="admin-users-button">
+                <a href="/block/{{row[3]}}">Block</a>
+            </button>
         </p>
         {% endfor %}
     <br><h2>Following rls</h2>--------------------------------------<br>
         {% for row in followers %}
-            <p>{{row[0]}} is following {{row[1]}}</p>
+            <p>@{{row[1]}} &#8594 @{{row[0]}}</p>
         {% endfor %}
     </div>
 </div>

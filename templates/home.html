@@ -16,18 +16,18 @@
         <!-- updates section -->
         <div class="home-sidebar">
             <h1>Updates</h1>
-            {% for i in range(8) %}
-            <div class="sidebar-section">
-                {% set post = results | selectattr('8', 'equalto', i) | list | first %}
-                <!-- find the most recent post with the cat.id -->
-                {% if post %}
-                <a href="{{ url_for('category', id=post[8]) }}">
-                    @{{ post[2] }} posted in {{ post[4] }}: "{{ post[0][:15] }}..."
-                </a>
-                {% else %}
-                <p>No new posts</p>
-                {% endif %}
-            </div>
+            {% for category in categories %}
+                <div class="sidebar-section">
+                    {% set post = results | selectattr('8', 'equalto', category[0]) | list | first %}
+                    <!-- find the most recent post with the cat.id -->
+                    {% if post %}
+                    <a href="{{ url_for('category', id=post[8]) }}">
+                        {{post[2]}} in {{category[1]}}: {{post[1][:20]}}...
+                    </a>
+                    {% else %}
+                    <p>No new posts in {{category[1]}}</p>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
 
@@ -119,8 +119,8 @@
                 <div class="line"></div>
                 <a class="reply-box" href="{{ url_for('newpost', id=item[7]) }}">
                     <div class="post-text">
-                        <p>Replying to <i>{{ post[2] }}</i></p>
-                        <p>{{ post[0] }}</p>
+                        <p><i>{{ post[2] }}</i></p>
+                        <b>{{ post[0] }}</b>
                         <p>{{ post[1] }}</p>
                     </div>
                 </a>
