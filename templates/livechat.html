@@ -16,14 +16,16 @@ window.addEventListener("load", function () {
     <!-- box that holds all chat messages -->
     <div id="chat-box" class="chat-box">
         {% for message in messages %}
-        <!-- each old message loaded from the database -->
-            <div class="chat-meta">
-                <!-- information about the post - name, date -->
-                <strong>{{ message[2] }}</strong>
-                <span>{{ message[1] }}</span>
+            <div class="chat-message">
+                <div class="chat-meta">
+                    <!-- information about the post - name, date -->
+                    <strong>{{ message[2] }}</strong>
+                    <span>{{ message[1] }}</span>
+                </div>
+                <div class="chat-text">{{ message[0] }}</div>   
             </div>
-            <div class="chat-text">{{ message[0] }}</div>   
         {% endfor %}
+        <!-- each old message loaded from the database -->
     </div>
 
     <!-- form to send a new message -->
