@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
 /* Global styling */
 :root{
@@ -13,7 +14,8 @@
     --sidebar-font-size:0.8vw;
     --reply-font:calc(0.5vh + 0.5vw);
     --reply-line:calc(2vh + 2vw);
-    --navbar-font-size:1vw;
+    --navbar-font-size:0.7vw;
+    --navbar-title-size:1.3vw;
 }
 
 
@@ -35,7 +37,6 @@ a{
 }
 
 /* Navbar */
-
 .navbar{
     display:flex;
     align-items:center;
@@ -51,6 +52,16 @@ a{
     gap:1em;
 }
 
+.title{
+    font-size:var(--navbar-title-size);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:550;
+    font-family:"Audiowide";
+    color:white;
+    border:none;
+}
 
 .nav-right{
     margin-left:auto;
@@ -462,8 +473,6 @@ a{
     padding:0.25em;
 }
 
-.container{
-}
 
 .chat-input-box{
     background:var(--box-background);

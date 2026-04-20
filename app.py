@@ -1,9 +1,17 @@
+#-----------------#
+#-----MODULES-----#
+#-----------------#
+
 from flask import Flask, g, render_template, request, redirect, url_for, session, jsonify
 from flask_socketio import SocketIO, emit
 import logging, sqlite3, datetime, random
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, timedelta
+
+#-----------------------------------------#
+#-----CONNECTING/CONFIGURING DATABASE-----#
+#-----------------------------------------#
 
 DATABASE = 'database.db'
 #sets the variable DATABASE as the file database.db
@@ -41,35 +49,49 @@ def query_db(query, args=(), one=False):
     #closes the cursor after the query
     return (rv[0] if rv else None) if one else rv
     #if first argument == True return only the first result, otherwise return all results
+    
+#------------------------#
+#-----SQL STATEMENTS-----#
+#------------------------#
 
-@app.route("/") #creates the home route for the flask app
-def home():
-    sql = """
+sql = """
         SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         JOIN users on posts.user_id = users.id
         ORDER BY posts.time DESC; 
         """ 
-        #sql statement to return all posts from the database
+        #return all posts from the posts table
+        
+likes = """
+        SELECT liker_id, postid FROM likes;
+        """
+        #return all relevant data from the likes table
+
+#--------------------#
+#-----APP ROUTES-----#
+#--------------------#
+
+@app.route("/") #creates the home route for the flask app
+def home():
     userssql = """
         SELECT users.id, users.name
         FROM users
         ORDER BY users.id ASC;
         """
-        #sql statement to get user info
+        #get user info
     comments = """
         SELECT * FROM comments;
         """
-        #sql statement to get comments on posts
+        #get comments on posts
     likes = """
         SELECT liker_id, postid FROM likes;
         """
-        #sql statement to get all info from likes table
+        #get all info from likes table
     categories = """
         SELECT * FROM cat;
         """
-        #sql statement to get all info from category table
+        #get all info from category table
     likes = query_db(likes)
     users = query_db(userssql)
     results = query_db(sql)
@@ -78,20 +100,11 @@ def home():
     return render_template("home.html", results=results, users=users, comments=comments, likes=likes, categories=categories, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
 @app.route("/allposts")
-def allposts():
-    sql = """    
-    SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply  
-    FROM posts
-    JOIN cat ON posts.categoryid = cat.id
-    JOIN users ON posts.user_id = users.id
-    ORDER BY posts.time DESC;
-    """
-    #sql statement to return all relevant info from posts table
-    
+def allposts():    
     likes = """
         SELECT liker_id, postid FROM likes;
         """
-    #sql statement to get all info from likes table
+    #get all info from likes table
     likes = query_db(likes)
     results = query_db(sql)
     return render_template("allposts.html", results=results, likes=likes, today=datetime.now().strftime("%Y-%m-%d"))
@@ -102,7 +115,7 @@ def like(id):
     liker_id = session.get('user_id')
     #sets gets the current user, also the one liking the post
     sql = "SELECT * FROM likes;"
-    #sql statement to get all info from likes table
+    #get all info from likes table
     likes = query_db(sql)
     for row in likes:
         if row[2] == id and row[1] == liker_id:
@@ -211,7 +224,7 @@ def newpost(id=None):
     JOIN users ON posts.user_id = users.id
     ORDER BY posts.time DESC;
     """
-    #sql statement to get all relevant info from posts table
+    #get all relevant info from posts table
     results = query_db(sql)
     
     if "user_id" not in session:
@@ -247,7 +260,7 @@ def newpost(id=None):
         #send user back to homepage after posting
     else:
         sql = "SELECT * FROM cat"
-        #sql statement to get all info from categories table
+        #get all info from categories table
         categories = query_db(sql)
 
         return render_template(
@@ -295,10 +308,11 @@ def category(id):
     WHERE posts.categoryid = ?
     ORDER BY posts.time DESC;
         """
+    #get all posts with a specific category ID
     cat = """
         SELECT cat.name FROM cat WHERE cat.id = ?
     """
-        #sql statement to return posts info where category id is selected by the user
+        #return posts info where category id is selected by the user
     likes = """
         SELECT liker_id, postid FROM likes;
         """
@@ -358,7 +372,7 @@ def follow(followed_id):
     sql = """
         SELECT * FROM following;
     """
-    #sql statement to get all data from following table
+    #get all data from following table
     results = query_db(sql)
     for row in results:
         if row[0] == follower_id and row[1] == followed_id:
@@ -418,9 +432,9 @@ def livechat():
         SELECT chat.message, chat.time, users.name
         FROM chat
         JOIN users ON chat.user_id = users.id
-        ORDER BY chat.id ASC
-        LIMIT 100;
+        ORDER BY chat.id ASC;
     """
+    #
     messages = query_db(sql)
 
     return render_template("livechat.html", messages=messages)
