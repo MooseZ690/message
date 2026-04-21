@@ -17,17 +17,17 @@
         <div class="home-sidebar">
             <h1>Updates</h1>
             {% for category in categories %}
-                <div class="sidebar-section">
-                    {% set post = results | selectattr('8', 'equalto', category[0]) | list | first %}
-                    <!-- find the most recent post with the cat.id -->
-                    {% if post %}
-                    <a href="{{ url_for('category', id=post[8]) }}">
-                        {{post[2]}} in {{category[1]}}: {{post[1][:20]}}...
-                    </a>
-                    {% else %}
-                    <p>No new posts in {{category[1]}}</p>
-                    {% endif %}
-                </div>
+            <div class="sidebar-section">
+                {% set post = results | selectattr('8', 'equalto', category[0]) | list | first %}
+                <!-- find the most recent post with the cat.id -->
+                {% if post %}
+                <a href="{{ url_for('category', id=post[8]) }}">
+                    {{post[2]}} in {{category[1]}}: {{post[1][:20]}}...
+                </a>
+                {% else %}
+                <p>No new posts in {{category[1]}}</p>
+                {% endif %}
+            </div>
             {% endfor %}
         </div>
 
@@ -71,43 +71,43 @@
                     <h1>{{item[0]}}</h1>
                     <h3>@{{item[2]}}</h3><br>
                     <h2>{{item[1]}}</h2>
+                    {% set ns = namespace(postlikes=0, liked=False) %}
+
+                    {% for row in likes %}
+                    {% if row[1] == item[6] %}
+                    {% set ns.postlikes = ns.postlikes + 1 %}
+                    {% if row[0] == session['user_id'] %}
+                    {% set ns.liked = True %}
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if session['username'] %}
+                    {% if ns.liked %}
+                    <form action="/unlike/{{ item[6] }}" method="POST">
+                        <button type="submit" class="like-button">
+                            <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="/like/{{ item[6] }}" method="POST">
+                        <button type="submit" class="like-button">
+                            <h1>♥</h1>{{ ns.postlikes }}
+                        </button>
+                    </form>
+                    {% endif %}
+                    {% else %}
+                    <form action="/login">
+                        <button type="submit" class="like-button">
+                            <h1>♡</h1>{{ ns.postlikes }}
+                        </button>
+                    </form>
+                    {% endif %}
                 </div>
                 {% if item[3] %}
                 <div class="post-img">
                     <img src="{{ item[3] }}" alt="{{ item[0] }}">
                 </div>
-                {% endif %}
-                {% set ns = namespace(postlikes=0, liked=False) %}
-
-                {% for row in likes %}
-                {% if row[1] == item[6] %}
-                {% set ns.postlikes = ns.postlikes + 1 %}
-                {% if row[0] == session['user_id'] %}
-                {% set ns.liked = True %}
-                {% endif %}
-                {% endif %}
-                {% endfor %}
-
-                {% if session['username'] %}
-                {% if ns.liked %}
-                <form action="/unlike/{{ item[6] }}" method="POST">
-                    <button type="submit" class="like-button">
-                        <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
-                    </button>
-                </form>
-                {% else %}
-                <form action="/like/{{ item[6] }}" method="POST">
-                    <button type="submit" class="like-button">
-                        <h1>♥</h1>{{ ns.postlikes }}
-                    </button>
-                </form>
-                {% endif %}
-                {% else %}
-                <form action="/login">
-                    <button type="submit" class="like-button">
-                        <h1>♡</h1>{{ ns.postlikes }}
-                    </button>
-                </form>
                 {% endif %}
             </a>
 

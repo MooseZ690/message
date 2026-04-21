@@ -1,25 +1,21 @@
-{% extends "layout.html" %} <!-- borrows formatting, navbar etc from layout file -->
+{% extends "layout.html" %}
 
 {% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+
 <div class="centered-content">
-    <div class="block"></div>
-    <h1>Register</h1>
-    {% if failed %}
-        <p class="error">ⓘ username/email already in use. </p>
-    {% endif %}
-    <form method="post" class="login-container"> <!-- tells app.py the method="POST" -->
-        <div class="register-top-box">
-            <input type="text" id="username" name="username" class="login-box" placeholder="Username" required>
+    <div style="height:16vh"></div>
+    <div class="account-container">
+        <h1>Register</h1>
 
-            <input type="text" id="password" name="password" class="login-box" placeholder="Password" required>
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="imageurl" placeholder="Profile Image URL (optional)">
 
-            <input type="text" id="email" name="email" class="login-box" placeholder="Email">
-
-            <input type="text" id="imageurl" name="imageurl" class="login-box" placeholder="Profile picture URL">
-
-            <button type="submit" class="login-button">^</button>
-            <!-- gets username and password from user -->
-        </div>
-    </form>
+            <button type="submit" class="login-button">Create Account</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

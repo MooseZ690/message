@@ -15,6 +15,9 @@ window.addEventListener("load", function () {
 <div class="chat-centered-content">
     <!-- box that holds all chat messages -->
     <div id="chat-box" class="chat-box">
+        {% if not messages %}
+            <div id="nomessage" style="text-align:center; margin-top:12.5cqi;">No messages</div>
+        {% endif %}
         {% for message in messages %}
             <div class="chat-message">
                 <div class="chat-meta">
@@ -44,7 +47,6 @@ window.addEventListener("load", function () {
     const form = document.getElementById("chat-form");
     const input = document.getElementById("message-input");
     const chatBox = document.getElementById("chat-box");
-    
 
     form.addEventListener("submit", function (e) {
         //when the user submits the message
@@ -79,6 +81,8 @@ window.addEventListener("load", function () {
         //add the new message to the bottom of the chat box
         chatBox.scrollTop = chatBox.scrollHeight;
         //scrolls to bottom
+        document.getElementById("nomessage").remove();
+        //if its there, delete the no messages error
     });
 </script>
 

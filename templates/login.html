@@ -1,21 +1,21 @@
-{% extends "layout.html" %} <!-- borrows formatting, navbar etc from layout file -->
+{% extends "layout.html" %}
 
 {% block body %}
 <div class="centered-content">
-    <div class="block"></div>
-    <h1>Login</h1>
-    {% if failed %}
-        <p class="error">ⓘ YOU HAVE BEEN BLACKLISTED. </p>
-    {% endif %}
-    <form method="post" class="login-container"> <!-- tells app.py the method="POST" -->
-        <div class="top-box">
-            <input type="text" id="username" name="username" class="login-box" placeholder="Username" required>
+    <div style="height:16vh"></div>
+    <div class="account-container">
+        <h1>Login</h1>
+        {% if blacklist %}
+            <p class="error">ⓘ Error - account blocked </p>
+        {% elif notadmin %}
+            <p class="error">ⓘ Error - admin account required </p>
+        {% endif %}
+        <form method="POST"> <!-- tells app.py the method="POST" -->
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="text" name="password" placeholder="Password" required>
 
-            <input type="text" id="password" name="password" class="login-box" placeholder="Password">
-
-            <button type="submit" class="login-button">^</button>
-            <!-- gets username and password from user -->
-        </div>
+            <button type="submit" class="login-button">Login</button>
     </form>
+    </div>
 </div>
 {% endblock %}

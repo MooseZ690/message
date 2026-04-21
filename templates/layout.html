@@ -14,16 +14,14 @@
     <nav class="navbar">
     <!-- Home -->
     <div class="left-navbar-group">
-            {% if request.path == "/" %}
-                {% set button = 'top-button-active' %}
-            {% else %}
-                {% set button = 'top-button' %}
-            {% endif %}
-        <a href="/" class="{{button}}"> 
-            
+        {% if request.path == "/" %}
+            {% set button = 'top-button-active' %}
+        {% else %}
+            {% set button = 'top-button' %}
+        {% endif %}
+        <a href="/" class="{{button}}">
             <div class="title">Home</div>
         </a>
-
         <!-- mew post -->
             {% if request.path == "/newpost" %}
                 {% set button = 'top-button-active' %}
@@ -59,7 +57,7 @@
         <div class="dropdown">
             <button class="{{button}}">
                 <svg viewBox="0 0 24 24" width="20" height="20">
-                    <path d="M3 7v14h18V7H12l-2-3H3z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3 7v14h18V7H12l-2-3H4z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 &nbsp;Posts 
             </button>

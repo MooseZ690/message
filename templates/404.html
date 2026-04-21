@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+<div style="height:15vh;"></div>
+<div class="content-404">
+    404
+    <h1>the URL you've entered is not valid</h1>
+    <h2>"{{request.path}}"</h2> 
+</div>
+{% endblock %}

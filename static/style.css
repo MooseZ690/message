@@ -10,26 +10,28 @@
     --box-background:rgba(255, 255, 255, 0.15);
     --box-border:3px solid rgba(255, 255, 255, 0.25);
     --error-red:rgba(184, 39, 39, 0.616);
-    --light-font:rgb(200, 200, 200);
+    --font:black;
     --sidebar-font-size:0.8vw;
     --reply-font:calc(0.5vh + 0.5vw);
     --reply-line:calc(2vh + 2vw);
-    --navbar-font-size:0.7vw;
+    --navbar-font-size:15px;
     --navbar-title-size:1.3vw;
+    --box-border-radius:25px;
 }
 
 
 body{
-    background:rgba(9, 24, 32);
+    background:black;
     color:white;
-    font-family:"Roboto Mono";
+    font-family:"Arial";
     margin:0;
 }
 
 
-h1{font-size:1.3vw; font-weight:400;}
-h2{font-size:0.8vw; font-weight:400;}
+h1{font-size:1.3vw; font-weight:400; font-family:"Audiowide";}
+h2{font-size:0.95vw; font-weight:400;}
 h3{font-size:0.65vw; font-weight:400;}
+p{font-size:0.75vw; font-weight:375;}
 
 a{
     text-decoration:none;
@@ -39,27 +41,19 @@ a{
 /* Navbar */
 .navbar{
     display:flex;
-    align-items:center;
     gap:1em;
-    padding:0;
+    padding:0.5em 0;
     background-color:black;
-    padding-top:1em;
 }
 
 .left-navbar-group{
     display:flex;
-    align-items:center;
     gap:1em;
 }
 
 .title{
     font-size:var(--navbar-title-size);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-weight:550;
-    font-family:"Audiowide";
-    color:white;
+    font-weight:600;
     border:none;
 }
 
@@ -83,16 +77,16 @@ a{
     padding:0.6em;
     font-weight:600;
     color:white;
+    font-family:"Audiowide";
     border:none;
     font-size:var(--navbar-font-size) !important;
     background:black;
-    border-bottom:3px solid rgba(0, 0, 255, 0);
 }
 
 .top-button-active, 
 .top-button:hover{
-    color:white;
     box-shadow:0 10px 10px -5px var(--nav-box-shadow);
+    clip-path: inset(0 0 -5px 0);
 }
 
 
@@ -101,7 +95,7 @@ a{
     width:2.8em;
     padding:0.5em;
     margin:0 0.7em 1.5em 0.7em;
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     border:1px solid white;
     color:black;
 }
@@ -110,23 +104,37 @@ a{
     border-color:rgb(110,110,110);
 }
 
-.reply-button{
-    margin-top:2em;
-    border-radius:25px;
-    padding:0.6em;
-    background:#0866FF;
-}
-
 .reply-button a{
     font-weight:550;
 }
 
 .follow-button{
     background:var(--box-background);
-    border:var(--box-border)
+    border:var(--box-border);
+    padding:2vh;
 }
 
 /* Input boxes */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+    font-family: 'Roboto Mono', monospace;
+}
+
+input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
 
 .top-input-box,
 .input-box{
@@ -152,34 +160,23 @@ a{
 
 /* Login/register */
 
-.login-box,
-.login-button{
-    height:2.4em;
-    padding:0.5em;
-    border-radius:20px;
-    border:none;
-    color:rgb(110,110,110);
-    font-family:"Roboto mono";
-}
-
-.register-top-box{
-    display:flex;
-    flex-direction:column;
-    gap:1em;
+.account-container {
+    background: var(--box-background);
+    padding: 40px;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
 .login-button{
-    color:rgb(110,110,110);
-}
-
-.login-container{
-    border-radius:25px;
-    background:rgba(220, 220, 220, 0.5);
-    padding:2em;
-}
-
-.block{
-    margin-bottom:4em;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    background: white;
+    color: black;
+    cursor: pointer;
+    font-family: 'Roboto Mono', monospace;
+    transition: 0.2s;
 }
 
 /* Posts */
@@ -199,7 +196,7 @@ a{
     background:rgba(255, 255, 255, 0.2);
     border:2px solid rgba(255,255,255,0.25);
     padding:1em;
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     color:white;
 }
 
@@ -246,6 +243,10 @@ a{
     cursor:pointer;
 }
 
+.like-button h1{
+    margin-right:auto;
+}
+
 /* New post header */
 
 .top-box{
@@ -275,7 +276,7 @@ a{
     position:absolute;
     background:var(--box-background);
     border:2px solid rgba(255, 255, 255, 0.25);
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     min-width:140px;
     z-index:1;
     overflow:hidden;
@@ -298,6 +299,10 @@ a{
     font-size:var(--navbar-font-size) !important;
 }
 
+.dropdown{
+    padding-top:2em;
+}
+
 .dropdown:hover .dropdown-content{
     display:block;
 }
@@ -314,7 +319,7 @@ a{
 /* Post replies */
 
 .reply-box{
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     background:var(--box-background);
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
     border:1px solid rgba(255,255,255,0.25);
@@ -374,7 +379,7 @@ a{
     width:100%;
     padding:1em;
     margin-left:1vw;
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     background:var(--box-background);
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
     border:1px solid rgba(255,255,255,0.25);
@@ -438,7 +443,7 @@ a{
     width:80%;
     background:var(--box-background);
     border:2px solid rgba(255, 255, 255, 0.25);
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     padding:1em;
 }
 
@@ -454,7 +459,7 @@ a{
     align-items:center;
     gap:1em;
     border:3px solid rgba(255, 255, 255, 0.15);
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     background:var(--box-background);
     padding:1em;
 }
@@ -470,7 +475,7 @@ a{
 .chat-input-box{
     background:var(--box-background);
     border:var(--box-border);
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     padding:1em;
 }
 
@@ -485,7 +490,6 @@ a{
     width:80%;
     padding:1em;
     margin-top:0;
-    margin-bottom:2vh;
     gap:1em;
     height:80vh;
     max-height:60%;
@@ -498,7 +502,7 @@ a{
     outline:none;
     height:100%;
     color:black;
-    border-radius:25px;
+    border-radius:var(--box-border-radius);
     border:none;
 }
 
@@ -509,47 +513,18 @@ a{
 /* messages/errors */
 .error{
     background:var(--error-red);
-    color:var(--light-font);
-    border-radius:25px;
-    padding:0.5em;
-    width:277px;
+    color:white;
+    border-radius:var(--box-border-radius);
+    padding:0.5em 1em;
+    font-family:"Roboto Mono";
 }
 
-/* hide checkbox safely */
-.toggle {
-    display: none;
-}
-
-/* slider track */
-.label {
-    width: 80px;
-    height: 40px;
-    border-radius: 50px;
-    background: var(--box-background);
-
-    display: flex;
-    align-items: center;
-    padding: 3px;
-
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-/* slider knob */
-.ball {
-    width: 34px;
-    height: 34px;
-    background: white;
-    border-radius: 50%;
-    background:red;
-    transition: transform 0.3s ease;
-}
-
-/* ON state */
-.toggle:checked + .label {
-    background: var(--error-red);
-}
-
-.toggle:checked + .label .ball {
-    transform: translateX(40px);
+.content-404{
+    background:var(--box-background);
+    border:var(--box-border);
+    margin:3vw 10vw;
+    padding:1vw;
+    text-align:center;
+    border-radius:var(--box-border-radius);
+    font-size:10em;
 }

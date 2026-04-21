@@ -20,6 +20,7 @@ app = Flask(__name__)
 app.secret_key = "serendipitous"
 socketio = SocketIO(app)
 
+
 def get_db():
     #try to get the database connection in flasks g object
     db = getattr(g, '_database', None)
@@ -49,23 +50,23 @@ def query_db(query, args=(), one=False):
     #closes the cursor after the query
     return (rv[0] if rv else None) if one else rv
     #if first argument == True return only the first result, otherwise return all results
-    
+
 #------------------------#
 #-----SQL STATEMENTS-----#
 #------------------------#
 
-sql = """
+all = """
         SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         JOIN users on posts.user_id = users.id
         ORDER BY posts.time DESC; 
-        """ 
+    """ 
         #return all posts from the posts table
         
 likes = """
         SELECT liker_id, postid FROM likes;
-        """
+    """
         #return all relevant data from the likes table
 
 #--------------------#
@@ -94,7 +95,7 @@ def home():
         #get all info from category table
     likes = query_db(likes)
     users = query_db(userssql)
-    results = query_db(sql)
+    results = query_db(all)
     comments = query_db(comments)
     categories = query_db(categories)
     return render_template("home.html", results=results, users=users, comments=comments, likes=likes, categories=categories, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
@@ -106,7 +107,7 @@ def allposts():
         """
     #get all info from likes table
     likes = query_db(likes)
-    results = query_db(sql)
+    results = query_db(all)
     return render_template("allposts.html", results=results, likes=likes, today=datetime.now().strftime("%Y-%m-%d"))
 
 @app.route("/like/<int:id>", methods=["POST"])
@@ -198,7 +199,7 @@ def login():
         )
         for row in query_db("SELECT users.name FROM blacklist JOIN users on blacklist.userid = users.id;"):
             if row[0] == username:
-                return render_template("login.html", failed=True)
+                return render_template("login.html", blacklisted=True)
         if user and check_password_hash(user[2], password):
 
             session["user_id"] = user[0]
@@ -237,18 +238,9 @@ def newpost(id=None):
         if not imageurl:
             imageurl = "https://operaparallele.org/wp-content/uploads/2023/09/Placeholder_Image.png"
         categoryid = request.form["categoryid"]
-        with open("profanity.txt", "r") as profanity: #open profanity.txt as profanity so the code can read it
-            badwords = [line.strip() for line in profanity]
-        for word in badwords:
-            stars = "*" * len(word) #sets the *s of the censored word to its length
-            content = content.replace(word, stars)
-            title = title.replace(word, stars)
-        
         # if replying, use the id from the URL
         reply = id if id else None
-
         time = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-
         db = get_db()
         db.execute(
             "INSERT INTO posts (title, user_id, content, imageurl, categoryid, time, reply) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -294,7 +286,7 @@ def admin():
         if row[0] == session.get('user_id'):
         #if the user is an admin, load the template
             return render_template("admin.html", users=users, followers=followers, admin=admin)
-    return redirect(url_for("home"))
+    return render_template("login.html", notadmin=True)
     #if the user isn't an admin, redirect to the homepage. 
             
 
@@ -419,6 +411,10 @@ def unfollow(id):
     )
     db.commit()
     return redirect(request.referrer)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
 
 #---------------------#
 #------LIVE-CHAT------#

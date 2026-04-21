@@ -1,6 +1,0 @@
--- database: ./database.db
-
-SELECT * FROM posts;
-SELECT posts.title, posts.content, posts.name, posts.imageurl, cat.id
-        FROM posts
-        JOIN cat ON posts.categoryid = cat.id;
