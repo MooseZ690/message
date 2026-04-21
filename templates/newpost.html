@@ -26,7 +26,7 @@
         <div class="block"></div>
     <form method="post" class="new-post-container"> <!-- tells app.py the method="POST" -->
         <div class="top-box">
-            <input type="text" id="title" name="title" class="top-input-box" placeholder="Title" required>
+            <input type="text" id="title" name="title" class="top-input-box" placeholder="Title" maxlength="20" required>
 
             <input type="text" id="imageurl" name="imageurl" class="top-input-box" placeholder="Image">
 
@@ -39,7 +39,7 @@
             </button>
         </div>
 
-        <textarea id="content" name="content" rows="5" class="input-box" placeholder="Ask anything" required></textarea>
+        <textarea id="content" name="content" rows="5" class="input-box" placeholder="Ask anything" maxlength="1000" required></textarea>
 
         <select name="categoryid" id="categoryid" class="category-dropdown" required>
             <option value="">Category</option>

@@ -17,11 +17,12 @@
     --sidebar-font-size:0.8vw;
     --reply-font:calc(0.5vh + 0.5vw);
     --reply-line:calc(2vh + 2vw);
-    --navbar-font-size:15px;
+    --navbar-font-size:calc(0.55vh + 0.55vw);
     --navbar-title-size:1.3vw;
     --box-border-radius:25px;
     --heading-font:"Audiowide";
     --post-background:var(--background);
+    --menu-font:"Roboto Mono";
 }
 
 /* Light mode changes */
@@ -31,9 +32,9 @@
     --font:black;
     --background:white;
     --box-background:grey;
-    --box-border:5px solid black;
-    --post-border:2px solid black;
-    --post-background:blue;
+    --box-border:3px solid black;
+    --post-border:3px solid black;
+    --post-background:rgb(200, 200, 200);
 }
 
 .theme-toggle{
@@ -50,13 +51,14 @@ body{
     font-family:"Arial";
 }
 
-h1{font-size:1.3vw; font-weight:400; font-family:var(--heading-font);}
-h2{font-size:0.95vw; font-weight:400;}
-h3{font-size:0.65vw; font-weight:400;}
-p{font-size:0.75vw; font-weight:375;}
+h1{font-size:var(--navbar-font-size); font-weight:400; font-family:var(--heading-font);}  
+h2{font-size:1.6vh; font-weight:400;}
+h3{font-size:1.2vh; font-weight:400;}
+p{font-size:1.3vh; font-weight:375;}
 
 a{
     text-decoration:none;
+    color:var(--font);
 }
 
 /* Navbar */
@@ -145,17 +147,19 @@ form {
     gap:15px;
 }
 
-input {
+input, 
+textarea {
     padding:10px;
     border-radius:6px;
     border:none;
     outline:none;
+    color:var(--font);
     background:rgba(255,255,255,0.1);
-    color:white;
     font-family:'Roboto Mono', monospace;
 }
 
-input::placeholder {
+input::placeholder, 
+textarea::placeholder{
     color:rgba(255,255,255,0.6);
 }
 
@@ -164,6 +168,7 @@ input::placeholder {
     border-radius:25px;
     border:none;
     color:var(--font);
+    height:10vh;
 }
 
 .top-input-box{
@@ -171,14 +176,13 @@ input::placeholder {
     height:2.4em;
     padding:0.5em;
     margin:0 0.7em 1.5em 0.7em;
-    color:black;
 }
 
 .input-box{
     width:97.5%;
     padding:0.8em;
     margin-left:0.7em;
-    color:black;
+    color:var(--font);
 }
 
 /* Login/register */
@@ -311,6 +315,7 @@ input::placeholder {
     min-width:140px;
     overflow:hidden;
     transition:height 0.14s ease;
+    z-index:1000;
 }
 
 .dropdown-content a{
@@ -347,10 +352,10 @@ input::placeholder {
 .category-dropdown{
     border:none;
     border-radius:20px;
-    height:2.4em;
     padding:0.5em;
+    width:fit-content;
     margin:1.4em 0 0 0.7em;
-    color:rgb(120,120,120);
+    font-family:var(--menu-font);
 }
 
 /* Post replies */

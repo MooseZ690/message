@@ -68,7 +68,7 @@
                 <h1>Hi, {{session.get('username')}}!</h1>
             {% else %}
                 <h1>Hi, guest!</h1>
-                <a style="text-decoration:none; color:white;" href="/register">register here</a>
+                <a style="text-decoration:none;" href="/register">register here</a>
             {% endif %}
             <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
                 <div class="post-text">
@@ -110,7 +110,7 @@
                 {% else %}
                 <form action="/login">
                     <button type="submit" class="like-button">
-                        <h1>♡</h1>{{ ns.postlikes }}
+                        <h1>♥</h1>{{ ns.postlikes }}
                     </button>
                 </form>
                 {% endif %}

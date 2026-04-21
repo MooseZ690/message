@@ -8,6 +8,16 @@
         <p class="admin-users"?>
             @{{row[0]}}<br>
             {{row[1]}}<br>
+            {% for admin in admins %}
+                {% if row[3] == admin[0] %}
+                    (admin)
+                {% endif %}
+            {% endfor %}
+            {% for blocked in blacklist %}
+                {% if row[3] == blocked[0] %}
+                    (blocked)
+                {% endif %}
+            {% endfor %}
             <button class="admin-users-button" style="margin-left:auto">
                 <a href="/userposts/{{row[0]}}">Profile</a>
             </button>

@@ -4,10 +4,10 @@
 
 from flask import Flask, g, render_template, request, redirect, url_for, session, jsonify
 from flask_socketio import SocketIO, emit
-import logging, sqlite3, datetime, random
+import sqlite3, datetime
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime, timedelta
+from datetime import datetime
 
 #-----------------------------------------#
 #-----CONNECTING/CONFIGURING DATABASE-----#
@@ -17,7 +17,7 @@ DATABASE = 'database.db'
 #sets the variable DATABASE as the file database.db
 
 app = Flask(__name__)
-app.secret_key = "serendipitous"
+app.secret_key = "serendipitous" #base of the password hashing
 socketio = SocketIO(app)
 
 
@@ -108,8 +108,8 @@ def admin():
     FROM following
     JOIN users AS followed ON following.followed_id = followed.id
     JOIN users AS follower ON following.follower_id = follower.id;
-    """
-    admin = """SELECT users.id, users.name, users.email, users.imageurl
+    """    
+    admins = """SELECT users.id, users.name, users.email, users.imageurl
     FROM admins
     JOIN users ON admins.userid = users.id
     ORDER BY admins.id DESC;
@@ -117,15 +117,17 @@ def admin():
     users = """SELECT users.name, users.email, users.imageurl, users.id
                 FROM users;
             """
-            #return all relevant data from the users table
-            
-    admin = query_db(admin)
+    #return all relevant data from the follower, admin, and users tables
+    blacklist = "SELECT * FROM blacklist;"
+    
+    admins = query_db(admins)
     users = query_db(users)
     followers = query_db(followers)
-    for row in admin:
+    blacklist = query_db(blacklist)
+    for row in admins:
         if row[0] == session.get('user_id'):
         #if the user is an admin, load the template
-            return render_template("admin.html", users=users, followers=followers, admin=admin)
+            return render_template("admin.html", users=users, followers=followers, admins=admins)
     session.pop("user_id", None)
     session.pop("username", None)
     return render_template("login.html", notadmin=True)
@@ -218,10 +220,8 @@ def register():
             (name,),
             one=True
         )
-
         session["user_id"] = user[0]
         session["username"] = user[1]
-
         return redirect(url_for("home"))
         #log the user in
     return render_template("register.html")

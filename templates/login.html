@@ -15,14 +15,14 @@
             <p class="error" onclick="this.style.display='none'">ⓘ user '{{faileduser}}' does not exist</p>
         {% endif %}
         <form method="POST"> <!-- tells app.py the method="POST" -->
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
+            <input type="text" name="username" placeholder="Username" maxlength="20" required>
+            <input type="password" name="password" placeholder="Password" maxlength="20" required>
 
             <button type="submit" class="login-button">Login</button>
         </form>
         <h3 style="text-align:center;">
             <br>Don't have an account?<br>
-            <a style="text-decoration:none; color:white; font-weight:700; "href="/register">
+            <a style="text-decoration:none; font-weight:700; "href="/register">
                 sign up here!
             </a>
         </h3>
