@@ -64,11 +64,11 @@
 
     <div class="centered-content">
         <div class="home-wrapper">
-            {% if session.get(user) is not none %}
-                Hi, {{session.get(user)}}!
+            {% if session.get('username') is not none %}
+                <h1>Hi, {{session.get('username')}}!</h1>
             {% else %}
                 <h1>Hi, guest!</h1>
-                <a style="text-decoration:none; color:white; font-weight:700;" href="/register">register here</a>
+                <a style="text-decoration:none; color:white;" href="/register">register here</a>
             {% endif %}
             <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
                 <div class="post-text">
@@ -137,6 +137,5 @@
     </div>
 
 </div>
-
 {% endblock %}
 {% endif %}

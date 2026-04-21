@@ -4,14 +4,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
 /* Global styling */
+
 :root{
     --nav-box-shadow:white;
+    --font:white;
+    --background:black;
     --nav-box-shadow-light:rgba(255, 255, 255, 0.6);
     --box-background:rgba(255, 255, 255, 0.15);
     --input-background:rgba(255, 255, 255, 0.1);
     --box-border:3px solid rgba(255, 255, 255, 0.25);
-    --error-red:rgba(184, 39, 39, 0.616);
-    --font:white;
+    --error-red:red;
     --sidebar-font-size:0.8vw;
     --reply-font:calc(0.5vh + 0.5vw);
     --reply-line:calc(2vh + 2vw);
@@ -19,11 +21,31 @@
     --navbar-title-size:1.3vw;
     --box-border-radius:25px;
     --heading-font:"Audiowide";
+    --post-background:var(--background);
 }
 
+/* Light mode changes */
+
+.light{
+    --nav-box-shadow:black;
+    --font:black;
+    --background:white;
+    --box-background:grey;
+    --box-border:5px solid black;
+    --post-border:2px solid black;
+    --post-background:blue;
+}
+
+.theme-toggle{
+    background:var(--background);
+    color:var(--font);
+    border:none;
+    padding-top:0.6em;
+    cursor:pointer;
+}
 
 body{
-    background:black;
+    background:var(--background);
     color:var(--font);
     font-family:"Arial";
 }
@@ -42,7 +64,7 @@ a{
     display:flex;
     gap:1em;
     padding:0.5em 0;
-    background-color:black;
+    background-color:var(--background);
 }
 
 .left-navbar-group{
@@ -79,7 +101,7 @@ a{
     font-family:var(--heading-font);
     border:none;
     font-size:var(--navbar-font-size) !important;
-    background:black;
+    background:var(--background);
 }
 
 .top-button-active, 
@@ -194,8 +216,8 @@ input::placeholder {
     display:grid;
     grid-template-columns:4fr 1fr;
     margin:2em 2em 0 2em;
-    background:rgba(255, 255, 255, 0.2);
-    border:2px solid rgba(255,255,255,0.25);
+    background:var(--post-background);
+    border:var(--box-border);
     padding:1em;
     border-radius:var(--box-border-radius);
     color:var(--font);
@@ -516,10 +538,6 @@ input::placeholder {
     overflow-y:auto;
     display:flex;
     flex-direction:column;
-}
-
-.chat-meta{
-    margin:0.5em;
 }
 
 .chat-input{
