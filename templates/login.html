@@ -6,16 +6,30 @@
     <div class="account-container">
         <h1>Login</h1>
         {% if blacklist %}
-            <p class="error">ⓘ Error - account blocked </p>
+            <p class="error" onclick="this.style.display='none'">ⓘ account blocked. naughty</p>
         {% elif notadmin %}
-            <p class="error">ⓘ Error - admin account required </p>
+            <p class="error" onclick="this.style.display='none'">ⓘ admin account required </p>
+        {% elif incorrectpw %}
+            <p class="error" onclick="this.style.display='none'">ⓘ incorrect password</p>
+        {% elif incorrectuser %}
+            <p class="error" onclick="this.style.display='none'">ⓘ user '{{faileduser}}' does not exist</p>
         {% endif %}
         <form method="POST"> <!-- tells app.py the method="POST" -->
             <input type="text" name="username" placeholder="Username" required>
-            <input type="text" name="password" placeholder="Password" required>
+            <input type="password" name="password" placeholder="Password" required>
 
             <button type="submit" class="login-button">Login</button>
-    </form>
+        </form>
+        <h3 style="text-align:center;">
+            Don't have an account?<br>
+            <a style="text-decoration:none; color:white; font-weight:700; "href="/register">
+                sign up here!
+            </a>
+            <br><br>
+            <a style="text-decoration:none; color:white; font-weight:600; font-size:1vh;"href="/">
+                continue as guest
+            </a>
+        </h3>
     </div>
 </div>
 {% endblock %}

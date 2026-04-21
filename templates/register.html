@@ -7,7 +7,9 @@
     <div style="height:16vh"></div>
     <div class="account-container">
         <h1>Register</h1>
-
+        {% if inuse %}
+            <p class="error" onclick="this.style.display='none'">ⓘ username or email already taken </p>
+        {% endif %}
         <form method="POST">
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>

@@ -8,34 +8,33 @@
     --nav-box-shadow:white;
     --nav-box-shadow-light:rgba(255, 255, 255, 0.6);
     --box-background:rgba(255, 255, 255, 0.15);
+    --input-background:rgba(255, 255, 255, 0.1);
     --box-border:3px solid rgba(255, 255, 255, 0.25);
     --error-red:rgba(184, 39, 39, 0.616);
-    --font:black;
+    --font:white;
     --sidebar-font-size:0.8vw;
     --reply-font:calc(0.5vh + 0.5vw);
     --reply-line:calc(2vh + 2vw);
     --navbar-font-size:15px;
     --navbar-title-size:1.3vw;
     --box-border-radius:25px;
+    --heading-font:"Audiowide";
 }
 
 
 body{
     background:black;
-    color:white;
+    color:var(--font);
     font-family:"Arial";
-    margin:0;
 }
 
-
-h1{font-size:1.3vw; font-weight:400; font-family:"Audiowide";}
+h1{font-size:1.3vw; font-weight:400; font-family:var(--heading-font);}
 h2{font-size:0.95vw; font-weight:400;}
 h3{font-size:0.65vw; font-weight:400;}
 p{font-size:0.75vw; font-weight:375;}
 
 a{
     text-decoration:none;
-    color:white;
 }
 
 /* Navbar */
@@ -72,12 +71,12 @@ a{
 .top-button,
 .top-button-active{
     display:flex;
+    color:var(--font);
     justify-content:center;
     align-items:center;
     padding:0.6em;
     font-weight:600;
-    color:white;
-    font-family:"Audiowide";
+    font-family:var(--heading-font);
     border:none;
     font-size:var(--navbar-font-size) !important;
     background:black;
@@ -86,7 +85,7 @@ a{
 .top-button-active, 
 .top-button:hover{
     box-shadow:0 10px 10px -5px var(--nav-box-shadow);
-    clip-path: inset(0 0 -5px 0);
+    clip-path:inset(0 0 -5px 0);
 }
 
 
@@ -111,36 +110,38 @@ a{
 .follow-button{
     background:var(--box-background);
     border:var(--box-border);
-    padding:2vh;
+    padding:1vh;
+    font-family:var(--heading-font);
+    border-radius:25px;
 }
 
 /* Input boxes */
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
 }
 
 input {
-    padding: 10px;
-    border-radius: 6px;
-    border: none;
-    outline: none;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    font-family: 'Roboto Mono', monospace;
+    padding:10px;
+    border-radius:6px;
+    border:none;
+    outline:none;
+    background:rgba(255,255,255,0.1);
+    color:white;
+    font-family:'Roboto Mono', monospace;
 }
 
 input::placeholder {
-    color: rgba(255,255,255,0.6);
+    color:rgba(255,255,255,0.6);
 }
 
 .top-input-box,
 .input-box{
-    border-radius:20px;
+    border-radius:25px;
     border:none;
-    color:white;
+    color:var(--font);
 }
 
 .top-input-box{
@@ -161,22 +162,22 @@ input::placeholder {
 /* Login/register */
 
 .account-container {
-    background: var(--box-background);
-    padding: 40px;
-    border-radius: 12px;
-    width: 320px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    background:var(--box-background);
+    padding:40px;
+    border-radius:12px;
+    width:320px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
 }
 
 .login-button{
-    padding: 10px;
-    border-radius: 6px;
-    border: none;
-    background: white;
-    color: black;
-    cursor: pointer;
-    font-family: 'Roboto Mono', monospace;
-    transition: 0.2s;
+    padding:10px;
+    border-radius:6px;
+    border:none;
+    background:white;
+    color:black;
+    cursor:pointer;
+    font-family:'Roboto Mono', monospace;
+    transition:0.2s;
 }
 
 /* Posts */
@@ -197,7 +198,7 @@ input::placeholder {
     border:2px solid rgba(255,255,255,0.25);
     padding:1em;
     border-radius:var(--box-border-radius);
-    color:white;
+    color:var(--font);
 }
 
 
@@ -220,7 +221,15 @@ input::placeholder {
     display:grid;
     place-items:center;
     padding-bottom:5em;
+    opacity:0;
+    animation:fadeIn 0.3s forwards;
 }
+
+
+@keyframes fadeIn {
+    to { opacity:1; }
+}
+
 
 .new-post-container{
     border-radius:20px;
@@ -241,6 +250,7 @@ input::placeholder {
     color:#a7a7a7;
     border:none;
     cursor:pointer;
+    width:2em;
 }
 
 .like-button h1{
@@ -273,17 +283,16 @@ input::placeholder {
 
 .dropdown-content{
     display:none;
-    position:absolute;
     background:var(--box-background);
     border:2px solid rgba(255, 255, 255, 0.25);
     border-radius:var(--box-border-radius);
     min-width:140px;
-    z-index:1;
     overflow:hidden;
     transition:height 0.14s ease;
 }
 
 .dropdown-content a{
+    color:var(--font);
     font-weight:500;
     display:block;
     padding:10px;
@@ -300,11 +309,17 @@ input::placeholder {
 }
 
 .dropdown{
-    padding-top:2em;
+    display:flex;
+    align-items:center;
+    margin:0;
+    padding:0;
+    position:relative;
 }
 
 .dropdown:hover .dropdown-content{
     display:block;
+    position:absolute;
+    top:100%;
 }
 
 .category-dropdown{
@@ -326,7 +341,7 @@ input::placeholder {
     padding:1em;
     font-size:var(--reply-font);
     margin:1em 0 2em 0;
-    color:white;
+    color:var(--font);
     font-size:0.7cqi;
     min-width:10vw;
     max-width:35vw;
@@ -391,7 +406,7 @@ input::placeholder {
 }
 
 .home-sidebar a{
-    color:white;
+    color:var(--font);
 }
 
 .home-sidebar h3{
@@ -410,9 +425,10 @@ input::placeholder {
     position:relative;
     background:rgba(255, 255, 255, 0.25);
     border:1px solid rgba(255,255,255,0.2);
-    color:white;
+    color:var(--font);
     transition:height 0.3s ease-in-out;
     font-size:var(--sidebar-font-size);
+    transition:transform 0.1s ease;
 }
 
 .sidebar-section:hover{
@@ -448,9 +464,9 @@ input::placeholder {
 }
 
 .admin-users {
-    display: flex;
-    align-items: center;
-    gap: 1em;
+    display:flex;
+    align-items:center;
+    gap:1em;
 }
 
 /* various containers */
@@ -480,8 +496,13 @@ input::placeholder {
 }
 
 .chat-centered-content{
-    display:grid;
-    place-items:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-top:10vh;
+    gap:2vh;
+    opacity:0;
+    animation:fadeIn 0.23s forwards;
 }
 
 .chat-box{  
@@ -491,32 +512,31 @@ input::placeholder {
     padding:1em;
     margin-top:0;
     gap:1em;
-    height:80vh;
-    max-height:60%;
+    height:50vh;
     overflow-y:auto;
     display:flex;
     flex-direction:column;
 }
 
-.chat-input{
-    outline:none;
-    height:100%;
-    color:black;
-    border-radius:var(--box-border-radius);
-    border:none;
+.chat-meta{
+    margin:0.5em;
 }
 
-.chat-spacer{
-    margin-top:1em;
+.chat-input{
+    height:100%;
+    background:var(--input-background);
+    border-radius:var(--box-border-radius);
+    border:none;
 }
 
 /* messages/errors */
 .error{
     background:var(--error-red);
-    color:white;
+    color:var(--font);
     border-radius:var(--box-border-radius);
     padding:0.5em 1em;
     font-family:"Roboto Mono";
+    cursor:pointer;
 }
 
 .content-404{
@@ -527,4 +547,5 @@ input::placeholder {
     text-align:center;
     border-radius:var(--box-border-radius);
     font-size:10em;
+    font-family:var(--heading-font);
 }

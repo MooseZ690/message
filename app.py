@@ -63,7 +63,7 @@ all = """
         ORDER BY posts.time DESC; 
     """ 
         #return all posts from the posts table
-        
+
 likes = """
         SELECT liker_id, postid FROM likes;
     """
@@ -100,6 +100,54 @@ def home():
     categories = query_db(categories)
     return render_template("home.html", results=results, users=users, comments=comments, likes=likes, categories=categories, today=datetime.now().strftime("%Y-%m-%d")) #sends the results to home.html, rendering the html file with the info from the database
 
+@app.route("/admin")
+def admin():
+    followers = """
+    SELECT followed.name AS followed_name,
+        follower.name AS follower_name
+    FROM following
+    JOIN users AS followed ON following.followed_id = followed.id
+    JOIN users AS follower ON following.follower_id = follower.id;
+    """
+    admin = """SELECT users.id, users.name, users.email, users.imageurl
+    FROM admins
+    JOIN users ON admins.userid = users.id
+    ORDER BY admins.id DESC;
+    """
+    users = """SELECT users.name, users.email, users.imageurl, users.id
+                FROM users;
+            """
+            #return all relevant data from the users table
+            
+    admin = query_db(admin)
+    users = query_db(users)
+    followers = query_db(followers)
+    for row in admin:
+        if row[0] == session.get('user_id'):
+        #if the user is an admin, load the template
+            return render_template("admin.html", users=users, followers=followers, admin=admin)
+    session.pop("user_id", None)
+    session.pop("username", None)
+    return render_template("login.html", notadmin=True)
+    #if the user isn't an admin, redirect to the homepage. 
+
+@app.route("/makeadmin/<int:id>")
+def makeadmin(id):
+    admin = "SELECT admins.id, admins.userid FROM admins;"
+    admin = query_db(admin)
+    for row in admin:
+        if row[0] == id:
+            return request.referrer()
+        else:
+            db = get_db()
+            db.execute(
+                "INSERT INTO admins (userid) VALUES (?);",
+                (id)
+            )
+            
+            db.commit()
+    return request.referrer()
+    
 @app.route("/allposts")
 def allposts():    
     likes = """
@@ -147,7 +195,6 @@ def unlike(id):
 
 @app.route("/register", methods=["GET","POST"])
 def register():
-    failed = request.args.get("failed") == "True"
 
     if request.method == "POST":
         name = request.form["username"]
@@ -158,11 +205,10 @@ def register():
 
         hashed_password = generate_password_hash(password)
         #hashes the password with werkzeug
-        users = query_db("SELECT email, name FROM users")
-
+        users = query_db("SELECT email, name FROM users;")
         for row in users:
             if row[1] == name or row[0] == email:
-                return redirect(url_for("register", failed=True))
+                return render_template("register.html", inuse=True)
         #if the user is already registered, go back to register page with an error message
         db = get_db()
         db.execute(
@@ -182,32 +228,43 @@ def register():
 
         return redirect(url_for("home"))
         #log the user in
-    return render_template("register.html", failed=failed)
+    return render_template("register.html")
 
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-
     if request.method == "POST":
-
+        session.pop("user_id", None)
+        session.pop("username", None)
+        #clear any existing session
         username = request.form["username"]
         password = request.form["password"]
-
+        #gets the username and password from the login page
         user = query_db(
             "SELECT * FROM users WHERE name = ?",
             (username,),
             one=True
         )
-        for row in query_db("SELECT users.name FROM blacklist JOIN users on blacklist.userid = users.id;"):
-            if row[0] == username:
-                return render_template("login.html", blacklisted=True)
-        if user and check_password_hash(user[2], password):
-
-            session["user_id"] = user[0]
-            session["username"] = user[1]
-
-            return redirect(url_for("home"))
+        #finds the user with that username
+        if not user:
+            return render_template("login.html", incorrectuser=True, faileduser=username)
+        #if there is none
+        blacklisted = query_db(
+            "SELECT 1 FROM blacklist WHERE userid = ?",
+            (user[0],),
+            one=True
+        )
+        if blacklisted:
+            return render_template("login.html", blacklisted=True)
+        #if the user has been blacklisted, return them to the login page
+        if not check_password_hash(user[2], password):
+            return render_template("login.html", incorrectpw=True)
+        session["user_id"] = user[0]
+        session["username"] = user[1]
+        return redirect(url_for("home"))
+        #if all is successful, add the user to session and redirect to homepage
 
     return render_template("login.html")
+
 
 @app.route("/logout")
 def logout():
@@ -262,34 +319,6 @@ def newpost(id=None):
             results=results
         )
 
-@app.route("/admin")
-def admin():
-    users = """SELECT users.name, users.email, users.imageurl, users.id
-            FROM users;"""
-            
-    followers = """
-    SELECT followed.name AS followed_name,
-        follower.name AS follower_name
-    FROM following
-    JOIN users AS followed ON following.followed_id = followed.id
-    JOIN users AS follower ON following.follower_id = follower.id;
-    """
-    admin = """SELECT users.id, users.name, users.email, users.imageurl
-    FROM admins
-    JOIN users ON admins.userid = users.id
-    ORDER BY admins.id DESC;
-    """
-    admin = query_db(admin)
-    users = query_db(users)
-    followers = query_db(followers)
-    for row in admin:
-        if row[0] == session.get('user_id'):
-        #if the user is an admin, load the template
-            return render_template("admin.html", users=users, followers=followers, admin=admin)
-    return render_template("login.html", notadmin=True)
-    #if the user isn't an admin, redirect to the homepage. 
-            
-
 @app.route("/category/<int:id>") #flask app route for the page that shows posts only from a certain category
 def category(id):
     sql = """
@@ -321,6 +350,7 @@ def post(id):
     sql = """
         SELECT posts.title, posts.content, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
         """
+    #make a singular post view page here
     
 
 @app.route("/userposts/<username>")
@@ -361,14 +391,12 @@ def follow(followed_id):
     if "user_id" not in session: #if you're not logged in
         return redirect(url_for("login")) #go to login page
     follower_id = session.get('user_id')
-    sql = """
-        SELECT * FROM following;
-    """
-    #get all data from following table
-    results = query_db(sql)
+    results = query_db("SELECT * FROM following;")
     for row in results:
         if row[0] == follower_id and row[1] == followed_id:
-            return render_template('userposts', message = True)
+            return render_template('userposts')
+        elif followed_id == follower_id:
+            return render_template('userposts')
     db = get_db()
     db.execute(            
     "INSERT INTO following (follower_id, followed_id) VALUES (?, ?)",
