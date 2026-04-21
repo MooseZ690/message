@@ -133,20 +133,16 @@ def admin():
 
 @app.route("/makeadmin/<int:id>")
 def makeadmin(id):
-    admin = "SELECT admins.id, admins.userid FROM admins;"
-    admin = query_db(admin)
-    for row in admin:
-        if row[0] == id:
-            return request.referrer()
-        else:
-            db = get_db()
-            db.execute(
-                "INSERT INTO admins (userid) VALUES (?);",
-                (id)
-            )
-            
-            db.commit()
-    return request.referrer()
+    admin = query_db("SELECT 1 FROM admins WHERE userid = ? LIMIT 1;", (id,))
+    if admin:
+        return redirect(request.referrer or "/")
+    db = get_db()
+    db.execute(
+        "INSERT INTO admins (userid) VALUES (?);",
+        (id,)
+    )
+    db.commit()
+    return redirect(request.referrer or "/")
     
 @app.route("/allposts")
 def allposts():    
