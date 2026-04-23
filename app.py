@@ -129,7 +129,7 @@ def admin():
         #if the user is an admin, load the template
             return render_template("admin.html", users=users, followers=followers, admins=admins)
     return redirect(url_for("login", notadmin=True))
-    #if the user isn't an admin, redirect to the homepage. 
+    #if the user isn't an admin, redirect to the login page
 
 @app.route("/makeadmin/<int:id>")
 def makeadmin(id):
@@ -258,8 +258,8 @@ def login():
         session["username"] = user[1]
         return redirect(url_for("home"))
         #if all is successful, add the user to session and redirect to homepage
-
-    return render_template("login.html")
+    notadmin = request.args.get("notadmin") == "True"
+    return render_template("login.html", notadmin=notadmin)
 
 
 @app.route("/logout")
