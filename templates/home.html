@@ -17,17 +17,17 @@
         <div class="home-sidebar">
             <h1>Updates</h1>
             {% for category in categories %}
-            <div class="sidebar-section">
-                {% set post = results | selectattr('8', 'equalto', category[0]) | list | first %}
-                <!-- find the most recent post with the cat.id -->
-                {% if post %}
-                <a href="{{ url_for('category', id=post[8]) }}">
-                    {{post[2]}} in {{category[1]}}: {{post[1][:20]}}...
-                </a>
-                {% else %}
-                <p>No new posts in {{category[1]}}</p>
-                {% endif %}
-            </div>
+            {% set post = results | selectattr('8', 'equalto', category[0]) | list | first %}
+            <!-- find the most recent post with the cat.id -->
+            {% if post %}
+            <a href="{{ url_for('category', id=post[8]) }}" class="sidebar-section">
+                @{{ post[2] }} in {{category[1]}}: {{post[1][:20]}}...
+            </a>
+            {% else %}
+            <a href="{{ url_for('category', id=category[0]) }}" class="sidebar-section">
+                no posts in {{category[1]}} &#128532;
+            </a>
+            {% endif %}
             {% endfor %}
         </div>
 
@@ -65,10 +65,14 @@
     <div class="centered-content">
         <div class="home-wrapper">
             {% if session.get('username') is not none %}
-                <h1>Hi, {{session.get('username')}}!</h1>
+            <h1>Hi, {{session.get('username')}}!</h1>
             {% else %}
-                <h1>Hi, guest!</h1>
-                <a style="text-decoration:none;" href="/register">register here</a>
+            <h1>Hi, guest!</h1>
+            <span>
+                <a href="/register">login </a>
+                or
+                <a href="/register"> register here</a>
+            </span>
             {% endif %}
             <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
                 <div class="post-text">
@@ -133,6 +137,15 @@
             {% endif %}
             {% endfor %}
             {% endif %}
+
+            {% for comment in comments %}
+            {% if comment[1] == item[6] %}
+            <p>{{comments}}</p>
+            {% endif %}
+            {% endfor %}
+
+
+
         </div>
     </div>
 

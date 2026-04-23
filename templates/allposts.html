@@ -67,6 +67,15 @@
         {% endif %}
         {% endfor %}
         {% endif %}
+
+
+        {% for comment in comments %}
+        {% if comment[1] == item[6] %}
+        <p>{{comment}}</p>
+        {% endif %}
+        {% endfor %}
+
+
         {% endfor %}
     </div>
 </div>

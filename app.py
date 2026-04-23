@@ -128,9 +128,7 @@ def admin():
         if row[0] == session.get('user_id'):
         #if the user is an admin, load the template
             return render_template("admin.html", users=users, followers=followers, admins=admins)
-    session.pop("user_id", None)
-    session.pop("username", None)
-    return render_template("login.html", notadmin=True)
+    return redirect(url_for("login", notadmin=True))
     #if the user isn't an admin, redirect to the homepage. 
 
 @app.route("/makeadmin/<int:id>")
@@ -152,9 +150,11 @@ def allposts():
         SELECT liker_id, postid FROM likes;
         """
     #get all info from likes table
+    comments = "SELECT * FROM comments"
     likes = query_db(likes)
     results = query_db(all)
-    return render_template("allposts.html", results=results, likes=likes, today=datetime.now().strftime("%Y-%m-%d"))
+    comments = query_db(comments)
+    return render_template("allposts.html", results=results, likes=likes, comments=comments, today=datetime.now().strftime("%Y-%m-%d"))
 
 @app.route("/like/<int:id>", methods=["POST"])
 def like(id):
