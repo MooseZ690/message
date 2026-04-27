@@ -343,9 +343,37 @@ def category(id):
 @app.route("/post/<int:id>")
 def post(id):
     sql = """
-        SELECT posts.title, posts.content, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
+        FROM posts
+        JOIN cat ON posts.categoryid = cat.id
+        JOIN users on posts.user_id = users.id
+        WHERE posts.id = ?
+        ORDER BY posts.time DESC;
+    """
+    userssql = """
+        SELECT users.id, users.name
+        FROM users
+        ORDER BY users.id ASC;
         """
-    #make a singular post view page here
+        #get user info
+    comments = """
+        SELECT * FROM comments;
+        """
+        #get comments on posts
+    likes = """
+        SELECT liker_id, postid FROM likes;
+        """
+        #get all info from likes table
+    categories = """
+        SELECT * FROM cat;
+        """
+        #get all info from category table
+    likes = query_db(likes)
+    users = query_db(userssql)
+    comments = query_db(comments)
+    categories = query_db(categories)
+    results = query_db(sql, (id,), True)
+    return render_template("post.html", likes=likes, users=users, comments=comments, categories=categories, item=results)
     
 
 @app.route("/userposts/<username>")

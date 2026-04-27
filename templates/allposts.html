@@ -4,7 +4,7 @@
     <div class="home-wrapper">
         <h1>all posts</h1>
         {% for item in results %}
-        <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
+        <a href="{{ url_for('post', id=item[6]) }}" class="post-container">
             <div class="post-text">
                 <h2 class='category-box'>category: {{item[4]}} | {{item[5][10:]}}</h2><br>
                 <h1>{{item[0]}}</h1>

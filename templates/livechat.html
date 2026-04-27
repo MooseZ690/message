@@ -22,7 +22,7 @@ window.addEventListener("load", function () {
             <div class="chat-message">
                 <div class="chat-meta">
                     <!-- information about the post - name, date -->
-                    <strong>{{ message[2] }}</strong>
+                    <a style="text-decoration:underline; font-weight:600;" href="{{ url_for('userposts', username=message[2]) }}">{{ message[2] }}</a>
                     <span>{{ message[1] }}</span>
                 </div>
                 <div class="chat-text">{{ message[0] }}</div>   
@@ -33,8 +33,7 @@ window.addEventListener("load", function () {
 
     <!-- form to send a new message -->
     <form id="chat-form" class="chat-input-box">
-        <input type="text" id="message-input" class="chat-input" placeholder="Type a message..." autocomplete="off"
-            required>
+        <input type="text" id="message-input" class="chat-input" placeholder="Type a message..." autocomplete="off" maxlength="100" required>
         <button type="submit" class="chat-send-button">Send</button>
     </form>
 </div>

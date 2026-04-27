@@ -208,6 +208,21 @@ textarea::placeholder {
     color: var(--font);
 }
 
+.comment-box{
+    width: 15vw;
+    display: none;
+    color: var(--font);
+    margin: 2em 2em 0px;
+    background: var(--post-background);
+    border: var(--box-border);
+    padding: 1em;
+    border-radius: var(--box-border-radius);
+}
+
+.comment-icon:hover .comment-box{
+    display:block;
+}
+
 /* Login/register */
 
 .account-container {
@@ -255,7 +270,7 @@ textarea::placeholder {
     margin-right: 10px;
 }
 
-.post-container {
+.post-container{
     width: 46vw;
     display: grid;
     grid-template-columns: 4fr 1fr;
@@ -529,9 +544,6 @@ textarea::placeholder {
     margin-top: 5em;
 }
 
-.home-sidebar:hover .sidebar-section {
-    display: flex;
-}
 
 /* admin panel */
 

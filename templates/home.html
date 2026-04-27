@@ -2,7 +2,7 @@
 {% if results %}
 {% block body %}
 
-{% set item = results[0] %} {# most recent post #}
+{% set item = results[0] %}
 
 {% if item[5][:10] == today %}
 {% set time = "Today," + item[5][10:] %}
@@ -74,7 +74,7 @@
                 <a href="/register"> register here</a>
             </span>
             {% endif %}
-            <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
+            <a href="{{ url_for('post', id=item[6]) }}" class="post-container">
                 <div class="post-text">
                     <h2 class='category-box'>category: {{item[4]}} | {{item[5][10:]}}</h2><br>
                     <h1>{{item[0]}}</h1>
