@@ -7,7 +7,6 @@ from flask_socketio import SocketIO, emit
 import sqlite3, datetime
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
 
 #-----------------------------------------#
 #-----CONNECTING/CONFIGURING DATABASE-----#
@@ -454,7 +453,6 @@ def livechat():
         JOIN users ON chat.user_id = users.id
         ORDER BY chat.id ASC;
     """
-    #
     messages = query_db(sql)
 
     return render_template("livechat.html", messages=messages)

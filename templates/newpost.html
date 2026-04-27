@@ -44,7 +44,7 @@
         <select name="categoryid" id="categoryid" class="category-dropdown" required>
             <option value="">Category</option>
             {% for id, name in categories %}
-            <option value="{{ id }}">{{ name }}</option>
+            <option class="cat-drop-content" value="{{ id }}">{{ name }}</option>
             {% endfor %}
         </select>
     </form>
