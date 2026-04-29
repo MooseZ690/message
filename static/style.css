@@ -210,7 +210,7 @@ textarea::placeholder {
 
 .comment-box{
     width: 15vw;
-    display: none;
+    display: block;
     color: var(--font);
     margin: 2em 2em 0px;
     background: var(--post-background);
@@ -219,8 +219,29 @@ textarea::placeholder {
     border-radius: var(--box-border-radius);
 }
 
-.comment-icon:hover .comment-box{
-    display:block;
+.comments-content {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--post-background);
+    border: var(--box-border);
+    border-radius: var(--box-border-radius);
+}
+
+.comments-content::-webkit-scrollbar {
+    display: none;
+}
+
+.special{
+    height:0;
+}
+
+.special:hover .comments-content{
+    height:auto;
+    opacity:1;
 }
 
 /* Login/register */

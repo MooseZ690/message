@@ -1,68 +1,15 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if results %}
-{# get the category name from the result's fifth element #}
 {% set title = results[4] %}
 <div class="cat-title">
-    <h1>Post #{{ results[5] }}</h1> <!-- post ID -->
+    <h1>Post #{{ results[5] }}</h1>
 </div>
 {% endif %}
+
 <div class="centered-content">
     <div class="home-wrapper">
-        <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
-            <div class="post-text">
-                <h2 class='category-box'>category: {{item[4]}} | {{item[5][10:]}}</h2><br>
-                <h1>{{item[0]}}</h1>
-                <h3>@{{item[2]}}</h3><br>
-                <h2>{{item[1]}}</h2>
-            </div>
-            {% if item[3] %}
-            <div class="post-img">
-                <img src="{{ item[3] }}" alt="{{ item[0] }}">
-            </div>
-            {% endif %}
-            {% set ns = namespace(postlikes=0, liked=False) %}
 
-            {% for row in likes %}
-            {% if row[1] == item[6] %}
-            {% set ns.postlikes = ns.postlikes + 1 %}
-            {% if row[0] == session['user_id'] %}
-            {% set ns.liked = True %}
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-
-            {% if session['username'] %}
-            {% if ns.liked %}
-            <form action="/unlike/{{ item[6] }}" method="POST">
-                <button type="submit" class="like-button">
-                    <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
-                </button>
-            </form>
-            {% else %}
-            <form action="/like/{{ item[6] }}" method="POST">
-                <button type="submit" class="like-button">
-                    <h1>♥</h1>{{ ns.postlikes }}
-                </button>
-            </form>
-            {% endif %}
-            {% else %}
-            <form action="/login">
-                <button type="submit" class="like-button">
-                    <h1>♥</h1>{{ ns.postlikes }}
-                </button>
-            </form>
-            {% endif %}
-        </a>
-        <div class="comment-icon">
-            hey
-            <div class="comment-box">
-                <input class="text" id="comment" placeholder="Add a comment..." required>
-                <button type="submit" class="chat-send-button">Post</button>
-            </div>
-        </div>
-
-        {# Only show replied if there actually is one #}
         {% if item[7] %}
         {% for post in results %}
         {% if post[6] == item[7] %}
@@ -80,14 +27,81 @@
         {% endfor %}
         {% endif %}
 
-        {% for comment in comments %}
-        {% if comment[1] == item[6] %}
-        <p>{{ comment[2] }}</p>
+        <a href="{{ url_for('newpost', id=item[6]) }}" class="post-container">
+            <div class="post-text">
+                <h2 class='category-box'>category: {{item[4]}} | {{item[5][10:]}}</h2><br>
+                <h1>{{item[0]}}</h1>
+                <h3>@{{item[2]}}</h3><br>
+                <h2>{{item[1]}}</h2>
+            </div>
+
+            {% if item[3] %}
+            <div class="post-img">
+                <img src="{{ item[3] }}" alt="{{ item[0] }}">
+            </div>
+            {% endif %}
+
+            {% set ns = namespace(postlikes=0, liked=False) %}
+
+            {% for row in likes %}
+            {% if row[1] == item[6] %}
+            {% set ns.postlikes = ns.postlikes + 1 %}
+            {% if row[0] == session['user_id'] %}
+            {% set ns.liked = True %}
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+
+            {% if session['username'] %}
+                {% if ns.liked %}
+                <form action="/unlike/{{ item[6] }}" method="POST">
+                    <button type="submit" class="like-button">
+                        <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
+                    </button>
+                </form>
+                {% else %}
+                <form action="/like/{{ item[6] }}" method="POST">
+                    <button type="submit" class="like-button">
+                        <h1>♥</h1>{{ ns.postlikes }}
+                    </button>
+                </form>
+                {% endif %}
+            {% else %}
+            <form action="/login">
+                <button type="submit" class="like-button">
+                    <h1>♥</h1>{{ ns.postlikes }}
+                </button>
+            </form>
+            {% endif %}
+        </a>
+
+        <form class="comment-box" method="POST">
+            <input class="text" name="comment" placeholder="Add a comment..." required>
+            <button type="submit" class="chat-send-button">Post</button>
+        </form>
+
+        {% if comments %}
+        <div class="special">
+            <div class="comments-content" id="commentsBox">
+                {% for comment in comments %}
+                <div class="comment">
+                    {{ comment[4] }}<br>@{{ comment[5] }} {{ comment[2] }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         {% endif %}
-        {% endfor %}
-
-
 
     </div>
 </div>
+
+<script>
+window.addEventListener("load", function () {
+    const box = document.getElementById("commentsBox");
+    if (box) {
+        box.scrollTop = box.scrollHeight;
+    }
+});
+</script>
+
 {% endblock %}
