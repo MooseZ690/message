@@ -10,11 +10,12 @@
             (@{{ username }})'s posts
         </h1>
         </img>
-
-        {% if following == True %}
-        <a class="follow-button" href="/unfollow/{{userid}}">Following</a>
-        {% else %}
-        <a class="follow-button" href="/follow/{{userid}}">Follow</a>
+        {% if session.get('username') != username %}
+            {% if following == True %}
+            <a class="follow-button" href="/unfollow/{{userid}}">Following</a>
+            {% else %}
+            <a class="follow-button" href="/follow/{{userid}}">Follow</a>
+            {% endif %}
         {% endif %}
     </div>
     {% if not results %}

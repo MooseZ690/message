@@ -2,30 +2,41 @@
 {% block body %}
 <div class="centered-content">
     <div class="admin-container">
-        <h1 class="cat-title">Admin panel</h1>
-        <br>
+        <h1 class="cat-title">Admin Panel</h1>
+
         <h2>Users</h2>
         {% for row in users %}
-        <p class="admin-users" ?>
-            @{{row[0]}}<br>
-            {{row[1]}}<br>
+        <p class="admin-users">
+            <strong>@{{ row[0] }}</strong><br>
+            {{ row[1] }}<br>
+            {% if row[3] in blacklist %}
+                <span style="color: red;">⛔ Blocked</span>
+            {% endif %}
             <button class="admin-users-button" style="margin-left:auto">
-                <a href="/userposts/{{row[0]}}">Profile</a>
+                <a href="/userposts/{{ row[0] }}">Profile</a>
             </button>
             <button class="admin-users-button">
-                <a href="/block/{{row[3]}}">Block</a>
+                {% if row[3] in blacklist %}
+                    <a href="/unblock/{{ row[3] }}">
+                        Unblock
+                    </a>
+                {% else %}
+                    <a href="/block/{{ row[3] }}">
+                        Block
+                    </a>
+                {% endif %}
             </button>
             <button class="admin-users-button">
-                <a href="/makeadmin/{{row[3]}}">Make Admin</a>
+                <a href="/makeadmin/{{ row[3] }}">Make Admin</a>
             </button>
         </p>
         {% endfor %}
-        <br>
-        <h2>Following rls</h2>--------------------------------------<br>
+
+        <h2>Following Relationships</h2>
+        <hr>
         {% for row in followers %}
-        <p>@{{row[1]}} &#8594 @{{row[0]}}</p>
+        <p>@{{ row[1] }} &#8594; @{{ row[0] }}</p>
         {% endfor %}
     </div>
 </div>
-
 {% endblock %}

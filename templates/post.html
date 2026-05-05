@@ -53,19 +53,19 @@
             {% endfor %}
 
             {% if session['username'] %}
-                {% if ns.liked %}
-                <form action="/unlike/{{ item[6] }}" method="POST">
-                    <button type="submit" class="like-button">
-                        <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
-                    </button>
-                </form>
-                {% else %}
-                <form action="/like/{{ item[6] }}" method="POST">
-                    <button type="submit" class="like-button">
-                        <h1>♥</h1>{{ ns.postlikes }}
-                    </button>
-                </form>
-                {% endif %}
+            {% if ns.liked %}
+            <form action="/unlike/{{ item[6] }}" method="POST">
+                <button type="submit" class="like-button">
+                    <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
+                </button>
+            </form>
+            {% else %}
+            <form action="/like/{{ item[6] }}" method="POST">
+                <button type="submit" class="like-button">
+                    <h1>♥</h1>{{ ns.postlikes }}
+                </button>
+            </form>
+            {% endif %}
             {% else %}
             <form action="/login">
                 <button type="submit" class="like-button">
@@ -73,17 +73,18 @@
                 </button>
             </form>
             {% endif %}
+            <button type="button" class="comment-toggle" onclick="toggleComments(this)">
+                Comments
+            </button>
         </a>
 
         {% if comments %}
-        <div class="special">
-            <div class="comments-content" id="commentsBox">
-                {% for comment in comments %}
-                <div class="comment">
-                    {{ comment[4] }}<br>@{{ comment[5] }} {{ comment[2] }}
-                </div>
-                {% endfor %}
+        <div class="comments-content" id="commentsBox">
+            {% for comment in comments %}
+            <div class="comment">
+                {{ comment[4] }}<br>@{{ comment[5] }} {{ comment[2] }}
             </div>
+            {% endfor %}
         </div>
         {% endif %}
 
@@ -96,12 +97,12 @@
 </div>
 
 <script>
-window.addEventListener("load", function () {
-    const box = document.getElementById("commentsBox");
-    if (box) {
-        box.scrollTop = box.scrollHeight;
-    }
-});
+    window.addEventListener("load", function () {
+        const box = document.getElementById("commentsBox");
+        if (box) {
+            box.scrollTop = box.scrollHeight;
+        }
+    });
 </script>
 
 {% endblock %}

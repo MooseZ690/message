@@ -82,77 +82,107 @@ likes = """
 # -----APP ROUTES-----#
 # --------------------#
 
-
-@app.route("/")  # creates the home route for the flask app
+@app.route("/", methods=("GET", "POST"))
 def home():
-    userssql = """
-        SELECT users.id, users.name
-        FROM users
-        ORDER BY users.id ASC;
-        """
-    # get user info
-    likes = """
-        SELECT liker_id, postid FROM likes;
-        """
-    # get all info from likes table
-    categories = """
-        SELECT * FROM cat;
-        """
-    # get all info from category table
-    likes = query_db(likes)
-    users = query_db(userssql)
-    results = query_db(all)
-    categories = query_db(categories)
-    id = results[0][6]
-    comments = """
-        SELECT * FROM comments WHERE postid = ?;
-        """
-    # get comments on posts
-    comments = query_db(comments, (id,))
-    return render_template(
-        "home.html",
-        results=results,
-        users=users,
-        comments=comments,
-        likes=likes,
-        categories=categories,
-        today=datetime.now().strftime("%Y-%m-%d"),
-    )  # sends the results to home.html, rendering the html file with the info from the database
+    if request.method == "POST":
+        comment_text = request.form.get("comment")
+        id = request.form.get("post_id")
+        if comment_text:
+            time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            db = get_db()
+            db.execute(
+                "INSERT INTO comments (postid, content, userid, time) VALUES (?, ?, ?, ?)",
+                (id, comment_text, session["user_id"], time),
+            )
+            db.commit()
+        return redirect(request.referrer)
+    else:
+        following = [row[0] for row in query_db(
+            "SELECT followed_id FROM following WHERE follower_id = ?;",
+            (session.get('user_id'),)
+        )]
 
+        placeholders = ", ".join("?" * len(following))
+        sql = f"""
+            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id
+            FROM posts
+            JOIN cat ON posts.categoryid = cat.id
+            JOIN users ON posts.user_id = users.id
+            WHERE users.id IN ({placeholders})
+            ORDER BY posts.time DESC;
+        """        
+        userssql = """
+            SELECT users.id, users.name
+            FROM users
+            ORDER BY users.id ASC;
+            """
+        likes_sql = """
+            SELECT liker_id, postid FROM likes;
+            """
+        categories_sql = """
+            SELECT * FROM cat;
+            """
+        comments_sql = """
+            SELECT comments.*, users.name AS username
+            FROM comments
+            JOIN users ON comments.userid = users.id
+            ORDER BY comments.time ASC;
+        """
+
+        likes = query_db(likes_sql)
+        users = query_db(userssql)
+        results = query_db(sql, following) if following else []
+        sidebarposts = query_db(all)
+        categories = query_db(categories_sql)
+        comments = query_db(comments_sql)
+
+        return render_template(
+            "home.html",
+            results=results,
+            sidebarposts=sidebarposts,
+            users=users,
+            comments=comments,
+            likes=likes,
+            categories=categories,
+            today=datetime.now().strftime("%Y-%m-%d"),
+        )
 
 @app.route("/admin")
 def admin():
-    followers = """
-    SELECT followed.name AS followed_name,
+    followers_sql = """
+        SELECT followed.name AS followed_name,
         follower.name AS follower_name
-    FROM following
-    JOIN users AS followed ON following.followed_id = followed.id
-    JOIN users AS follower ON following.follower_id = follower.id;
+        FROM following
+        JOIN users AS followed ON following.followed_id = followed.id
+        JOIN users AS follower ON following.follower_id = follower.id;
     """
-    admins = """SELECT users.id, users.name, users.email, users.imageurl
-    FROM admins
-    JOIN users ON admins.userid = users.id
-    ORDER BY admins.id DESC;
+    admins_sql = """
+        SELECT users.id, users.name, users.email, users.imageurl
+        FROM admins
+        JOIN users ON admins.userid = users.id
+        ORDER BY admins.id DESC;
     """
-    users = """SELECT users.name, users.email, users.imageurl, users.id
-                FROM users;
-            """
-    # return all relevant data from the follower, admin, and users tables
-    blacklist = "SELECT * FROM blacklist;"
+    users_sql = """
+        SELECT users.name, users.email, users.imageurl, users.id
+        FROM users;
+    """
+    blacklist_sql = "SELECT userid FROM blacklist;"
+    admins = query_db(admins_sql)
+    users = query_db(users_sql)
+    followers = query_db(followers_sql)
+    blacklist = [row[0] for row in query_db(blacklist_sql)]  # flat list of IDs
 
-    admins = query_db(admins)
-    users = query_db(users)
-    followers = query_db(followers)
-    blacklist = query_db(blacklist)
-    for row in admins:
-        if row[0] == session.get("user_id"):
-            # if the user is an admin, load the template
-            return render_template(
-                "admin.html", users=users, followers=followers, admins=admins
-            )
-    return redirect(url_for("login", notadmin=True))
-    # if the user isn't an admin, redirect to the login page
+    if not any(row[0] == session.get("user_id") for row in admins):
+        return redirect(url_for("login", notadmin=True))
+    #if the user isn't an admin, return to login page
 
+    return render_template(
+        "admin.html",
+        users=users,
+        followers=followers,
+        admins=admins,
+        blacklist=blacklist,
+    )
 
 @app.route("/makeadmin/<int:id>")
 def makeadmin(id):
@@ -498,6 +528,12 @@ def block(id):
             db.execute("INSERT INTO blacklist (userid) VALUES (?)", (id,))
             db.commit()
             return redirect(url_for("admin"))
+        else:
+            return render_template("404.html"), 404
+
+@app.route("/unblock/<int:id>")
+def unblock(id):
+    return ModuleNotFoundError
 
 
 @app.route("/unfollow/<int:id>")

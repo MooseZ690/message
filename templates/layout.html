@@ -93,7 +93,7 @@
         <div class="nav-right">
             <a href="/admin" class="top-button">Admin panel</a>
             {% if session.username %}
-            <a href="{{ url_for('userposts', username=session['username']) }}" class="top-button">My Posts</a>
+            <a href="{{ url_for('userposts', username=session['username']) }}" class="top-button">My Profile</a>
             <a href="/logout" class="top-button">Logout</a>
             {# if logged in, say so in navbar #}
             {% else %}
