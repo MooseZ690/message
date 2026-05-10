@@ -7,13 +7,13 @@
 
 :root {
     /* backgrounds */
-    --background: #1f1f1f;
+    --background: #0c1014;
     --box-background: rgba(255, 255, 255, 0.035);
     --post-background: #2a2a2a;
     --input-background: rgba(255, 255, 255, 0.05);
     /* fonts */
     --font: #e8e6e3;
-    --font-muted: #b0aca4;
+    --font-muted: #6f6f6f;
     /* element colours */
     --coloured-element: #4066ff;
     --error-red: #ef4444;
@@ -88,6 +88,7 @@ a {
     text-decoration: none;
     color: var(--font);
 }
+
 
 /* Navbar */
 
@@ -309,9 +310,9 @@ textarea::placeholder {
 
 .post-container{
     width: 46vw;
-    display: grid;
-    grid-template-columns: 4fr 1fr;
-    margin: 2em 2em 0 2em;
+    display: flex;
+    flex-direction: column;
+    margin: 0 2em 0 2em;
     background: var(--post-background);
     border: var(--box-border);
     padding: 1em;
@@ -320,18 +321,32 @@ textarea::placeholder {
 }
 
 
-.post-container h1,
-.post-container-home h1 {
-    font-weight: 700;
+.post-container h1{
     margin: 0;
 }
 
+.post-container .profile-image{
+    border-radius:50%;
+    width: 3em;
+    aspect-ratio: 1 / 1;
+}
 
-.post-img img {
-    width: 100%;
+.post-bottom-row{
+    display:flex;
+}
+
+.post-bottom-row .meta{
+    color:var(--muted-font);
+}
+
+.post-container .post-img {
     border-radius: 15px;
     aspect-ratio: 1/1;
     object-fit: cover;
+}
+
+.post-meta{
+    display: flex;
 }
 
 .centered-content {
@@ -467,30 +482,13 @@ textarea::placeholder {
 
 .reply-box {
     border-radius: var(--box-border-radius);
-    background: var(--box-background);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: var(--background);
     padding: 1em;
+    display:flex;
     font-size: var(--reply-font);
     margin: 1em 0 2em 0;
     color: var(--font);
     font-size: 0.7cqi;
-    min-width: 10vw;
-    max-width: 35vw;
-}
-
-.reply-decoration {
-    display: flex;
-    justify-content: center;
-    transform: translateX(-2em);
-}
-
-.line {
-    height: var(--reply-line);
-    width: var(--reply-line);
-    border-left: 3px solid rgba(255, 255, 255, 0.25);
-    border-bottom: 3px solid rgba(255, 255, 255, 0.25);
-    border-bottom-left-radius: 25px;
 }
 
 .newpost-reply {

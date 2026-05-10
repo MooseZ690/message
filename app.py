@@ -104,7 +104,7 @@ def home():
 
         placeholders = ", ".join("?" * len(following))
         sql = f"""
-            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id
+            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
             FROM posts
             JOIN cat ON posts.categoryid = cat.id
             JOIN users ON posts.user_id = users.id
@@ -112,7 +112,7 @@ def home():
             ORDER BY posts.time DESC;
         """        
         userssql = """
-            SELECT users.id, users.name
+            SELECT users.id, users.name, users.imageurl
             FROM users
             ORDER BY users.id ASC;
             """
@@ -195,23 +195,36 @@ def makeadmin(id):
     return redirect(request.referrer or "/")
 
 
-@app.route("/allposts")
+@app.route("/allposts", methods=("GET", "POST"))
 def allposts():
-    likes = """
-        SELECT liker_id, postid FROM likes;
-        """
-    # get all info from likes table
-    comments = "SELECT * FROM comments"
-    likes = query_db(likes)
-    results = query_db(all)
-    comments = query_db(comments)
-    return render_template(
-        "allposts.html",
-        results=results,
-        likes=likes,
-        comments=comments,
-        today=datetime.now().strftime("%Y-%m-%d"),
-    )
+    if request.method == "POST":
+        comment_text = request.form.get("comment")
+        id = request.form.get("post_id")
+        if comment_text:
+            time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            db = get_db()
+            db.execute(
+                "INSERT INTO comments (postid, content, userid, time) VALUES (?, ?, ?, ?)",
+                (id, comment_text, session["user_id"], time),
+            )
+            db.commit()
+        return redirect(request.referrer)
+    else:
+        likes = """
+            SELECT liker_id, postid FROM likes;
+            """
+        # get all info from likes table
+        comments = "SELECT * FROM comments"
+        likes = query_db(likes)
+        results = query_db(all)
+        comments = query_db(comments)
+        return render_template(
+            "allposts.html",
+            results=results,
+            likes=likes,
+            comments=comments,
+            today=datetime.now().strftime("%Y-%m-%d"),
+        )
 
 
 @app.route("/like/<int:id>", methods=["POST"])
@@ -337,8 +350,6 @@ def newpost(id=None):
         userid = session["user_id"]
         content = request.form["content"]
         imageurl = request.form["imageurl"]
-        if not imageurl:
-            imageurl = "https://operaparallele.org/wp-content/uploads/2023/09/Placeholder_Image.png"
         categoryid = request.form["categoryid"]
         # if replying, use the id from the URL
         reply = id if id else None
