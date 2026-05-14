@@ -14,81 +14,86 @@
             {% for post in results %}
             {% if post[6] == item[7] %}
             <div class="reply-decoration">
-                <div class="line"></div>
-                <div class="reply-box" href="{{ url_for('newpost', id=item[7]) }}">
+                <div class="reply-box">
                     <div class="post-text">
-                        <p><i>{{ post[2] }}</i></p>
+                        <h3 class="meta">Replying to <a class="meta"
+                                href='{{url_for("userposts", username=post[2]) }}'>{{post[2]}}</a></h3><br>
                         <b>{{ post[0] }}</b>
                         <p>{{ post[1] }}</p>
+                        <a class="meta" href="{{ url_for('newpost', id=item[7]) }}">Reply</a>
                     </div>
                 </div>
             </div>
             {% endif %}
             {% endfor %}
             {% endif %}
-
-            {% if item[3] %}
-            <img src="{{ item[3] }}" alt="{{ item[0] }}" class="post-img">
-            {% endif %}
             <div class="post-text">
-                <h1>{{item[0]}}</h1>
+                <h1>{{item[0]}}</h1><br>
                 <h2>{{item[1]}}</h2>
             </div>
+            {% if item[3] %}
+            <img src="{{ item[3] }}" class="post-img" alt="{{ item[0] }}">
+            {% endif %}
             {% set ns = namespace(postlikes=0, liked=False) %}
-            <span>
-                <h3 class="meta">{{item[5]}}</h3>
-                <a class="meta" href="{{ url_for('newpost', id=item[6]) }}">Reply</a>
+            <span style="display:flex; align-items:center; gap:10px;">
+
+                <h3 class="meta">{{ item[5] }}</h3>
+
+                <a class="meta" href="{{ url_for('newpost', id=item[6]) }}">
+                    Reply
+                </a>
+
+                {% for row in likes %}
+                {% if row[1] == item[6] %}
+                {% set ns.postlikes = ns.postlikes + 1 %}
+                {% if row[0] == session['user_id'] %}
+                {% set ns.liked = True %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+
+                {% if session['username'] %}
+                {% if ns.liked %}
+                <form action="/unlike/{{ item[6] }}" method="POST" style="margin:0;">
+                    <button type="submit" class="like-button meta">
+                        <span style="color:red;">♥</span> {{ ns.postlikes }}
+                    </button>
+                </form>
+                {% else %}
+                <form action="/like/{{ item[6] }}" method="POST" style="margin:0;">
+                    <button type="submit" class="like-button meta">
+                        ♥ {{ ns.postlikes }}
+                    </button>
+                </form>
+                {% endif %}
+                {% else %}
+                <form action="/login" style="margin:0;">
+                    <button type="submit" class="like-button meta">
+                        Like {{ ns.postlikes }}
+                    </button>
+                </form>
+                {% endif %}
+
             </span>
-            {% for row in likes %}
-            {% if row[1] == item[6] %}
-            {% set ns.postlikes = ns.postlikes + 1 %}
-            {% if row[0] == session['user_id'] %}
-            {% set ns.liked = True %}
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-            {% if session['username'] %}
-            {% if ns.liked %}
-            <form action="/unlike/{{ item[6] }}" method="POST">
-                <button type="submit" class="like-button">
-                    <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
-                </button>
-            </form>
-            {% else %}
-            <form action="/like/{{ item[6] }}" method="POST">
-                <button type="submit" class="like-button">
-                    <h1>♥</h1>{{ ns.postlikes }}
-                </button>
-            </form>
-            {% endif %}
-            {% else %}
-            <form action="/login">
-                <button type="submit" class="like-button">
-                    <h1>♥</h1>{{ ns.postlikes }}
-                </button>
-            </form>
-            {% endif %}
-        </div>
-
-
-
-        {% if comments %}
-        <div class="comments-content" id="commentsBox">
-            {% for comment in comments %}
-            {% if comment[1] == item[6] %}
-            <div class="comment">
-                {{ comment[4] }}<br>@{{ comment[5] }} {{ comment[2] }}
+            {% if comments %}
+            <div style="max-height: 256px; overflow-y: auto; scrollbar-width: none;" id="commentsBox">
+                {% for comment in comments %}
+                {% if comment[1] == item[6] %}
+                <div class="comment">
+                    {{ comment[4] }}<br>@{{ comment[5] }} {{ comment[2] }}
+                </div>
+                {% endif %}
+                {% endfor %}
             </div>
             {% endif %}
-            {% endfor %}
-        </div>
-        {% endif %}
 
-        <form class="comment-box" method="POST">
-            <input class="text" name="comment" placeholder="Add a comment..." required>
-            <button type="submit" class="chat-send-button">Post</button>
-            <input type="hidden" name="post_id" value="{{ item[6] }}">
-        </form>
+            <form class="comment" method="POST">
+                <input class="text" name="comment" placeholder="Add a comment..." required>
+                <button type="submit" style="display:none">Post</button>
+                <input type="hidden" name="post_id" value="{{ item[6] }}">
+            </form>
+
+        </div>
     </div>
     {% endfor %}
 </div>

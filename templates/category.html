@@ -3,7 +3,7 @@
 <div class="centered-content">
     <h1>{{ cat[0][0] }}</h1>
     {% for item in results %}
-    <a href="{{ url_for('post', id=item[5]) }}" class="post-container">
+    <div class="post-container">
         <!-- Puts the post in a clickable centered element -->
         <div class="post-text">
             <h2 class='category-box'>category: {{item[4]}} | {{item[6][10:]}}</h2><br>
@@ -47,7 +47,7 @@
             </button>
         </form>
         {% endif %}
-    </a>
+    </div>
 
     {# Only show reply if there actually is one #}
     {% if item[7] is not none %}

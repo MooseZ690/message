@@ -2,7 +2,7 @@
 {% block body %}
 
 <div class="centered-content">
-    <div class="userposts-header">
+    <div style="justify-content:center;" class="userposts-header">
         <img src="{{profilepic}}" alt="profile picture">
         <h1>
             {% if username == session.get('username') %}
@@ -27,7 +27,7 @@
         <div class="home-wrapper">
             <div class="post-container">
                 <a class="post-meta" href="/userposts/{{item[2]}}">
-                    <img class="profile-image" src="{{item[10]}}" alt="profile picture">
+                    <img class="profile-image" src="{{item[9]}}" alt="profile picture">
                     <h2>&nbsp;@{{item[2]}}</h2>
                 </a>
                 {# Only show reply if there actually is one #}

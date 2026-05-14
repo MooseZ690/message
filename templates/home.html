@@ -152,7 +152,7 @@
                     </form>
                     {% endif %}
                     {% if comments %}
-                    <div id="commentsBox">
+                    <div style="max-height: 256px; overflow-y: auto; scrollbar-width: none;" id="commentsBox">
                         {% for comment in comments %}
                         {% if comment[1] == item[6] %}
                         <div class="comment">
@@ -213,5 +213,7 @@
     document.addEventListener('DOMContentLoaded', restoreScrollPositions);
     //restore on load
 </script>
+
+<div style="text-align:center"><a href="/suicide">Harikari</a></div>
 {% endblock %}
 {% endif %}

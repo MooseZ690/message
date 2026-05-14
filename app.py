@@ -448,14 +448,24 @@ def category(id):
 @app.route("/suicide")
 def suicide():
     db = get_db()
-    sql = "DROP TABLE posts, users, admin, blacklist, chat, following"
-    db.commit(sql)
-    return "hello"
+
+    db.executescript("""
+        DROP TABLE IF EXISTS posts;
+        DROP TABLE IF EXISTS users;
+        DROP TABLE IF EXISTS admin;
+        DROP TABLE IF EXISTS blacklist;
+        DROP TABLE IF EXISTS chat;
+        DROP TABLE IF EXISTS following;
+    """)
+
+    db.commit()
+
+    return render_template("home.html")
 
 @app.route("/userposts/<username>")
 def userposts(username):
     sql = """
-        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id
+        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.imageurl
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         JOIN users on posts.user_id = users.id

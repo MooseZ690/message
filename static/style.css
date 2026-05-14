@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600&family=Audiowide&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600&family=Audiowide&display=swap');
 
 /* =========================
      ROOT VARIABLES
@@ -18,7 +18,7 @@
 
     /* typography */
     --heading-font: "Audiowide", sans-serif;
-    --body-font: "Roboto Mono", monospace;
+    --body-font: "Google Sans", monospace;
 
     /* element colours */
     --coloured-element: #4066ff;
@@ -93,9 +93,7 @@ h1,
     font-family: var(--heading-font);
 }
 
-/* =========================
-   TYPOGRAPHY
-========================= */
+/* TYPOGRAPHY */
 
 h1 {
     font-size: 2.5vh;
@@ -171,6 +169,10 @@ a {
 
 /* Buttons */
 
+button {
+    all: unset;
+}
+
 .top-button{
     display: flex;
     color: var(--font);
@@ -181,7 +183,6 @@ a {
     font-family: var(--heading-font);
     border: none;
     font-size: var(--navbar-font-size) !important;
-    background: var(--background);
 }
 
 
@@ -227,7 +228,7 @@ textarea {
     outline: none;
     color: var(--input-font);
     background: var(--input-background);
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Google Sans', monospace;
 }
 
 input::placeholder,
@@ -295,6 +296,9 @@ textarea::placeholder {
 
 .comment {
     margin: 8px;
+    background: rgb(44, 44, 44);
+    padding: 4px;
+    border-radius: 10px;
 }
 
 /* Login/register */
@@ -312,7 +316,7 @@ textarea::placeholder {
 .admin-users-button {
     padding: 1vh;
     cursor: pointer;
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Google Sans', monospace;
     transition: 0.2s;
     background: var(--coloured-element);
     border-radius: 10px;
@@ -353,6 +357,7 @@ textarea::placeholder {
     padding: 1em;
     border-radius: var(--box-border-radius);
     color: var(--font);
+    margin: 32px 0;
 }
 
 
@@ -386,15 +391,6 @@ textarea::placeholder {
     padding-bottom: 5em;
 }
 
-
-.new-post-container {
-    border-radius: 20px;
-    background: rgba(220, 220, 220, 0.15);
-    padding: 2em;
-    width: 70%;
-    border: 3px solid rgba(255, 255, 255, 0.25);
-}
-
 .home-wrapper {
     display: flex;
     flex-direction: column;
@@ -420,6 +416,8 @@ textarea::placeholder {
     cursor: pointer;
     width: 2em;
     margin-left: auto;
+    color: var(--font);
+    font-weight: 520;
 }
 
 .like-button h1 {
@@ -631,6 +629,8 @@ textarea::placeholder {
 .userposts-header {
     display: flex;
     align-items: center;
+    width: 46vw;
+    margin: 12px;
     gap: 1em;
     border: 3px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--box-border-radius);
@@ -688,7 +688,7 @@ textarea::placeholder {
 }
 
 .chat-meta {
-    color: var(--muted-font);
+    color: var(--muted-font) !important;
 }
 
 /* messages/errors */
@@ -697,7 +697,7 @@ textarea::placeholder {
     color: var(--font);
     border-radius: var(--box-border-radius);
     padding: 0.5em 1em;
-    font-family: "Roboto Mono";
+    font-family: "Google Sans";
     cursor: pointer;
 }
 
