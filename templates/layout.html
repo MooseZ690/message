@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Outfit">
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <link rel="icon" href="">
     <title>Messages</title>
 </head>
 
@@ -14,55 +15,35 @@
     <nav class="navbar">
         <!-- Home -->
         <div class="left-navbar-group">
-            {% if request.path == "/" %}
-            {% set button = 'top-button-active' %}
-            {% else %}
-            {% set button = 'top-button' %}
-            {% endif %}
-            <a href="/" class="{{button}}">
-                <div class="title">Home</div>
+            <a href="/" class="top-button">
+                <div class="title">HOME</div>
             </a>
             <!-- mew post -->
-            {% if request.path == "/newpost" %}
-            {% set button = 'top-button-active' %}
-            {% else %}
-            {% set button = 'top-button' %}
-            {% endif %}
-            <a href="/newpost" class="{{button}}">
-                <svg viewBox="0 0 24 24" width="20" height="20">
+            <a href="/newpost" class="top-button">
+                <svg viewBox="0 0 24 24" width="26" height="26">
                     <path
                         d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 C22.8132856,11.0605983 22.3423792,10.4322088 21.714504,10.118014 L4.13399899,1.16346272 C3.34915502,0.9 2.40734225,1.00636533 1.77946707,1.4776575 C0.994623095,2.10604706 0.8376543,3.0486314 1.15159189,3.99121575 L3.03521743,10.4322088 C3.03521743,10.5893061 3.34915502,10.7464035 3.50612381,10.7464035 L16.6915026,11.5318905 C16.6915026,11.5318905 17.1624089,11.5318905 17.1624089,12.0031827 C17.1624089,12.4744748 16.6915026,12.4744748 16.6915026,12.4744748 Z"
                         fill="currentColor" />
                 </svg>
-                &nbsp;New post
+                &nbsp;NEW POST
             </a>
 
             <!-- all posts -->
-            {% if request.path == "/allposts" %}
-            {% set button = 'top-button-active' %}
-            {% else %}
-            {% set button = 'top-button' %}
-            {% endif %}
-            <a href="/allposts" class="{{button}}">
-                <svg viewBox="0 0 24 24" width="20" height="20">
+            <a href="/allposts" class="top-button">
+                <svg viewBox="0 0 24 24" width="26" height="26">
                     <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                 </svg>
-                &nbsp;All posts
+                &nbsp;ALL POSTS
             </a>
 
             <!-- categories dropdown -->
-            {% if "/category" in request.path %}
-            {% set button = 'top-button-active' %}
-            {% else %}
-            {% set button = 'top-button' %}
-            {% endif %}
             <div class="dropdown">
-                <button class="{{button}}">
-                    <svg viewBox="0 0 24 24" width="20" height="20">
+                <button class="top-button">
+                    <svg viewBox="0 0 24 24" width="26" height="26">
                         <path d="M3 7v14h18V7H12l-2-3H4z" stroke="currentColor" stroke-width="2" fill="none"
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                    &nbsp;Posts
+                    &nbsp;CATEGORY
                 </button>
                 <div class="dropdown-content">
                     <a href="/category/0">Misc</a>
@@ -77,31 +58,32 @@
             </div>
 
             <!-- live chat -->
-            {% if request.path == "/livechat" %}
-            {% set button = 'top-button-active' %}
-            {% else %}
-            {% set button = 'top-button' %}
-            {% endif %}
-            <a href="/livechat" class="{{button}}">
-                <svg viewBox="0 0 24 24" width="20" height="20">
+            <a href="/livechat" class="top-button">
+                <svg viewBox="0 0 24 24" width="26" height="26">
                     <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                 </svg>
-                &nbsp;Live chat
+                &nbsp;LIVE CHAT
             </a>
 
+            <form action="/search" method="POST">
+                <div class="search">
+                    <input type="text" name="search" class="searchbar" placeholder="Search here...">
+                    <button type="submit" style="display:none"></button>
+                </div>
+            </form>
         </div>
         <div class="nav-right">
-            <a href="/admin" class="top-button">Admin panel</a>
+            <a href="/admin" class="top-button">ADMIN</a>
             {% if session.username %}
-            <a href="{{ url_for('userposts', username=session['username']) }}" class="top-button">My Profile</a>
-            <a href="/logout" class="top-button">Logout</a>
+            <a href="{{ url_for('userposts', username=session['username']) }}" class="top-button">PROFILE</a>
+            <a href="/logout" class="top-button">LOGOUT</a>
             {# if logged in, say so in navbar #}
             {% else %}
-            <a href="/login" class="top-button">Login</a>
-            <a href="/register" class="top-button">Register</a>
+            <a href="/login" class="top-button">LOGIN</a>
+            <a href="/register" class="top-button">REGISTER</a>
             {% endif %}
             <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <!-- lightbulb svg for switching light/dark modes -->
                     <path d="M9 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                     <path
