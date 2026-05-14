@@ -646,13 +646,6 @@ textarea::placeholder {
 }
 
 /* live chat styling */
-.chat-input-box {
-    display: inline;
-    background: var(--box-background);
-    border: var(--box-border);
-    border-radius: var(--box-border-radius);
-    padding: 1em;
-}
 
 .chat-centered-content {
     display: flex;

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>What's up diddy blud</title>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: black;
+}
+
+/* ===== BACKGROUND CHAOS ===== */
+body {
+    animation: bgPulse 2s infinite;
+}
+
+/* scanlines */
+body::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.06),
+        rgba(255,255,255,0.06) 1px,
+        transparent 2px,
+        transparent 4px
+    );
+    mix-blend-mode: overlay;
+    animation: scanMove 0.08s infinite linear;
+    pointer-events: none;
+}
+
+/* noise layer */
+body::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+    opacity: 0.25;
+    mix-blend-mode: screen;
+    animation: noiseFlicker 0.12s infinite;
+    pointer-events: none;
+}
+
+/* ===== GLYPH TEXT ===== */
+#gibberish {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: monospace;
+    font-size: 3rem;
+    color: #b06cff;
+    letter-spacing: 6px;
+    text-align: center;
+    text-shadow:
+        0 0 5px #7a3cff,
+        0 0 20px #b06cff,
+        0 0 40px #2b0a5a;
+    animation: float 1.2s infinite ease-in-out, jitter 0.08s infinite;
+}
+
+/* RGB ghost layers */
+#gibberish::before,
+#gibberish::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+#gibberish::before {
+    color: red;
+    animation: rgb1 0.1s infinite;
+}
+
+#gibberish::after {
+    color: cyan;
+    animation: rgb2 0.09s infinite;
+}
+
+/* ===== KEYFRAMES ===== */
+
+@keyframes float {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(calc(-50% + 2px), calc(-50% - 6px)) scale(1.03); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes jitter {
+    0% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(180deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes scanMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+}
+
+@keyframes noiseFlicker {
+    0%,100% { opacity: 0.2; }
+    50% { opacity: 0.35; }
+}
+
+@keyframes bgPulse {
+    0%,100% { background: #000; }
+    50% { background: #070010; }
+}
+
+@keyframes rgb1 {
+    0% { transform: translate(2px, -2px); }
+    50% { transform: translate(6px, 2px); }
+    100% { transform: translate(-2px, 3px); }
+}
+
+@keyframes rgb2 {
+    0% { transform: translate(-2px, 2px); }
+    50% { transform: translate(-6px, -3px); }
+    100% { transform: translate(2px, -2px); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="gibberish" data-text="⟡⟟⟊⟐⟒">⟡⟟⟊⟐⟒</div>
+
+<script>
+const el = document.getElementById("gibberish");
+
+/* enchantment glyph pool */
+const glyphs = [
+"ᚠ","ᚢ","ᚦ","ᚨ","ᚱ","ᚲ","ᚷ","ᚹ","ᚺ","ᚾ",
+"ᛁ","ᛃ","ᛇ","ᛈ","ᛉ","ᛋ","ᛏ","ᛒ","ᛖ","ᛗ",
+"ᛚ","ᛜ","ᛟ","ᛞ","⟐","⟡","⟟","⟊","⟠","✧","✶"
+];
+
+function makeGlyphs() {
+    let len = Math.floor(Math.random() * 22) + 6;
+    let out = "";
+
+    for (let i = 0; i < len; i++) {
+        out += glyphs[Math.floor(Math.random() * glyphs.length)];
+    }
+
+    return out;
+}
+
+/* constant morphing text */
+setInterval(() => {
+    const text = makeGlyphs();
+    el.textContent = text;
+    el.setAttribute("data-text", text);
+}, 50);
+
+/* occasional corruption burst */
+setInterval(() => {
+    document.body.style.filter =
+        `hue-rotate(${Math.random() * 360}deg) contrast(1.5) saturate(2)`;
+}, 120);
+
+/* screen micro-shake */
+setInterval(() => {
+    document.body.style.transform =
+        `translate(${Math.random()*4-2}px, ${Math.random()*4-2}px)`;
+}, 40);
+</script>
+
+</body>
+</html>

