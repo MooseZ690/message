@@ -10,7 +10,10 @@
             <strong>@{{ row[0] }}</strong><br>
             {{ row[1] }}<br>
             {% if row[3] in blacklist %}
-                <span style="color: red;">⛔ Blocked</span>
+                <span style="color: red;">⬤ Blocked</span>
+            {% endif %}
+            {% if row[3] in admins2 %}
+                <span style="color: green;">⬤ Admin</span>
             {% endif %}
             <button class="admin-users-button" style="margin-left:auto">
                 <a href="/userposts/{{ row[0] }}">Profile</a>
@@ -27,9 +30,14 @@
                 {% endif %}
             </button>
             <button class="admin-users-button">
-                <a href="/makeadmin/{{ row[3] }}">Make Admin</a>
+                {% if row[3] in admins2 %}
+                    <a href="/removeadmin/{{ row[3] }}">Remove Admin</a>
+                {% else %}
+                    <a href="/makeadmin/{{ row[3] }}">Make Admin</a>
+                {% endif %}
             </button>
         </p>
+        <div style="border-bottom: 1px solid rgba(193, 193, 193, 0.744)"></div>
         {% endfor %}
 
         <h2>Following Relationships</h2>

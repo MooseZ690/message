@@ -75,15 +75,18 @@
         {% if session.get('username') is not none %}
         <h1>Hi, {{session.get('username')}}!</h1>
         {% else %}
-        <h1>Hi, guest!</h1>
+        <h1>Not much going on here...</h1>
         <span>
             <a href="/login">login </a>
             or
-            <a href="/register"> register here</a>
+            <a href="/register"> register here </a>
+            to see your friend's posts!
         </span>
         {% endif %}
         {% set posts = results|length %}
-        <h2>{{ posts }} posts from following</h2>
+        {% if posts %}
+        <p>{{ posts }} posts from people you follow</p>
+        {% endif %}
         <div class="inline" id="postbox">
             {% for item in results %}
             <div class="home-wrapper">
@@ -118,39 +121,46 @@
                     <img src="{{ item[3] }}" class="post-img" alt="{{ item[0] }}">
                     {% endif %}
                     {% set ns = namespace(postlikes=0, liked=False) %}
-                    <span>
-                        <h3 class="meta">{{item[5]}}</h3>
-                        <a class="meta" href="{{ url_for('newpost', id=item[6]) }}">Reply</a>
+                    <span style="display:flex; align-items:center; gap:10px;">
+
+                        <h3 class="meta">{{ item[5] }}</h3>
+
+                        <a class="meta" href="{{ url_for('newpost', id=item[6]) }}">
+                            Reply
+                        </a>
+
+                        {% for row in likes %}
+                        {% if row[1] == item[6] %}
+                        {% set ns.postlikes = ns.postlikes + 1 %}
+                        {% if row[0] == session['user_id'] %}
+                        {% set ns.liked = True %}
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if session['username'] %}
+                        {% if ns.liked %}
+                        <form action="/unlike/{{ item[6] }}" method="POST" style="margin:0;">
+                            <button type="submit" class="like-button meta">
+                                <span style="color:red;">♥</span> {{ ns.postlikes }}
+                            </button>
+                        </form>
+                        {% else %}
+                        <form action="/like/{{ item[6] }}" method="POST" style="margin:0;">
+                            <button type="submit" class="like-button meta">
+                                ♥ {{ ns.postlikes }}
+                            </button>
+                        </form>
+                        {% endif %}
+                        {% else %}
+                        <form action="/login" style="margin:0;">
+                            <button type="submit" class="like-button meta">
+                                Like {{ ns.postlikes }}
+                            </button>
+                        </form>
+                        {% endif %}
+
                     </span>
-                    {% for row in likes %}
-                    {% if row[1] == item[6] %}
-                    {% set ns.postlikes = ns.postlikes + 1 %}
-                    {% if row[0] == session['user_id'] %}
-                    {% set ns.liked = True %}
-                    {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                    {% if session['username'] %}
-                    {% if ns.liked %}
-                    <form action="/unlike/{{ item[6] }}" method="POST">
-                        <button type="submit" class="like-button">
-                            <h1 style="color:red;">♥</h1>{{ ns.postlikes }}
-                        </button>
-                    </form>
-                    {% else %}
-                    <form action="/like/{{ item[6] }}" method="POST">
-                        <button type="submit" class="like-button">
-                            <h1>♥</h1>{{ ns.postlikes }}
-                        </button>
-                    </form>
-                    {% endif %}
-                    {% else %}
-                    <form action="/login">
-                        <button type="submit" class="like-button">
-                            <h1>♥</h1>{{ ns.postlikes }}
-                        </button>
-                    </form>
-                    {% endif %}
                     {% if comments %}
                     <div style="max-height: 256px; overflow-y: auto; scrollbar-width: none;" id="commentsBox">
                         {% for comment in comments %}
@@ -212,8 +222,7 @@
 
     document.addEventListener('DOMContentLoaded', restoreScrollPositions);
     //restore on load
+    
 </script>
-
-<div style="text-align:center"><a href="/glitch">dont press this</a></div>
 {% endblock %}
 {% endif %}

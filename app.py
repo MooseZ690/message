@@ -82,7 +82,6 @@ likes = """
 # -----APP ROUTES-----#
 # --------------------#
 
-
 @app.route("/", methods=("GET", "POST"))
 def home():
     if request.method == "POST":
@@ -106,14 +105,15 @@ def home():
             )
         ]
 
-        placeholders = ", ".join("?" * len(following))
+        follow = ", ".join("?" * len(following))
+        #flexible amount of ?s in the sql statement
         sql = f"""
             SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
             FROM posts
             JOIN cat ON posts.categoryid = cat.id
             JOIN users ON posts.user_id = users.id
-            WHERE users.id IN ({placeholders})
-            ORDER BY posts.time DESC;
+            WHERE users.id IN ({follow})
+            ORDER BY posts.time DESC;       
         """
         userssql = """
             SELECT users.id, users.name, users.imageurl
@@ -176,6 +176,7 @@ def admin():
     users = query_db(users_sql)
     followers = query_db(followers_sql)
     blacklist = [row[0] for row in query_db(blacklist_sql)]  # flat list of IDs
+    admins2 = [row[0] for row in query_db(admins_sql)]  # flat list of IDs for admin button checking
 
     if not any(row[0] == session.get("user_id") for row in admins):
         return redirect(url_for("login", notadmin=True))
@@ -187,54 +188,78 @@ def admin():
         followers=followers,
         admins=admins,
         blacklist=blacklist,
+        admins2=admins2
     )
 
 
 @app.route("/makeadmin/<int:id>")
 def makeadmin(id):
-    admin = query_db("SELECT 1 FROM admins WHERE userid = ? LIMIT 1;", (id,))
-    if admin:
+    if query_db("SELECT 1 FROM admins WHERE userid = ? LIMIT 1;", (id,)):
         return redirect(request.referrer or "/")
     db = get_db()
     db.execute("INSERT INTO admins (userid) VALUES (?);", (id,))
     db.commit()
-    return redirect(request.referrer or "/")
+    return redirect(request.referrer)
 
+@app.route("/removeadmin/<int:id>")
+def removeadmin(id):
+    if query_db("SELECT 1 FROM admins WHERE userid = ?", (id,)):
+    #if user is admin
+        db = get_db()
+        db.execute(
+            """ DELETE FROM admins WHERE userid = ?; """, (id,)
+        )
+        db.commit()
+    return redirect(request.referrer)
 
 @app.route("/search", methods=("GET", "POST"))
 def search():
-    search = request.form.get("search")
+    search = request.form.get("search", "")
+
+    db = get_db()
+
+    # Handle comment submission
     if request.method == "POST":
         comment_text = request.form.get("comment")
-        id = request.form.get("post_id")
+        post_id = request.form.get("post_id")
+
         if comment_text:
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            db = get_db()
+
             db.execute(
-                "INSERT INTO comments (postid, content, userid, time) VALUES (?, ?, ?, ?)",
-                (id, comment_text, session["user_id"], time),
+                """
+                INSERT INTO comments (postid, content, userid, time)
+                VALUES (?, ?, ?, ?)
+                """,
+                (post_id, comment_text, session["user_id"], time),
             )
             db.commit()
-        return redirect(request.referrer)
+
+    # Search query
     sql = """
-            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
-            FROM posts
-            JOIN cat ON posts.categoryid = cat.id
-            JOIN users ON posts.user_id = users.id
-            WHERE posts.title LIKE ?
-            OR posts.content LIKE ?
-            OR users.name LIKE ?
-            OR cat.name LIKE ?
-            ORDER BY posts.time DESC;
-        """
-    likes = "SELECT liker_id, postid FROM likes;"
-    comments = "SELECT * FROM comments"
-    
+        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
+        FROM posts  
+        JOIN cat ON posts.categoryid = cat.id
+        JOIN users ON posts.user_id = users.id
+        WHERE posts.title LIKE ?
+        OR posts.content LIKE ?
+        OR users.name LIKE ?
+        OR cat.name LIKE ?
+        ORDER BY posts.time DESC;
+    """
+
     term = f"%{search}%"
     results = query_db(sql, (term, term, term, term))
-    likes = query_db(likes)
-    comments = query_db(comments)
-    return render_template("search.html", comments=comments, likes=likes, results=results, search=search)
+    likes = query_db("SELECT liker_id, postid FROM likes;")
+    comments = query_db("SELECT * FROM comments")
+
+    return render_template(
+        "search.html",
+        comments=comments,
+        likes=likes,
+        results=results,
+        search=search,
+    )
 
 
 @app.route("/allposts", methods=("GET", "POST"))
@@ -347,10 +372,7 @@ def login():
                 "login.html", incorrectuser=True, faileduser=username
             )
         # if there is none
-        blacklisted = query_db(
-            "SELECT 1 FROM blacklist WHERE userid = ?", (user[0],), one=True
-        )
-        if blacklisted:
+        if query_db("SELECT 1 FROM blacklist WHERE userid = ?", (user[0],)):
             return render_template("login.html", blacklisted=True)
         # if the user has been blacklisted, return them to the login page
         if not check_password_hash(user[2], password):
@@ -382,6 +404,9 @@ def newpost(id=None):
     JOIN users ON posts.user_id = users.id
     ORDER BY posts.time DESC;
     """
+
+    user = "SELECT users.imageurl, users.name, users.id FROM users WHERE users.id = ?;"
+    user = query_db(user, (session.get("user_id"),))
     # get all relevant info from posts table
     results = query_db(sql)
 
@@ -411,7 +436,11 @@ def newpost(id=None):
         categories = query_db(sql)
 
         return render_template(
-            "newpost.html", categories=categories, reply_id=id, results=results
+            "newpost.html",
+            categories=categories,
+            reply_id=id,
+            results=results,
+            user=user,
         )
 
 
@@ -445,49 +474,71 @@ def category(id):
         "category.html", results=result, allposts=allposts, cat=cat, likes=likes
     )
 
-@app.route("/glitch")
-def suicide():
-    return render_template("glitch.html")
-
-@app.route("/userposts/<username>")
+@app.route("/userposts/<username>", methods = ["GET", "POST"])
 def userposts(username):
-    sql = """
-        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.imageurl
-        FROM posts
-        JOIN cat ON posts.categoryid = cat.id
-        JOIN users on posts.user_id = users.id
-        WHERE users.name = ?
-        ORDER BY posts.time DESC; 
-    """
-    user_sql = """
-        SELECT users.id, users.imageurl, users.name
-        FROM users
-        WHERE users.name = ?;
-    """
-    followers_sql = """
-        SELECT follower_id, followed_id
-        FROM following;
-    """
-    followers = query_db(followers_sql)
-    userdb = query_db(user_sql, (username,))
-    results = query_db(sql, (username,))
-    if not userdb:
-        return "User not found"
-    profilepic = userdb[0][1]
-    userid = userdb[0][0]
-    following = False
-    for row in followers:
-        if row[0] == session.get("user_id") and row[1] == userid:
-            following = True
-            break
-    return render_template(
-        "userposts.html",
-        results=results,
-        profilepic=profilepic,
-        username=username,
-        userid=userid,
-        following=following,
-    )
+    if request.method == "POST":
+        comment_text = request.form.get("comment")
+        id = request.form.get("post_id")
+        if comment_text:
+            time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            db = get_db()
+            db.execute(
+                "INSERT INTO comments (postid, content, userid, time) VALUES (?, ?, ?, ?)",
+                (id, comment_text, session["user_id"], time),
+            )
+            db.commit()
+        return redirect(request.referrer)
+    else:
+        sql = """
+            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
+            FROM posts
+            JOIN cat ON posts.categoryid = cat.id
+            JOIN users on posts.user_id = users.id
+            WHERE users.name = ?
+            ORDER BY posts.time DESC; 
+        """
+        user_sql = """
+            SELECT users.id, users.imageurl, users.name
+            FROM users
+            WHERE users.name = ?;
+        """
+        followers_sql = """
+            SELECT follower_id, followed_id
+            FROM following;
+        """
+        likes = """
+        SELECT liker_id, postid FROM likes;"""
+        
+        comments_sql = """
+            SELECT comments.*, users.name AS username
+            FROM comments
+            JOIN users ON comments.userid = users.id
+            ORDER BY comments.time ASC;
+        """
+        followers = query_db(followers_sql)
+        userdb = query_db(user_sql, (username,))
+        results = query_db(sql, (username,))
+        likes = query_db(likes)
+        comments = query_db(comments_sql)
+        if not userdb:
+            return "User not found"
+        profilepic = userdb[0][1]
+        userid = userdb[0][0]
+        following = False
+        for row in followers:
+            if row[0] == session.get("user_id") and row[1] == userid:
+                following = True
+                break
+        return render_template(
+            "userposts.html",
+            results=results,
+            profilepic=profilepic,
+            username=username,
+            userid=userid,
+            following=following,
+            likes=likes, 
+            comments=comments
+        )
 
 
 @app.route("/follow/<followed_id>")
@@ -509,31 +560,32 @@ def follow(followed_id):
     db.commit()
     return redirect(request.referrer)
 
-
-# ADMIN ACTIONS
-
+#=================#
+#==ADMIN ACTIONS==#
+#=================#
 
 @app.route("/block/<int:id>")
 def block(id):
-    admin_check = query_db("SELECT userid FROM admins")
-    for row in admin_check:
-        if session.get("user_id") == row[0]:
-            db = get_db()
-            existing = query_db(
-                "SELECT * FROM blacklist WHERE userid = ?", (id,), one=True
-            )
-            if existing:
-                return redirect(url_for("admin"))
-            db.execute("INSERT INTO blacklist (userid) VALUES (?)", (id,))
-            db.commit()
-            return redirect(url_for("admin"))
-        else:
-            return render_template("404.html"), 404
+    if query_db("SELECT * FROM admins WHERE userid = ?", (session.get("user_id"),)):
+        db = get_db()
+        #connect to db if user is admin
+        db.execute("INSERT INTO blacklist (userid) VALUES (?)", (id,))
+        #adds target user to blacklist table
+        db.commit()
+        return redirect(url_for("admin"))
+    else:
+        return render_template("404.html"), 403
 
 
 @app.route("/unblock/<int:id>")
 def unblock(id):
-    return ModuleNotFoundError
+    if query_db(f"SELECT * FROM admins WHERE userid = ?", (id,)):
+        db = get_db()
+        db.execute(
+            "DELETE FROM blacklist WHERE userid = ?", (id,)
+        )
+        db.commit()
+    return redirect(request.referrer)
 
 
 @app.route("/unfollow/<int:id>")

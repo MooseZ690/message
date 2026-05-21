@@ -5,7 +5,7 @@
     <div style="height:16vh"></div>
     <div class="account-container">
         <h1>Login</h1>
-        {% if blacklist %}
+        {% if blacklisted %}
             <p class="error" onclick="this.style.display='none'">ⓘ account blocked. naughty</p>
         {% elif notadmin %}
             <p class="error" onclick="this.style.display='none'">ⓘ admin account required </p>

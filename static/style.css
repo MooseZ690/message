@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@300;400;500;600&family=Audiowide&display=swap');
 
-/* =========================
-     ROOT VARIABLES
-========================= */
+/* ROOT */
 
 :root {
 
@@ -134,10 +132,10 @@ a {
     color:#1b1f26;
     padding: 0.6em;
     margin-top: 0.6em;
-    font-weight: 600;
-    font-family: var(--heading-font);
+    font-weight: 550;
+    font-family: var(--body-font);
     border-radius: 50px;
-    transform: translateY(3px);
+    transform: translateY(6px);
 }
 
 .navbar {
@@ -312,7 +310,6 @@ textarea::placeholder {
 }
 
 .login-button,
-.chat-send-button,
 .admin-users-button {
     padding: 1vh;
     cursor: pointer;
@@ -322,7 +319,7 @@ textarea::placeholder {
     border-radius: 10px;
     color: white;
     border: none;
-    width: 270px;
+    width: calc(270px-1vh);
 }
 
 .admin-users-button {
@@ -450,10 +447,10 @@ textarea::placeholder {
 
 .dropdown-content {
     display: none;
-    background: var(--box-background);
+    background: var(--background);
     border: 2px solid rgba(255, 255, 255, 0.25);
     border-radius: var(--box-border-radius);
-    min-width: 140px;
+    width:100%;
     overflow: hidden;
     transition: height 0.14s ease;
     z-index: 1000;
@@ -502,8 +499,9 @@ textarea::placeholder {
 }
 
 .cat-drop-content {
-    background: var(--input-background);
-    color: var(--font-muted);
+    background: var(--background);
+    color: var(--font);
+    border: var(--box-border);
 }
 
 /* Post replies */
