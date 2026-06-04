@@ -22,9 +22,9 @@
         <div class="chat-message">
             <div class="chat-meta">
                 <!-- information about the post - name, date -->
-                <a style="text-decoration:underline; font-weight:600;"
+                <a class="h1 meta" style="font-weight:600;"
                     href="{{ url_for('userposts', username=message[2]) }}">{{ message[2] }}</a>
-                <span>{{ message[1] }}</span>
+                <span class="meta">{{ message[1] }}</span>
             </div>
             <div class="chat-text">{{ message[0] }}</div>
         </div>
