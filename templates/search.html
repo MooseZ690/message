@@ -69,7 +69,7 @@
                 {% else %}
                 <form action="/login" style="margin:0;">
                     <button type="submit" class="like-button meta">
-                        Like {{ ns.postlikes }}
+                        <span>♥</span> {{ ns.postlikes }}
                     </button>
                 </form>
                 {% endif %}
@@ -87,10 +87,11 @@
             </div>
             {% endif %}
 
-            <form method="POST" action="/search?search={{ search }}">
-                <input type="hidden" name="post_id">
-                <input type="text" name="comment">
-                <button type="submit">Comment</button>
+            <form method="POST" action="{{ url_for('search', search=search) }}">
+                <input type="hidden" name="post_id" value="{{ item[6] }}">
+                <button placeholder="{{item[6]}} yes"></button>
+                <input type="text" name="comment" placeholder="Comment">
+                <button type="submit" type="hidden"></button>
             </form>
 
         </div>

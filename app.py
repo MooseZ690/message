@@ -218,11 +218,10 @@ def removeadmin(id):
 @app.route("/search", methods=("GET", "POST"))
 def search():
     search = request.args.get("search", "")
+
     if request.method == "POST":
         comment_text = request.form.get("comment")
         post_id = request.form.get("post_id")
-        search = request.form.get("search")
-
         if comment_text:
             db = get_db()
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -234,6 +233,7 @@ def search():
                 (post_id, comment_text, session["user_id"], time),
             )
             db.commit()
+
         return redirect(url_for("search", search=search))
 
     # get request from arguments (i think whats in the url) rather than form
@@ -297,7 +297,6 @@ def allposts():
             comments=comments,
             today=datetime.now().strftime("%Y-%m-%d"),
         )
-
 
 @app.route("/like/<int:id>", methods=["POST"])
 def like(id):
