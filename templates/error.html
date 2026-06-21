@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
+<div style="height:15vh;"></div>
+<div class="content-404">
+    {{error}}
+    {% if error == 404 %}
+        <h1>the URL you've entered is not valid :(</h1>
+        <h2>"{{request.path}}"</h2> 
+    {% elif error == 505 %}
+        <h1>HTML version not supported</h1>
+        <h2>run arch</h2>
+    {% endif %}
+</div>
+{% endblock %}

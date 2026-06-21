@@ -286,10 +286,15 @@ def allposts():
             SELECT liker_id, postid FROM likes;
             """
         # get all info from likes table
-        comments = "SELECT * FROM comments"
+        comments_sql = """
+            SELECT comments.*, users.name AS username
+            FROM comments
+            JOIN users ON comments.userid = users.id
+            ORDER BY comments.time ASC;
+        """
         likes = query_db(likes)
         results = query_db(all)
-        comments = query_db(comments)
+        comments = query_db(comments_sql)
         return render_template(
             "allposts.html",
             results=results,
@@ -633,8 +638,16 @@ def unfollow(id):
 
 @app.errorhandler(404)
 def page_not_found(e):
-    return render_template("404.html"), 404
+    return render_template("error.html", error=404), 404
 
+@app.errorhandler(505)
+def http_version_not_supported(error):
+    return render_template("error.html", error=505), 505
+
+@app.route("/test505")
+#route to test 505 error because I'm not smart enough to force one
+def test505():
+    return render_template("error.html", error=505), 505
 
 # ---------------------#
 # ------LIVE-CHAT------#
@@ -691,4 +704,4 @@ def handle_send_message(data):
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", debug=True)
-# runs the app
+# runs the app with socketio so livechat works
