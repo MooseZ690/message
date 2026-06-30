@@ -674,7 +674,7 @@ def handle_send_message(data):
     # run the function when the browser sends a "send_message" event
     if "user_id" not in session:
         # if the user isn't logged in, they can't send messages
-        return
+        return redirect(url_for("login"))
     message = data.get("message", "").strip()
     # get the message text sent from javascript and remove extra spaces
     if not message:

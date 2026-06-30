@@ -189,9 +189,8 @@ button {
     width: 2.8em;
     padding: 0.5em;
     margin: 0 0.7em 1.5em 0.7em;
-    border-radius: var(--box-border-radius);
-    border: 1px solid white;
-    color: black;
+    color:white;
+    cursor:pointer;
 }
 
 .post-button-right:hover {
@@ -240,6 +239,7 @@ textarea::placeholder {
     border: none;
     color: var(--font);
     height: 10vh;
+    padding: 80px;
 }
 
 .top-input-box {
@@ -426,7 +426,6 @@ textarea::placeholder {
 .top-box {
     display: flex;
     gap: 2em;
-    align-items: center;
 }
 
 .top-box .post-button-right {
