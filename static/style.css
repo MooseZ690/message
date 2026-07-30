@@ -42,7 +42,7 @@
 /* LIGHT MODE */
 
 .theme-toggle {
-    background: var(--background);
+    background: rgba(0,0,0,0);
     color: var(--font);
     border: none;
     cursor: pointer;
@@ -51,7 +51,11 @@
 
 .light {
 
-    --background: #e9e9e9;
+    --background:
+        radial-gradient(circle at 20% 20%, rgba(116, 90, 255, 0.18) 0%, transparent 35%),
+        radial-gradient(circle at 80% 15%, rgba(90, 150, 255, 0.14) 0%, transparent 35%),
+        radial-gradient(circle at 50% 85%, rgba(180, 120, 255, 0.12) 0%, transparent 40%),
+        linear-gradient(180deg, #f9fbff 0%, #eef2fa 100%);
     --box-background: rgba(100, 100, 100, 0.069);
     --input-background: rgba(0, 0, 0, 0.225);
     --post-background: #ffffff;
