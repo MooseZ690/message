@@ -215,58 +215,6 @@ def removeadmin(id):
     return redirect(request.referrer)
 
 
-@app.route("/search", methods=("GET", "POST"))
-def search():
-    search = request.args.get("search", "")
-
-    if request.method == "POST":
-        comment_text = request.form.get("comment")
-        post_id = request.form.get("post_id")
-        if comment_text:
-            db = get_db()
-            time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            db.execute(
-                """
-                INSERT INTO comments (postid, content, userid, time)
-                VALUES (?, ?, ?, ?)
-                """,
-                (post_id, comment_text, session["user_id"], time),
-            )
-            db.commit()
-
-        return redirect(url_for("search", search=search))
-
-    # get request from arguments (i think whats in the url) rather than form
-    search = request.args.get("search", "")
-
-    sql = """
-        SELECT posts.title, posts.content, users.name,
-        posts.imageurl, cat.name, posts.time,
-        posts.id, posts.reply, cat.id,
-        users.id, users.imageurl
-        FROM posts
-        JOIN cat ON posts.categoryid = cat.id
-        JOIN users ON posts.user_id = users.id
-        WHERE posts.title LIKE ?
-        OR posts.content LIKE ?
-        OR users.name LIKE ?
-        OR cat.name LIKE ?
-        ORDER BY posts.time DESC;
-    """
-    term = f"%{search}%"
-    results = query_db(sql, (term, term, term, term))
-    likes = query_db("SELECT liker_id, postid FROM likes;")
-    comments = query_db("SELECT * FROM comments")
-
-    return render_template(
-        "search.html",
-        comments=comments,
-        likes=likes,
-        results=results,
-        search=search,
-    )
-
-
 @app.route("/allposts", methods=("GET", "POST"))
 def allposts():
     if request.method == "POST":

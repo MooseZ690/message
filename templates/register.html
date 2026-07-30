@@ -8,18 +8,33 @@
     <div class="account-container">
         <h1>Register</h1>
         {% if inuse %}
-            <p class="error" onclick="this.style.display='none'">ⓘ username or email already taken </p>
+        <p class="error" onclick="this.style.display='none'">ⓘ username or email already taken </p>
         {% endif %}
         <form method="POST">
             <input type="text" name="username" placeholder="Username" maxlength="20" required>
-            <input type="password" name="password" placeholder="Password" minlength="8" maxlength="20" required>
-            <input type="password" placeholder="Verify password" minlength="8" maxlength="20">
+            <input type="password" class="password" id="password" name="password" required
+                pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}"
+                title="Password must contain at least 8 characters, one capital letter, and one number.">
+            <input type="password" class="password" id="confirm-password" name="confirm_password" required
+                title="Passwords must match.">
             <input type="email" name="email" placeholder="Email" maxlength="40" required>
-        <input type="text" name="imageurl" placeholder="Profile Image URL (optional)">
+            <input type="text" name="imageurl" placeholder="Profile Image URL (optional)">
 
             <button type="submit" class="login-button">Create Account</button>
         </form>
         <p style="font-size: 8px;">By creating this account, I agree that my email will be visible to site admins. </p>
     </div>
 </div>
+<script>
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm-password");
+
+    confirmPassword.addEventListener("input", function () {
+        if (confirmPassword.value !== password.value) {
+            confirmPassword.setCustomValidity("Passwords do not match.");
+        } else {
+            confirmPassword.setCustomValidity("");
+        }
+    });
+</script>
 {% endblock %}

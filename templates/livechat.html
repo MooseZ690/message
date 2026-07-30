@@ -53,7 +53,7 @@
         e.preventDefault();
         //stop the page from refreshing
         const message = input.value.trim();
-        //get the text the user typed and remove extra spaces
+        //get the text the user typed and remove leading + trailing spaces
         if (message === "") return;
         //don't post if the message is empty
         socket.emit("send_message", { message: message });
@@ -61,10 +61,11 @@
         input.value = "";
         //clear the input box after sending 
         chatBox.scrollTop = chatBox.scrollHeight;
-        //scrolls to bottom
+        //scrolls to bottom of chatbox
     });
 
     socket.on("receive_message", function (data) {
+        //when a new message from another user is recieved through socketio
         const div = document.createElement("div");
         //make a new div for the incoming message from flask
         div.classList.add("chat-message");

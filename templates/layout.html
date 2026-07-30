@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <link rel="icon" href="">
     <title>Relay</title>
+    <link red="icon" type="image" href="{{url_for('static', filename='')}}">
 </head>
 
 <body>
@@ -64,14 +65,6 @@
                 </svg>
                 &nbsp;LIVE CHAT
             </a>
-
-            <form action="/search" method="POST">
-                <div class="search">
-                    <input type="text" name="search" class="searchbar" placeholder="🔎︎ Search here...">
-                    <input type="hidden" name="search" value="{{ search }}">
-                    <button type="submit" style="display:none"></button>
-                </div>
-            </form>
         </div>
         <div class="nav-right">
             <a href="/admin" class="top-button">ADMIN</a>
