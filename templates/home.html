@@ -86,6 +86,7 @@
         {% set posts = results|length %}
         {% if posts %}
         <p>{{ posts }} posts from people you follow</p>
+        <h2>Scroll →</h2>
         {% endif %}
         <div class="inline" id="postbox">
             {% for item in results %}
@@ -155,7 +156,7 @@
                         {% else %}
                         <form action="/login" style="margin:0;">
                             <button type="submit" class="like-button meta">
-                                Like {{ ns.postlikes }}
+                                ♥ {{ ns.postlikes }}
                             </button>
                         </form>
                         {% endif %}

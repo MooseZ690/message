@@ -13,6 +13,7 @@
     --box-background: rgba(255, 255, 255, 0.035);
     --post-background: #2a2a2a;
     --input-background: rgba(255, 255, 255, 0.05);
+    --element-bg: black;
 
     /* fonts */
     --font: #e8e6e3;
@@ -66,6 +67,7 @@
     --nav-box-shadow: rgb(0, 0, 0);
     --box-border: 1px solid rgba(0, 0, 0, 0.08);
     --post-border: 1px solid rgba(0, 0, 0, 0.06);
+    --element-bg: white;
 }
 
 /* GLOBAL */
@@ -454,7 +456,7 @@ textarea::placeholder {
 
 .dropdown-content {
     display: none;
-    background: var(--background);
+    background: var(--element-bg);
     border: 2px solid rgba(255, 255, 255, 0.25);
     border-radius: var(--box-border-radius);
     width: 100%;
@@ -515,7 +517,7 @@ textarea::placeholder {
 
 .reply-box {
     border-radius: var(--box-border-radius);
-    background: var(--background);
+    background: rgba(0,0,0,0.3);
     padding: 1em;
     display: flex;
     font-size: var(--reply-font);

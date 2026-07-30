@@ -7,8 +7,8 @@
         <h2>Users</h2>
         {% for row in users %}
         <p class="admin-users">
-            <strong>@{{ row[0] }}</strong><br>
-            {{ row[1] }}<br>
+            <strong>@{{ row[0] }}</strong>
+            {{ row[1] }}
             {% if row[3] in blacklist %}
                 <span style="color: red;">⬤ Blocked</span>
             {% endif %}

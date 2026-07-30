@@ -550,24 +550,24 @@ def follow(followed_id):
 
 @app.route("/block/<int:id>")
 def block(id):
-    if query_db("SELECT * FROM admins WHERE userid = ?", (session.get("user_id"),)):
-        db = get_db()
-        # connect to db if user is admin
-        db.execute("INSERT INTO blacklist (userid) VALUES (?)", (id,))
-        # adds target user to blacklist table
-        db.commit()
-        return redirect(url_for("admin"))
-    else:
-        return render_template("404.html"), 403
+    if not query_db("SELECT * FROM admins WHERE userid = ?", (session.get("user_id"),)):
+        return render_template("error.html", error=403)
+
+    db = get_db()
+    db.execute("INSERT OR IGNORE INTO blacklist (userid) VALUES (?)", (id,))
+    db.commit()
+    return redirect(url_for("admin"))
 
 
 @app.route("/unblock/<int:id>")
 def unblock(id):
-    if query_db(f"SELECT * FROM admins WHERE userid = ?", (id,)):
-        db = get_db()
-        db.execute("DELETE FROM blacklist WHERE userid = ?", (id,))
-        db.commit()
-    return redirect(request.referrer)
+    if not query_db("SELECT * FROM admins WHERE userid = ?", (session.get("user_id"),)):
+        return render_template("error.html", error=403)
+
+    db = get_db()
+    db.execute("DELETE FROM blacklist WHERE userid = ?", (id,))
+    db.commit()
+    return redirect(url_for("admin"))
 
 
 @app.route("/unfollow/<int:id>")
