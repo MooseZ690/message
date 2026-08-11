@@ -26,7 +26,7 @@ DATABASE = "database.db"
 
 app = Flask(__name__)
 app.secret_key = "serendipitous"  # base of the password hashing
-socketio = SocketIO(app)
+socketio = SocketIO(app) # for instant updates without reloading on livechat
 
 
 def get_db():
@@ -86,6 +86,7 @@ likes = """
 @app.route("/", methods=("GET", "POST"))
 def home():
     if request.method == "POST":
+        # if the user is posting (a comment)
         comment_text = request.form.get("comment")
         id = request.form.get("post_id")
         if comment_text:
@@ -95,6 +96,7 @@ def home():
                 "INSERT INTO comments (postid, content, userid, time) VALUES (?, ?, ?, ?)",
                 (id, comment_text, session["user_id"], time),
             )
+            # adds the content of the users comment into the database
             db.commit()
         return redirect(request.referrer)
     else:
@@ -105,6 +107,7 @@ def home():
                 (session.get("user_id"),),
             )
         ]
+        # finds the users that the current user is following
 
         follow = ", ".join("?" * len(following))
         # flexible amount of ?s in the sql statement
@@ -133,6 +136,7 @@ def home():
             JOIN users ON comments.userid = users.id
             ORDER BY comments.time ASC;
         """
+        # sql statements for posts, comments, and sidebar content on homepage
 
         likes = query_db(likes_sql)
         users = query_db(userssql)
@@ -162,12 +166,14 @@ def admin():
         JOIN users AS followed ON following.followed_id = followed.id
         JOIN users AS follower ON following.follower_id = follower.id;
     """
+    # sql statement for the following relationships section of admin page
     admins_sql = """
         SELECT users.id, users.name, users.email, users.imageurl
         FROM admins
         JOIN users ON admins.userid = users.id
         ORDER BY admins.id DESC;
     """
+    # used to veryify if current user is an admin
     users_sql = """
         SELECT users.name, users.email, users.imageurl, users.id
         FROM users;
@@ -181,7 +187,7 @@ def admin():
         row[0] for row in query_db(admins_sql)
     ]  # flat list of IDs for admin button checking
 
-    if not any(row[0] == session.get("user_id") for row in admins):
+    if not any(row[0] == session.get("user_id") for row in admins): 
         return redirect(url_for("login", notadmin=True))
     # if the user isn't an admin, return to login page
 
@@ -503,7 +509,7 @@ def userposts(username):
         likes = query_db(likes)
         comments = query_db(comments_sql)
         if not userdb:
-            return "User not found"
+            return(render_template("error.html", error="User not found"))
         profilepic = userdb[0][1]
         userid = userdb[0][0]
         following = False

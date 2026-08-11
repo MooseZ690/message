@@ -10,8 +10,11 @@
         <h1>HTML version not supported</h1>
         <h2>run arch</h2>
     {% elif error == 403 %}
-        <h1>Insufficient priveliges</h1>
-        <h2>jbg bro jbg</h2>
+        <h1>Insufficient priviliges</h1>
+        <h2>just ask to be an admin. brutal. </h2>
+    {% elif error == "User not found" %}
+        <h1>The user specified in the URL is not registered. </h1>
+        <h2>Maybe you should get them to register ...</h2>
     {% endif %}
 </div>
 {% endblock %}

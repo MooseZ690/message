@@ -5,40 +5,46 @@
         <h1 class="cat-title">Admin Panel</h1>
 
         <h2>Users</h2>
-        {% for row in users %}
-        <p class="admin-users">
-            <strong>@{{ row[0] }}</strong>
-            {{ row[1] }}
-            {% if row[3] in blacklist %}
-                <span style="color: red;">⬤ Blocked</span>
-            {% endif %}
-            {% if row[3] in admins2 %}
-                <span style="color: green;">⬤ Admin</span>
-            {% endif %}
-            <button class="admin-users-button" style="margin-left:auto">
-                <a href="/userposts/{{ row[0] }}">Profile</a>
-            </button>
-            <button class="admin-users-button">
+
+        <input type="text" id="userSearch" class="user-search" placeholder="Search username or email...">
+
+        <div id="userList">
+            {% for row in users %}
+            <p class="admin-users user-item">
+                <strong class="username">@{{ row[0] }}</strong>
+                <span class="email">{{ row[1] }}</span>
+
                 {% if row[3] in blacklist %}
-                    <a href="/unblock/{{ row[3] }}">
-                        Unblock
-                    </a>
-                {% else %}
-                    <a href="/block/{{ row[3] }}">
-                        Block
-                    </a>
+                <span style="color:red;">⬤ Blocked</span>
                 {% endif %}
-            </button>
-            <button class="admin-users-button">
+
                 {% if row[3] in admins2 %}
-                    <a href="/removeadmin/{{ row[3] }}">Remove Admin</a>
-                {% else %}
-                    <a href="/makeadmin/{{ row[3] }}">Make Admin</a>
+                <span style="color:green;">⬤ Admin</span>
                 {% endif %}
-            </button>
-        </p>
+
+                <button class="admin-users-button" style="margin-left:auto">
+                    <a href="/userposts/{{ row[0] }}">Profile</a>
+                </button>
+
+                <button class="admin-users-button">
+                    {% if row[3] in blacklist %}
+                    <a href="/unblock/{{ row[3] }}">Unblock</a>
+                    {% else %}
+                    <a href="/block/{{ row[3] }}">Block</a>
+                    {% endif %}
+                </button>
+
+                <button class="admin-users-button">
+                    {% if row[3] in admins2 %}
+                    <a href="/removeadmin/{{ row[3] }}">Remove Admin</a>
+                    {% else %}
+                    <a href="/makeadmin/{{ row[3] }}">Make Admin</a>
+                    {% endif %}
+                </button>
+            </p>
+            {% endfor %}
+        </div>
         <div style="border-bottom: 1px solid rgba(193, 193, 193, 0.744)"></div>
-        {% endfor %}
 
         <h2>Following Relationships</h2>
         <hr>
@@ -47,4 +53,22 @@
         {% endfor %}
     </div>
 </div>
+<script>
+    const search = document.getElementById("userSearch");
+    const users = document.querySelectorAll(".user-item");
+
+    search.addEventListener("input", function () {
+        const value = this.value.toLowerCase().trim();
+
+        users.forEach(user => {
+            const text = user.textContent.toLowerCase();
+
+            if (text.includes(value)) {
+                user.style.display = "flex";
+            } else {
+                user.style.display = "none";
+            }
+        });
+    });
+</script>
 {% endblock %}
