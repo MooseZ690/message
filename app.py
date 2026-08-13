@@ -540,6 +540,7 @@ def follow(followed_id):
             return render_template("userposts")
         elif followed_id == follower_id:
             return render_template("userposts")
+        #queries post information from users the current user is 'following'
     db = get_db()
     db.execute(
         "INSERT INTO following (follower_id, followed_id) VALUES (?, ?)",
@@ -547,6 +548,7 @@ def follow(followed_id):
     )
     db.commit()
     return redirect(request.referrer)
+    #redirects back to the previous page
 
 
 # =================#
@@ -598,10 +600,10 @@ def page_not_found(e):
 def http_version_not_supported(error):
     return render_template("error.html", error=505), 505
 
-@app.route("/test505")
-#route to test 505 error because I'm not smart enough to force one
+""" @app.route("/test505")
+#route to test 505 error because I'm not smart enough to trigger one
 def test505():
-    return render_template("error.html", error=505), 505
+    return render_template("error.html", error=505), 505 """
 
 # ---------------------#
 # ------LIVE-CHAT------#
@@ -612,6 +614,7 @@ def test505():
 def livechat():
     if "user_id" not in session:
         return redirect(url_for("login"))
+    #if the user isn't logged in, send them to login page
     sql = """
         SELECT chat.message, chat.time, users.name
         FROM chat
@@ -621,7 +624,7 @@ def livechat():
     messages = query_db(sql)
 
     return render_template("livechat.html", messages=messages)
-
+    #renders livechat page with all messages from previous sessions from db
 
 @socketio.on("send_message")
 def handle_send_message(data):

@@ -7,7 +7,7 @@
         <h2>Users</h2>
 
         <input type="text" id="userSearch" class="user-search" placeholder="Search username or email...">
-
+        <!-- List of all site users with admin & blacklist status -->
         <div id="userList">
             {% for row in users %}
             <p class="admin-users user-item">
@@ -59,14 +59,16 @@
 
     search.addEventListener("input", function () {
         const value = this.value.toLowerCase().trim();
-
+        //changes search term(s) to lowercase
         users.forEach(user => {
             const text = user.textContent.toLowerCase();
-
+            //changes user info to lowercase to make search terms non case-sensitive
             if (text.includes(value)) {
                 user.style.display = "flex";
+                //if a user card contains the search term, keep it
             } else {
                 user.style.display = "none";
+                //otherwise make it disappear
             }
         });
     });
