@@ -65,7 +65,8 @@ def query_db(query, args=(), one=False):
 # ------------------------#
 
 all = """
-        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.imageurl
+        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, 
+        posts.time, posts.id, posts.reply, cat.id, users.imageurl
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         JOIN users on posts.user_id = users.id
@@ -112,7 +113,8 @@ def home():
         follow = ", ".join("?" * len(following))
         # flexible amount of ?s in the sql statement
         sql = f"""
-            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
+            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, 
+            posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
             FROM posts
             JOIN cat ON posts.categoryid = cat.id
             JOIN users ON posts.user_id = users.id
@@ -224,6 +226,8 @@ def removeadmin(id):
 @app.route("/allposts", methods=("GET", "POST"))
 def allposts():
     if request.method == "POST":
+        if "user_id" not in session:
+                return redirect(url_for("login"))
         comment_text = request.form.get("comment")
         id = request.form.get("post_id")
         if comment_text:
@@ -361,7 +365,8 @@ def logout():
 )  # app route if replying to another post
 def newpost(id=None):
     sql = """
-    SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.id, posts.time, posts.reply
+    SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.id, 
+    posts.time, posts.reply
     FROM posts
     JOIN cat ON posts.categoryid = cat.id
     JOIN users ON posts.user_id = users.id
@@ -386,7 +391,8 @@ def newpost(id=None):
         time = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         db = get_db()
         db.execute(
-            "INSERT INTO posts (title, user_id, content, imageurl, categoryid, time, reply) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            """INSERT INTO posts (title, user_id, content, imageurl, categoryid, time, reply) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)""",
             (title, userid, content, imageurl, categoryid, time, reply),
         )
         db.commit()
@@ -424,7 +430,8 @@ def category(id):
         return redirect(request.referrer)
     else:
         sql = """
-        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
+        SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time,
+        posts.id, posts.reply, cat.id, users.id, users.imageurl
         FROM posts
         JOIN cat ON posts.categoryid = cat.id
         JOIN users ON posts.user_id = users.id
@@ -478,7 +485,8 @@ def userposts(username):
         return redirect(request.referrer)
     else:
         sql = """
-            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
+            SELECT posts.title, posts.content, users.name, posts.imageurl, cat.name, 
+            posts.time, posts.id, posts.reply, cat.id, users.id, users.imageurl
             FROM posts
             JOIN cat ON posts.categoryid = cat.id
             JOIN users on posts.user_id = users.id
@@ -560,6 +568,7 @@ def follow(followed_id):
 def block(id):
     if not query_db("SELECT * FROM admins WHERE userid = ?", (session.get("user_id"),)):
         return render_template("error.html", error=403)
+    #Checks if the user is in 
 
     db = get_db()
     db.execute("INSERT OR IGNORE INTO blacklist (userid) VALUES (?)", (id,))
@@ -597,8 +606,12 @@ def page_not_found(e):
     return render_template("error.html", error=404), 404
 
 @app.errorhandler(505)
-def http_version_not_supported(error):
+def http_version_not_supported(e):
     return render_template("error.html", error=505), 505
+
+@app.errorhandler(405)
+def method_not_allowed(e):
+    return render_template("error.html", error=405), 405
 
 """ @app.route("/test505")
 #route to test 505 error because I'm not smart enough to trigger one
