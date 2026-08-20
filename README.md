@@ -1,3 +1,5 @@
+<img src="static/conversation.png" alt="README image" width="auto">
+
 # Message
 
 A Flask-based social platform with user accounts, posts, comments, likes, following, categories, administration tools, and real-time live chat.
