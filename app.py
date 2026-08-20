@@ -101,6 +101,9 @@ def home():
     if request.method == "POST":
         # if the user is posting (a comment)
         comment_text = request.form.get("comment")
+        print("LENGTH:", len(comment_text))
+        comment_text = comment_text[:200]
+        print("LENGTH:", len(comment_text))
         id = request.form.get("post_id")
         if comment_text:
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -241,6 +244,7 @@ def allposts():
         if check_logged_in() == False:
                 return redirect(url_for("login"))
         comment_text = request.form.get("comment")
+        comment_text = comment_text[:200]
         id = request.form.get("post_id")
         if comment_text:
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -431,6 +435,7 @@ def newpost(id=None):
 def category(id):
     if request.method == "POST":
         comment_text = request.form.get("comment")
+        comment_text = comment_text[:200]
         id = request.form.get("post_id")
         if comment_text:
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -486,6 +491,7 @@ def category(id):
 def userposts(username):
     if request.method == "POST":
         comment_text = request.form.get("comment")
+        comment_text = comment_text[:200]
         id = request.form.get("post_id")
         if comment_text:
             time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -685,5 +691,5 @@ def handle_send_message(data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", debug=False)
+    socketio.run(app, host="0.0.0.0", debug=True)
 # runs the app with socketio so livechat works
