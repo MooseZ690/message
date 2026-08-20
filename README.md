@@ -1,4 +1,4 @@
-<img src="static/conversation.png" alt="README image" width="auto">
+<img src="static/images.jpg" alt="README image" width="500">
 
 # Message
 
