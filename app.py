@@ -59,6 +59,18 @@ def query_db(query, args=(), one=False):
     return (rv[0] if rv else None) if one else rv
     # if first argument == True return only the first result, otherwise return all results
 
+#---User status checks---#
+
+def check_logged_in():
+    if "user_id" in session:
+        return True
+    else:
+        return False
+    
+def check_admin():
+    if not query_db("SELECT * FROM admins WHERE userid = ?", (session.get("user_id"),)):
+        return False
+
 
 # ------------------------#
 # -----SQL STATEMENTS-----#
@@ -189,9 +201,9 @@ def admin():
         row[0] for row in query_db(admins_sql)
     ]  # flat list of IDs for admin button checking
 
-    if not any(row[0] == session.get("user_id") for row in admins): 
-        return redirect(url_for("login", notadmin=True))
-    # if the user isn't an admin, return to login page
+    if check_admin() == False:
+        return render_template("error.html", error=403)
+    # if the user isn't an admin, go to 403 page
 
     return render_template(
         "admin.html",
@@ -226,7 +238,7 @@ def removeadmin(id):
 @app.route("/allposts", methods=("GET", "POST"))
 def allposts():
     if request.method == "POST":
-        if "user_id" not in session:
+        if check_logged_in() == False:
                 return redirect(url_for("login"))
         comment_text = request.form.get("comment")
         id = request.form.get("post_id")
@@ -378,7 +390,8 @@ def newpost(id=None):
     # get all relevant info from posts table
     results = query_db(sql)
 
-    if "user_id" not in session:
+    
+    if check_logged_in() == False:
         return redirect(url_for("login"))
     if request.method == "POST":
         title = request.form["title"]
@@ -539,8 +552,8 @@ def userposts(username):
 
 @app.route("/follow/<followed_id>")
 def follow(followed_id):
-    if "user_id" not in session:  # if you're not logged in
-        return redirect(url_for("login"))  # go to login page
+    if check_logged_in() == False:
+        return redirect(url_for("login"))
     follower_id = session.get("user_id")
     results = query_db("SELECT * FROM following;")
     for row in results:
@@ -566,7 +579,7 @@ def follow(followed_id):
 
 @app.route("/block/<int:id>")
 def block(id):
-    if not query_db("SELECT * FROM admins WHERE userid = ?", (session.get("user_id"),)):
+    if check_admin() == False:
         return render_template("error.html", error=403)
     #Checks if the user is in 
 
@@ -578,7 +591,7 @@ def block(id):
 
 @app.route("/unblock/<int:id>")
 def unblock(id):
-    if not query_db("SELECT * FROM admins WHERE userid = ?", (session.get("user_id"),)):
+    if check_admin() == False:
         return render_template("error.html", error=403)
 
     db = get_db()
@@ -589,7 +602,7 @@ def unblock(id):
 
 @app.route("/unfollow/<int:id>")
 def unfollow(id):
-    if "user_id" not in session:
+    if check_logged_in() == False:
         return redirect(url_for("login"))
     follower_id = session.get("user_id")
     db = get_db()
@@ -625,7 +638,7 @@ def test505():
 
 @app.route("/livechat")
 def livechat():
-    if "user_id" not in session:
+    if check_logged_in() == False:
         return redirect(url_for("login"))
     #if the user isn't logged in, send them to login page
     sql = """
@@ -642,8 +655,7 @@ def livechat():
 @socketio.on("send_message")
 def handle_send_message(data):
     # run the function when the browser sends a "send_message" event
-    if "user_id" not in session:
-        # if the user isn't logged in, they can't send messages
+    if check_logged_in() == False:
         return redirect(url_for("login"))
     message = data.get("message", "").strip()
     # get the message text sent from javascript and remove extra spaces
