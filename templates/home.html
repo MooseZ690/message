@@ -200,22 +200,17 @@
     //finds the element with the id postbox
 
     function saveScrollPositions() {
-        localStorage.setItem('pageScrollY', window.scrollY);
         localStorage.setItem('divScrollLeft', div.scrollLeft);
     }
     //saves the scroll position of page and div to local storage
 
     function restoreScrollPositions() {
-        const pageScrollY = localStorage.getItem('pageScrollY');
         const divScrollLeft = localStorage.getItem('divScrollLeft');
         //gets the scroll distance from local storage
-        if (pageScrollY !== null) window.scrollTo(0, parseInt(pageScrollY));
         if (divScrollLeft !== null) div.scrollLeft = parseInt(divScrollLeft);
         //if the values exist, scroll to them
     }
     //function to restore the positions
-
-    window.addEventListener('scroll', saveScrollPositions);
     div.addEventListener('scroll', saveScrollPositions);
     //listen for scroll events
 

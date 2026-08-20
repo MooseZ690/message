@@ -130,25 +130,6 @@
             });
         }
     });
-
-    function saveScrollPositions() {
-        localStorage.setItem('pageScrollY', window.scrollY);
-    }
-    //saves the scroll position of page and div to local storage
-
-    function restoreScrollPositions() {
-        const pageScrollY = localStorage.getItem('pageScrollY');
-        //gets the scroll distance from local storage
-        if (pageScrollY !== null) window.scrollTo(0, parseInt(pageScrollY));
-        //if the value exists, scroll to it
-    }
-    //function to restore the positions
-
-    window.addEventListener('scroll', saveScrollPositions);
-    //listen for scroll events
-
-    document.addEventListener('DOMContentLoaded', restoreScrollPositions);
-    //restore on load
 </script>
 {% endblock %}
 
